@@ -22,7 +22,7 @@ Smith states that reflection is "assessment of what is in relation to what might
 The snippet below is my (Samuel) suggested formatting, feel free to use if you want to.
 
 ```md
-# Reflection \[1/2/3/4/...]
+# >>>My Name's<<< Reflection - week \[1/2/3/4/...]
 
 Weeky individual reflection, week \[1/2/3/4/...], name here
 
