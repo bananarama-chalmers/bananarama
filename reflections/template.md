@@ -59,3 +59,7 @@ B: ...
 A->B: ...
 
 ```
+
+## Saving and submitting
+
+Remember to save your reflection with `.md`/`.txt`/`.pdf`. The above template is written in markdown, and needs a `.md` extension to show its pretty formatting in GitHub! 
