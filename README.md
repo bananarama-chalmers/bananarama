@@ -1,18 +1,30 @@
 # Bananarama
 
+Project repo for a GPS pooling app for finding the best meetup spot when carpooling. Made by Bananarama in TDA257.
+
+## Installation and running:
 Use a CLI (Terminal for MacOS, CMD/PowerShell for Windows) and use the below commands.
 
-## Install frontend:
+### Change directory to this repo:
 ```console
-banarama$ cd app
-/banarama/app$ npm install
+cd path/to/this/directory
 ```
 
-## Run app:
+### Install frontend:
 ```console
-/banarama$ cd app
-/banarama/app$ npm start
+cd dev/app
+```
+```console
+npm install
 ```
 
-## If it doesn't work
-Make sure to be in the right directory (the same directory where the git repository is)
+### Run app:
+```console
+cd dev/app
+```
+```console
+npm start
+```
+
+### If it doesn't work
+Make sure to be in the right directory (the same directory where the git repository is on your computer)
