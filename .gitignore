@@ -1,0 +1,7 @@
+.idea
+.vscode
+
+/dev/app/node_modules
+/dev/app/package-lock.json
+
+
