@@ -1,6 +1,6 @@
 # Hugo Mårdbrink's reflection - week 2
 
-Weeky individual reflection, week 2, Hugo Mårdbrink
+Weekly individual reflection, week 2, Hugo Mårdbrink
 
 ## What do I want to learn or understand better?
 
@@ -32,4 +32,4 @@ A: Laid out the foundation for the common work environment
 
 B: Set up a code structure that is easy to follow
 
-A->B: Discuss a optimal structure for us and implementing it
+A->B: Discuss an optimal structure for us and implementing it

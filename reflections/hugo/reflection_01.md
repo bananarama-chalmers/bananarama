@@ -1,6 +1,6 @@
 # Hugo Mårdbrink's reflection - week 1
 
-Weeky individual reflection, week 1, Hugo Mårdbrink
+Weekly individual reflection, week 1, Hugo Mårdbrink
 
 ## What do I want to learn or understand better?
 
