@@ -4,7 +4,9 @@ import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+      <div className="w-screen h-screen">
+          <App/>
+      </div>
   </React.StrictMode>,
   document.getElementById('root')
 );

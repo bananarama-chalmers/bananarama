@@ -1,12 +1,11 @@
 import React from 'react';
 import './tailwind.css';
+import StreetMap from "./components/StreetMap";
 
 function App() {
   return (
-    <div>
-      <h1 className="text-5xl">
-        Hello, World!
-      </h1>
+    <div className="w-screen h-screen">
+        <StreetMap/>
     </div>
   );
 }
