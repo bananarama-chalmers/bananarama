@@ -1,35 +1,35 @@
-# Adam Landberg's Reflection - week 2
+# Adam Landberg's Reflection - week 3
 
-Weeky individual reflection, week 2, Adam Landberg
+Weeky individual reflection, week 3, Adam Landberg
 
 ## What do I want to learn or understand better?
 
-A: I would like to be LIT at leading software engineering projects.
+A: I would like to get better at working with UI-design.
 
-B: I have sort of no kowledge about how software engineers work.
+B: I have no method for UI-designing.
 
-A->B: I need to talk more with my team mates from the IT division to understad their needs andways of working.
+A->B: I have to get some tools and methods for doing UI-design.
 
 ## How can I help someone else, or the entire team, to learn something new?
 
-A: I would like to see that my team mates find new ways of working in projects.
+A: I would like to help my team mates in the process of understanding how you design for the user and not only for the background people.
 
-B: I have a perspective that my team members from the IT division do not have any proper way of working with projects.
+B: I have a perspective that my team members focus on the back dev part of the project.
 
-A->B: I should bring my competence from Hyper Island into the team and utilize my position as Product Owner.
+A->B: I should remain the person in charge of assuring the final product is user friendly.
 
 ## What is my contribution towards the team’s use of Scrum?
 
-A: I want the team to have proper stories to work with.
+A: I want the team to have methods to facilitate the work in the project.
 
-B: I perceive the group to not have proper stories to work with.
+B: I perceive the group to work in unsystematic ways.
 
-A->B: I need to understand how to work properly with stories.
+A->B: I should contribute with trying tofind easy and efficient ways for the product to be produced efficiently.
 
 ## What is my contribution towards the team’s deliveries?
 
-A: I need to take the proper role as product owner.
+A: I would like to bring structure to our work.
 
-B: Right now I do not understand the role of a product owner.
+B: Right now I do not have any proper structures at hand that would facilitate our work.
 
-A->B: I have to understand my role as a product owner to be able to do my job properly.
+A->B: I have to get knowledge about what structures of work the team could make use of.
