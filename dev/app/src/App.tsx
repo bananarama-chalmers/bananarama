@@ -5,7 +5,9 @@ import StreetMap from "./components/StreetMap";
 function App() {
   return (
     <div className="w-screen h-screen">
-        <StreetMap/>
+      <h1 className='text-5xl'>Hello, World!</h1>
+      <p>foo bar</p>
+      <StreetMap/>
     </div>
   );
 }
