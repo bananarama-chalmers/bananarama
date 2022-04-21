@@ -4,7 +4,11 @@ module.exports = {
       "./src/**/*.{html,js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '400px': '400px',
+      }
+    },
   },
   plugins: [require('@tailwindcss/typography'),],
 }

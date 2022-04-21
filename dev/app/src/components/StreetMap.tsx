@@ -52,7 +52,7 @@ function StreetMap() {
 
     return (
         <div>
-            <div ref={mapContainer} className="map-container w-2/3 h-2/3 text-white"/>
+            <div ref={mapContainer} className="h-400px w-2/3 text-white"/>
         </div>
     );
 }
