@@ -6,7 +6,6 @@ function App() {
   return (
     <div className="w-screen h-screen">
       <h1 className='text-5xl'>Hello, World!</h1>
-      <p>foo bar</p>
       <StreetMap/>
     </div>
   );
