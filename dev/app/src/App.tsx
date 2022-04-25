@@ -1,15 +1,22 @@
 import React from 'react';
+import { 
+  BrowserRouter,
+  Switch,
+  Route,
+ } from 'react-router-dom';
+import Home from './pages/Home'
+import PoolPage from './pages/PoolPage';
 import './tailwind.css';
-import StreetMap from "./components/StreetMap";
+
 
 function App() {
   return (
-    <div className="w-screen h-screen">
-      <h1 className='text-5xl'>Hello, World!</h1>
-      <p>foo bar</p>
-      <StreetMap/>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/pool" component={ PoolPage }/>
+        <Route path="/" component={ Home }/>
+      </Switch>
+    </BrowserRouter>
   );
 }
-
-export default App;
+export default App
