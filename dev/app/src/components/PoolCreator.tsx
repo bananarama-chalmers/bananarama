@@ -42,6 +42,7 @@ export const PoolCreator = () => {
                 </select>
             </label>
             <label className="col-span-3 text-slate-600 text-base font-semibold">
+                Destination
                 <input
                     className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9  bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
                     type="text"
