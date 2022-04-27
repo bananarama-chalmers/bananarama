@@ -1,14 +1,15 @@
 import Pool from "../components/routing/Pool";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-function useQuery() {
-  const { search } = useLocation();
-
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
 
 export default function PoolPage() {
-  let query = useQuery();
-  return <Pool name={query.get("name")} />;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const poolProps = {
+    lat: searchParams.get("lat"),
+    long: searchParams.get("long")
+  }
+
+  return <Pool {...poolProps} />;
 }

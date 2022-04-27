@@ -1,7 +1,3 @@
-export default function Pool({ name }: { name: string | null }) {
-  return (
-    <div>
-      <h2>{name} wants you to meetup!</h2>
-    </div>
-  );
+export default function Pool({ lat, long }: {lat: string | null, long: string | null }) {
+  return <h2> Meet me here: ({lat},{long}) !</h2>
 }
