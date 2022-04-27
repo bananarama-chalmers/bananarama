@@ -35,18 +35,10 @@ export const PoolCreator = () => {
                     name="travelTypeList"
                     className="block z-10 relative w-full p-2 bg-white rounded-md border h-10 outline-slate-200"
                 >
-                    <option className="selection:bg-white" value="car">
-                        Car
-                    </option>
-                    <option className="selection:bg-white" value="bike">
-                        Bike
-                    </option>
-                    <option className="selection:bg-white" value="walk">
-                        Walk
-                    </option>
-                    <option className="selection:bg-white" value="bus">
-                        Bus
-                    </option>
+                    <option value="car">Car</option>
+                    <option value="bike">Bike</option>
+                    <option value="walk">Walk</option>
+                    <option value="bus">Bus</option>
                 </select>
             </label>
             <label className="col-span-3 text-slate-600 text-base font-semibold">
