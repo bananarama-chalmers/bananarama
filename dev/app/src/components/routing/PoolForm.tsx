@@ -24,7 +24,7 @@ export default function PoolForm() {
         </label>
         <label> Enter your destination longitude:
           <input
-            type="number"
+            type="number"   
             value={long}
             onChange={(e: any) => setLong(e.target.value)}
           />
