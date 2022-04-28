@@ -50,7 +50,7 @@ export const PoolCreator = () => {
                 />
             </label>
             <input
-                className="outline-0 mt-1 hover:cursor-pointer hover:bg-slate-700 bg-slate-800 col-span-3 text-white rounded-lg p-2 font-semibold text-base"
+                className="outline-0 mt-1 hover:cursor-pointer hover:bg-slate-900 bg-slate-800 col-span-3 text-white rounded-lg p-2 font-semibold text-base"
                 type="submit"
                 value="Next: add poolers"
                 onClick={handleSubmit}
