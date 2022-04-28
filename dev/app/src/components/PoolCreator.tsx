@@ -1,16 +1,21 @@
 import React from "react";
 
-export const PoolCreator = () => {
-    const handleSubmit = (e: React.SyntheticEvent) => {
-        // FIXME: SyntheticType is pretty abstract, try to more spcificly type this
+type PoolCreatorProps = {
+    callback: React.FormEventHandler;
+};
+
+export const PoolCreator = ({ callback }: PoolCreatorProps) => {
+    const handleSubmit = (e: any) => {
+        // Sends the event to the parent component
         e.preventDefault();
-        console.log("submit button clicked :^)");
+        callback(e);
     };
 
     return (
         <form
             className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-0 z-10 w-box-width bg-white"
             onSubmit={handleSubmit}
+            name="creator"
         >
             <label className="col-span-3 text-slate-600 text-base font-semibold">
                 My position
@@ -53,7 +58,6 @@ export const PoolCreator = () => {
                 className="outline-0 mt-1 hover:cursor-pointer hover:bg-slate-900 bg-slate-800 col-span-3 text-white rounded-lg p-2 font-semibold text-base"
                 type="submit"
                 value="Next: add poolers"
-                onClick={handleSubmit}
             />
         </form>
     );

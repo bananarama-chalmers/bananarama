@@ -4,11 +4,18 @@ import { ThinSeparator, Separator } from "./Separator";
 type PoolFillerProps = {
     destinationURL: string;
     destinationName: string;
+    callback: React.FormEventHandler;
 };
 
-export const PoolFiller = (props: PoolFillerProps) => {
-    const handleSubmit = (e: React.SyntheticEvent) => {
+export const PoolFiller = ({
+    callback,
+    destinationName,
+    destinationURL,
+}: PoolFillerProps) => {
+    const handleSubmit = (e: React.FormEvent) => {
+        // Sends the event to the parent component
         e.preventDefault();
+        callback(e);
     };
 
     return (
@@ -20,10 +27,10 @@ export const PoolFiller = (props: PoolFillerProps) => {
                 Destination
                 <br />
                 <a
-                    href={props.destinationURL}
+                    href={destinationURL}
                     className="text-blue-400 text-lg underline hover:text-blue-500"
                 >
-                    {props.destinationName}
+                    {destinationName}
                 </a>
             </label>
             <Separator />
