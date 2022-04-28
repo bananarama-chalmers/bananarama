@@ -6,6 +6,7 @@ module.exports = {
                 "400px": "400px",
                 "input-height": "25px",
                 "1px": "1px",
+                "2px": "2px",
             },
             width: {
                 "box-width": "350px",
