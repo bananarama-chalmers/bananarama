@@ -1,4 +1,5 @@
 import React from "react";
+import { ThinSeparator, Separator } from "./Separator";
 
 type PoolFillerProps = {
     destinationURL: string;
@@ -25,7 +26,7 @@ export const PoolFiller = (props: PoolFillerProps) => {
                     {props.destinationName}
                 </a>
             </label>
-            <div className="block h-1px col-span-3 bg-slate-200"></div>
+            <Separator />
             <label className="col-span-2 text-slate-600 text-base font-semibold">
                 Pooler name
                 <input
@@ -64,15 +65,14 @@ export const PoolFiller = (props: PoolFillerProps) => {
                     onClick={handleSubmit}
                 />
             </label>
-            <div className="block h-1px col-span-3 bg-slate-200" />
+            <ThinSeparator />
             <p className="col-span-2 mt-1 text-slate-600 text-base font-semibold">
                 Poolers
             </p>
             <p className="col-span-1 mt-1 text-slate-600 text-base font-semibold">
                 Traveling by
             </p>
-            <div className="block h-1px col-span-2 bg-slate-100" />
-            <div className="block h-1px col-span-1 bg-slate-100" />
+            <div className="block h-1px col-span-3 bg-slate-200" />
             <ul className="col-span-2">
                 <li className="text-slate-900">
                     <div className="block border-purple-500 w-3 border-8 rounded-full mt-1 mr-2 float-left"></div>
@@ -85,7 +85,7 @@ export const PoolFiller = (props: PoolFillerProps) => {
                     <p className="w-full">Bike</p>
                 </li>
             </ul>
-            <div className="block h-1px col-span-3 bg-slate-200" />
+            <Separator />
             <button className="col-span-3 font-semibold bg-slate-800 hover:bg-slate-900 text-white h-10 rounded-lg mt-1">
                 Get meeting point
             </button>
