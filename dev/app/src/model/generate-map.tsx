@@ -66,7 +66,41 @@ export class streetMap {
 
     }
 
-    private commonPoint() {
+    private getCommonPoint(travelAreas : Array<Array<coordinate>>) {
+        let tempDiff : number;
+        let lowestDiff : number = this.calcCoordDiff(travelAreas[0][0], travelAreas[1][0]);
+        let shortestPoints : Array<coordinate> = [travelAreas[0][0], travelAreas[1][0]];
 
+        travelAreas[0].forEach((c1 : coordinate) => {
+            travelAreas[1].forEach((c2 : coordinate) => {
+                tempDiff = this.calcCoordDiff(c1,c2);
+                if(lowestDiff > tempDiff) {
+                    lowestDiff = tempDiff;
+                    shortestPoints = [c1, c2];
+                }
+            })
+        })
+
+        let commonPoint = {lng: (shortestPoints[0].lng + shortestPoints[1].lng)/2,
+                           lat: (shortestPoints[0].lat + shortestPoints[1].lat)/2}
+        lowestDiff = this.calcCoordDiff(commonPoint, travelAreas[2][0]);
+        let shortestPoint:coordinate = travelAreas[2][0];
+
+        for (let i = 2; i < travelAreas.length; i++) {
+            travelAreas[i].forEach((c:coordinate) => {
+                tempDiff = this.calcCoordDiff(commonPoint,c);
+                if(lowestDiff > tempDiff) {
+                    lowestDiff = tempDiff;
+                    shortestPoint = c;
+                }
+            })
+            commonPoint = {lng: (commonPoint.lng + shortestPoint.lng)/2,
+                           lat: (commonPoint.lat + shortestPoint.lat)/2}
+        }
+    }
+
+
+    private calcCoordDiff(c1:coordinate, c2:coordinate) {
+        return Math.abs((c1.lng - c2.lng)) + Math.abs((c1.lat - c2.lat))
     }
 }
