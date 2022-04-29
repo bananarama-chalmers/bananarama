@@ -1,6 +1,6 @@
-# Samuel Kajava's Reflection - week 4
+# Samuel Kajava's Reflection - week 5
 
-Weeky individual reflection, week 4, Samuel Kajava
+Weeky individual reflection, week 5, Samuel Kajava
 
 ## What do I want to learn or understand better?
 
