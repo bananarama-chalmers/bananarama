@@ -11,12 +11,13 @@ function StreetMap() {
         if (map.current) return;
         map.current = new streetMap('mapbox://styles/mapbox/streets-v11', "mapContainer");
         map.current?.generateMarkers(poolers);
-        map.current?.getRoute([{lng:30,lat:30},{lng:30.2,lat:30.2}]);
     });
+
 
     return (
         <div>
             <div id="mapContainer" className="h-400px w-2/3 text-white"/>
+            <button onClick={() => {map.current?.getRoute()}}> Generate route </button>
         </div>
     );
 }

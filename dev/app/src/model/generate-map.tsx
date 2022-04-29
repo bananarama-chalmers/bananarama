@@ -42,12 +42,13 @@ export class streetMap {
 
     }
 
-    public getRoute(coordinates : Array<coordinate>) {
+    public getRoute() {
         let time = 10;
-        const coords = new Array<Array<coordinate>>()
+        const coordinates = this._markers.map((m : Marker) => {return {lng:m.getLngLat().lng, lat:m.getLngLat().lat}})
+        const travelAreas = new Array<Array<coordinate>>()
 
         for (let i = 0; i < coordinates.length; i++) {
-            coords.push([]);
+            travelAreas.push([]);
             axios.get("https://api.mapbox.com/isochrone/v1/mapbox/cycling/" +
                 coordinates[i].lng + "," + coordinates[i].lat +
                 "?contours_minutes=" + time +
@@ -56,12 +57,12 @@ export class streetMap {
                 "&access_token=" + mapboxgl.accessToken)
                 .then((response: any) => {
                     response.data.features[0].geometry.coordinates[0].forEach((c:any) => {
-                        coords[i].push({lng:c[0],lat:c[1]})
+                        travelAreas[i].push({lng:c[0],lat:c[1]})
                     })
                 })
         }
 
-        console.log(coords);
+        console.log(travelAreas);
 
     }
 
