@@ -9,7 +9,8 @@ export default function PoolForm() {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const search = `${window.location.host}/pool?name=${name}&long=${long}&lat=${lat}`
-    alert(`URL: ${search}`)
+    navigator.clipboard.writeText(search)
+    alert("Your join link has been copied to the clipboard!")
   };
 
   return (
