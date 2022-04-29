@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {streetMap} from "../model/generate-map";
 
-
 function StreetMap() {
 
     const map = useRef<streetMap|null>(null);
@@ -11,7 +10,8 @@ function StreetMap() {
     useEffect(() => {
         if (map.current) return;
         map.current = new streetMap('mapbox://styles/mapbox/streets-v11', "mapContainer");
-        map.current?.generateMarkers(poolers)
+        map.current?.generateMarkers(poolers);
+        map.current?.getRoute([{lng:30,lat:30},{lng:30.2,lat:30.2}]);
     });
 
     return (

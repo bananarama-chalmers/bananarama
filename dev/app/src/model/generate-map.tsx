@@ -1,4 +1,5 @@
 import mapboxgl, {Map, Marker} from 'mapbox-gl';
+import axios from "axios";
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg';
 
@@ -27,7 +28,7 @@ export class streetMap {
         });
     }
 
-    public generateMarkers(poolers: Number) {
+    public generateMarkers(poolers : Number) {
 
         for (let i = 0; i < poolers; i++) {
             if (this._markers[i]) return;
@@ -41,7 +42,30 @@ export class streetMap {
 
     }
 
-    public getRoute(coordinates:Array<coordinate>) {
+    public getRoute(coordinates : Array<coordinate>) {
+        let time = 10;
+        const coords = new Array<Array<coordinate>>()
+
+        for (let i = 0; i < coordinates.length; i++) {
+            coords.push([]);
+            axios.get("https://api.mapbox.com/isochrone/v1/mapbox/cycling/" +
+                coordinates[i].lng + "," + coordinates[i].lat +
+                "?contours_minutes=" + time +
+                "&polygons=true" +
+                "&denoise=1" +
+                "&access_token=" + mapboxgl.accessToken)
+                .then((response: any) => {
+                    response.data.features[0].geometry.coordinates[0].forEach((c:any) => {
+                        coords[i].push({lng:c[0],lat:c[1]})
+                    })
+                })
+        }
+
+        console.log(coords);
+
+    }
+
+    private commonPoint() {
 
     }
 }
