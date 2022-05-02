@@ -9,9 +9,39 @@ enum Step {
     Overview,
 }
 
+export enum Travel {
+    Car,
+    Foot,
+    Bike,
+    Bus,
+}
+
+export type Coordinate = {
+    lat: number;
+    long: number;
+};
+
+export type Traveler = {
+    name: string;
+    coords: Coordinate;
+    street: string;
+    travelType: Travel;
+};
+
 export const PoolWizard = () => {
     const [step, setStep] = useState<Step>(Step.Create);
-    const handlePoolCreation = (e: React.FormEvent) => {
+    // TODO: create position datatype with street name and coordinates
+    const [owner, setOwner] = useState<Traveler>({
+        name: "",
+        coords: { lat: 0, long: 0 } as Coordinate,
+        street: "",
+        travelType: Travel.Car,
+    } as Traveler);
+    const [dest, setDest] = useState("");
+
+    const handlePoolCreation = (owner: Traveler, dest: string): void => {
+        setOwner(owner);
+        setDest(dest);
         nextStep();
     };
 
@@ -39,15 +69,16 @@ export const PoolWizard = () => {
         case Step.Populate:
             return (
                 <PoolFiller
-                    destinationName="Andra Avenygatan 12"
+                    destinationName={dest}
                     destinationURL="#"
                     callback={handlePoolFill}
+                    owner={owner}
                 />
             );
         case Step.Overview:
             return (
                 <PoolOverview
-                    destinationName="Andra Avenygatan 12"
+                    destinationName={dest}
                     destinationURL="#"
                     meetingPointURL="#"
                     meetingPointName="Liseberg idk 31"

@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import { Traveler, Coordinate, Travel } from "./PoolWizard";
 
 type PoolCreatorProps = {
-    callback: React.FormEventHandler;
+    callback: Function;
 };
 
 export const PoolCreator = ({ callback }: PoolCreatorProps) => {
+    const [name, setName] = useState<string>("");
+    const [dest, setDest] = useState<string>("");
+    const [pos, setPos] = useState<string>("");
+
     const handleSubmit = (e: any) => {
-        // Sends the event to the parent component
+        // Sends the state to the parent component and prevents the page from refeshing
         e.preventDefault();
-        callback(e);
+        callback(
+            {
+                name: name,
+                coords: { lat: 0, long: 0 } as Coordinate,
+                street: pos,
+                travelType: Travel.Car,
+            } as Traveler,
+            dest
+        );
     };
 
     return (
@@ -22,6 +35,7 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
                 <input
                     className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9  bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
                     type="text"
+                    onChange={(e) => setPos(e.target.value)}
                     placeholder={"Enter position"}
                 />
             </label>
@@ -30,6 +44,7 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
                 <input
                     className="p-2 bg-white rounded-md border h-10 outline-slate-200"
                     type="text"
+                    onChange={(e) => setName(e.target.value)}
                     placeholder={"Enter name"}
                 />
             </label>
@@ -51,6 +66,7 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
                 <input
                     className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9  bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
                     type="text"
+                    onChange={(e) => setDest(e.target.value)}
                     placeholder={"Enter destination"}
                 />
             </label>
