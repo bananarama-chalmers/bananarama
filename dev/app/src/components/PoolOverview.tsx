@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Separator, ThinSeparator } from "./Separator";
 
 type PoolOverviewProps = {
@@ -6,6 +7,7 @@ type PoolOverviewProps = {
     meetingPointURL: string;
     meetingPointName: string;
     callback: React.FormEventHandler;
+    pool: Array<JSX.Element>;
 };
 
 export const PoolOverview = ({
@@ -14,6 +16,7 @@ export const PoolOverview = ({
     destinationURL,
     meetingPointURL,
     meetingPointName,
+    pool,
 }: PoolOverviewProps) => {
     return (
         <div className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-0 z-10 w-box-width bg-white">
@@ -35,18 +38,7 @@ export const PoolOverview = ({
                 Traveling by
             </p>
             <ThinSeparator />
-            <ul className="col-span-2">
-                <li className="text-slate-900">
-                    <div className="block border-purple-500 w-3 border-8 rounded-full mt-1 mr-2 float-left"></div>
-                    <p className="w-full">Hugh Mungus</p>
-                </li>
-            </ul>
-            <ul className="col-span-1">
-                <li className="text-slate-900">
-                    <div className="block border-slate-500 w-3 border-8 rounded-full mt-1 mr-2 float-left"></div>
-                    <p className="w-full">Bike</p>
-                </li>
-            </ul>
+            <ul className="col-span-3">{pool}</ul>
             <Separator />
             <div className="col-span-3 text-slate-600 text-base font-semibold">
                 Destination
