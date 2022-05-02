@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {streetMap} from "../model/generate-map";
 
-function StreetMap() {
+const StreetMap = () => {
 
     const map = useRef<streetMap|null>(null);
     const [poolers] = useState<Number>(2);
