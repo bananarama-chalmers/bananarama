@@ -18,7 +18,7 @@ export enum Travel {
 
 export type Coordinate = {
     lat: number;
-    long: number;
+    lng: number;
 };
 
 export type Traveler = {
@@ -32,11 +32,12 @@ export const PoolWizard = () => {
     const [step, setStep] = useState<Step>(Step.Create);
     const [owner, setOwner] = useState<Traveler>({
         name: "",
-        coords: { lat: 0, long: 0 } as Coordinate,
+        coords: { lat: 0, lng: 0 } as Coordinate,
         street: "",
         travelType: Travel.Car,
     } as Traveler);
     const [dest, setDest] = useState("");
+    const [renderedPool, setRenderedPool] = useState<Array<JSX.Element>>([]);
 
     const handlePoolCreation = (owner: Traveler, dest: string): void => {
         setOwner(owner);
@@ -45,11 +46,13 @@ export const PoolWizard = () => {
     };
 
     const handlePoolFill = (poolers: Array<JSX.Element>): void => {
+        setRenderedPool(poolers);
         nextStep();
     };
 
     const handlePoolOverview = (e: React.FormEvent) => {
-        nextStep();
+        // This function will open a share link when done!
+        e.preventDefault();
     };
 
     const nextStep = () => {
@@ -80,8 +83,9 @@ export const PoolWizard = () => {
                     destinationName={dest}
                     destinationURL="#"
                     meetingPointURL="#"
-                    meetingPointName="Liseberg idk 31"
+                    meetingPointName="IMPLEMENT ME"
                     callback={handlePoolOverview}
+                    pool={renderedPool}
                 />
             );
         case Step.Create:
