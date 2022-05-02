@@ -30,7 +30,6 @@ export type Traveler = {
 
 export const PoolWizard = () => {
     const [step, setStep] = useState<Step>(Step.Create);
-    // TODO: create position datatype with street name and coordinates
     const [owner, setOwner] = useState<Traveler>({
         name: "",
         coords: { lat: 0, long: 0 } as Coordinate,
@@ -45,7 +44,7 @@ export const PoolWizard = () => {
         nextStep();
     };
 
-    const handlePoolFill = (e: React.FormEvent) => {
+    const handlePoolFill = (poolers: Array<JSX.Element>): void => {
         nextStep();
     };
 

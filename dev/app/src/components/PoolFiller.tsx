@@ -1,22 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ThinSeparator, Separator } from "./Separator";
+import { Traveler, Coordinate, Travel } from "./PoolWizard";
+import { PoolItem } from "./PoolItem";
 
 type PoolFillerProps = {
     destinationURL: string;
     destinationName: string;
-    callback: React.FormEventHandler;
+    callback: Function;
+    owner: Traveler;
 };
 
 export const PoolFiller = ({
     callback,
     destinationName,
     destinationURL,
+    owner,
 }: PoolFillerProps) => {
+    const [pos, setPos] = useState("");
+    const [name, setName] = useState("");
+    const [travelType, setTravelType] = useState(Travel.Car);
+    const [poolers, setPoolers] = useState<Array<Traveler>>([]);
+    const [renderedPool, setRenderedPool] = useState<Array<JSX.Element>>([]);
+
     const handleSubmit = (e: React.FormEvent) => {
-        // Sends the event to the parent component
+        // Sends the event to the parent component and prevents the page from refreshing
         e.preventDefault();
-        callback(e);
+        callback(renderedPool);
     };
+
+    const addPooler = (e: React.FormEvent) => {
+        poolers.push({
+            name: name,
+            coords: {} as Coordinate,
+            street: pos,
+            travelType: travelType,
+        } as Traveler);
+
+        // Update the rendered pool to show all poolers
+        setRenderedPool(
+            poolers.map((traveler, id = 0) => {
+                return (
+                    <PoolItem
+                        poolerName={traveler.name}
+                        travelType={traveler.travelType}
+                        key={id++}
+                    />
+                );
+            })
+        );
+        // Prevent the page from refreshing
+        e.preventDefault();
+    };
+
+    useEffect(() => {
+        // Populate the pooler list with the owners info when mounting the component
+        setPoolers([owner]);
+        setRenderedPool([
+            <PoolItem
+                poolerName={owner.name}
+                travelType={owner.travelType}
+                key={0}
+            />,
+        ]);
+    }, []);
 
     return (
         <form
@@ -39,6 +85,7 @@ export const PoolFiller = ({
                 <input
                     className="p-2 bg-white rounded-md border h-10 outline-slate-200"
                     type="text"
+                    onChange={(e) => setName(e.target.value)}
                     placeholder={"Enter name"}
                 />
             </label>
@@ -49,10 +96,30 @@ export const PoolFiller = ({
                     name="travelTypeList"
                     className="block z-10 relative w-full p-2 bg-white rounded-md border h-10 outline-slate-200"
                 >
-                    <option value="car">Car</option>
-                    <option value="bike">Bike</option>
-                    <option value="walk">Walk</option>
-                    <option value="bus">Bus</option>
+                    <option
+                        onSelect={() => setTravelType(Travel.Car)}
+                        value="car"
+                    >
+                        Car
+                    </option>
+                    <option
+                        onSelect={() => setTravelType(Travel.Bike)}
+                        value="bike"
+                    >
+                        Bike
+                    </option>
+                    <option
+                        onSelect={() => setTravelType(Travel.Foot)}
+                        value="walk"
+                    >
+                        Walk
+                    </option>
+                    <option
+                        onSelect={() => setTravelType(Travel.Bus)}
+                        value="bus"
+                    >
+                        Bus
+                    </option>
                 </select>
             </label>
             <label className="col-span-2 text-slate-600 text-base font-semibold">
@@ -69,29 +136,18 @@ export const PoolFiller = ({
                     className="w-full hover:bg-green-600 hover:cursor-pointer bg-green-500 font-semibold text-white rounded-md h-10"
                     type="submit"
                     value="Add pooler"
-                    onClick={handleSubmit}
+                    onClick={(e) => addPooler(e)}
                 />
             </label>
             <ThinSeparator />
             <p className="col-span-2 mt-1 text-slate-600 text-base font-semibold">
                 Poolers
             </p>
-            <p className="col-span-1 mt-1 text-slate-600 text-base font-semibold">
+            <p className="col-span-1 mt-1 text-slate-600 text-base text-right font-semibold">
                 Traveling by
             </p>
             <div className="block h-1px col-span-3 bg-slate-200" />
-            <ul className="col-span-2">
-                <li className="text-slate-900">
-                    <div className="block border-purple-500 w-3 border-8 rounded-full mt-1 mr-2 float-left"></div>
-                    <p className="w-full">Hugh Mungus</p>
-                </li>
-            </ul>
-            <ul className="col-span-1">
-                <li className="text-slate-900">
-                    <div className="block border-slate-500 w-3 border-8 rounded-full mt-1 mr-2 float-left"></div>
-                    <p className="w-full">Bike</p>
-                </li>
-            </ul>
+            <ul className="col-span-3">{renderedPool}</ul>
             <Separator />
             <button className="col-span-3 font-semibold bg-slate-800 hover:bg-slate-900 text-white h-10 rounded-lg mt-1">
                 Get meeting point
