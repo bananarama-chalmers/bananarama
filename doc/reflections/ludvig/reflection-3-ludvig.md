@@ -14,7 +14,7 @@ A: I feel like I may be able help the team by asking critical questions just to 
 
 B: I want my being a team member to contribute to higher knowledge within the team.
 
-A->B: By ask critical questions to spark discussions.
+A->B: By asking critical questions to spark discussions.
 
 ## What is my contribution towards the team’s use of Scrum?
 
