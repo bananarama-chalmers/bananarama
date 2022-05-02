@@ -9,6 +9,7 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
     const [name, setName] = useState<string>("");
     const [dest, setDest] = useState<string>("");
     const [pos, setPos] = useState<string>("");
+    const [travelType, setTravelType] = useState<Travel>(Travel.Car);
 
     const handleSubmit = (e: any) => {
         // Sends the state to the parent component and prevents the page from refeshing
@@ -16,12 +17,27 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
         callback(
             {
                 name: name,
-                coords: { lat: 0, long: 0 } as Coordinate,
+                coords: { lat: 0, lng: 0 } as Coordinate,
                 street: pos,
-                travelType: Travel.Car,
+                travelType: travelType,
             } as Traveler,
             dest
         );
+    };
+
+    const stringToTravelType = (travelString: string): Travel => {
+        // blasphemy
+        switch (travelString) {
+            case "bike":
+                return Travel.Bike;
+            case "walk":
+                return Travel.Foot;
+            case "bus":
+                return Travel.Bus;
+            default:
+            case "car":
+                return Travel.Car;
+        }
     };
 
     return (
@@ -54,11 +70,14 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
                     id="true"
                     name="travelTypeList"
                     className="block z-10 relative w-full p-2 bg-white rounded-md border h-10 outline-slate-200"
+                    onChange={(e) => {
+                        setTravelType(stringToTravelType(e.target.value));
+                    }}
                 >
-                    <option value="car">Car</option>
-                    <option value="bike">Bike</option>
-                    <option value="walk">Walk</option>
-                    <option value="bus">Bus</option>
+                    <option value={"car"}>Car</option>
+                    <option value={"bike"}>Bike</option>
+                    <option value={"walk"}>Walk</option>
+                    <option value={"bus"}>Bus</option>
                 </select>
             </label>
             <label className="col-span-3 text-slate-600 text-base font-semibold">
