@@ -3,9 +3,11 @@ import React from "react";
 // <Share location={"Location"} />
 function Share({location}: {location: string}) {
     return (
-        <div>
-            <button onClick={() => {navigator.clipboard.writeText(generateInvite(location))}}> Copy invite </button>
-            <a href={generateMailRef(location)}> Invite by email</a>
+        <div className="grid grid-cols-3 drop-shadow-lg gap-0 p-2 rounded-lg fixed m-4 left-50 top-0 z-10 relative w-1/5 bg-white">
+            <h1 className="col-span-3 text-center font-semibold text-slate-800"> Share invite with friends</h1>
+            <button className="col-span-3 font-semibold bg-slate-800 hover:bg-slate-900 text-white h-10 rounded-lg w-200 mt-1" onClick={() => {navigator.clipboard.writeText(generateInvite(location))}}> Copy invite </button>
+            <p className="col-span-3 text-center text-gray-500"> or </p>
+            <a className="col-span-3 font-semibold bg-slate-50 hover:bg-slate-100 text-gray-500 h-10 rounded-lg mt-1 outline outline-offset-1 outline-1 outline-slate-400 text-center self-center" href={generateMailRef(location)}> Invite by email</a>
         </div>
     );
 
