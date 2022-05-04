@@ -25,7 +25,7 @@ const StreetMap = () => {
             />
             <button
                 onClick={() => {
-                    map.current?.getRoute();
+                    map.current?.getRoute({lng:11.72, lat:57.70});
                 }}
                 className="absolute z-10 top-5 right-5 hover:bg-green-600 bg-green-500 rounded-lg font-bold p-2 text-white"
             >

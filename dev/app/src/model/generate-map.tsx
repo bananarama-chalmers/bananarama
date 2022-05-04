@@ -16,7 +16,8 @@ export class streetMap {
     //TODO: be abstracted
     private readonly _markerColors = ["#AE3C60", "#DF473C", "#F3C33C", "#255E79", "#267778", "#82b4bb"];
 
-    private _markers = new Array<Marker>();
+    private _markers:Array<Marker> = new Array<Marker>();
+    private _middleMarker:Marker|null = null;
 
     constructor(mapType: string, mapContainer: string) {
 
@@ -25,7 +26,7 @@ export class streetMap {
         this._map = new mapboxgl.Map({
             container: this._mapContainer,
             style: mapType,
-            center: [30, 30],
+            center: [11.97, 57.7],
             zoom: 12
         });
     }
@@ -38,13 +39,13 @@ export class streetMap {
                 color: this._markerColors[i],
                 draggable: true,
             })
-                .setLngLat([30, 30])
+                .setLngLat([11.97, 57.7])
                 .addTo(this._map))
         }
 
     }
 
-    public getRoute() {
+    public getRoute(destination:coordinate) {
 
         let minutes = 10;
 
@@ -66,7 +67,10 @@ export class streetMap {
                     response.data.features[0].geometry.coordinates[0].forEach((c: any) => {
                         travelAreas[i].push({lng: c[0], lat: c[1]});
                     })
-                    if(i+1 === coordinates.length) this.getMeetingPoint(travelAreas, coordinates);
+                    if(i+1 === coordinates.length) {
+                        this.drawDestinationRoute(this.getMeetingPoint(travelAreas, coordinates), destination, "driving");
+                        this.drawMeetingpointRoutes(coordinates,["cycling","cycling","cycling","cycling","cycling","cycling"], this.getMeetingPoint(travelAreas, coordinates));
+                    }
                 })
         }
     }
@@ -83,8 +87,6 @@ export class streetMap {
             middle = this.getOptimalMiddlePoint(middle, poolerCoordinates[i], newIntersectedTravelArea);
             intersectedTravelArea = newIntersectedTravelArea;
         }
-
-        this.getDestinationRoute(middle, {lng:30, lat:30}, "cycling");
 
         return middle;
     }
@@ -196,10 +198,10 @@ export class streetMap {
     }
 
     private getOptimalMiddlePoint(c1:coordinate, c2:coordinate, intersectedTravelArea:Array<coordinate>):coordinate{
-        let middle;
+        let middle:coordinate;
 
         // Gets average between points if both are in the intersected area
-        if (this.isPointInsidePoly(c1, intersectedTravelArea) && this.isPointInsidePoly(c2, intersectedTravelArea))
+        if (this.isPointInsidePoly(c1, intersectedTravelArea) || this.isPointInsidePoly(c2, intersectedTravelArea))
             middle = {
                 lng: (c1.lng + c2.lng) / 2,
                 lat: (c1.lat + c2.lat) / 2,
@@ -211,6 +213,16 @@ export class streetMap {
                 lat: (intersectedTravelArea[0].lat + intersectedTravelArea[intersectedTravelArea.length - 1].lat) / 2,
             }
 
+        if(this._middleMarker)
+            this._middleMarker.remove();
+
+        this._middleMarker = new mapboxgl.Marker({
+            color: "#000000",
+            draggable: false,
+        })
+            .setLngLat([middle.lng,middle.lat])
+            .addTo(this._map)
+
         return middle;
 
     }
@@ -219,25 +231,92 @@ export class streetMap {
         return Math.abs(d1-d2) <= 0.000000001;
     }
 
-    public getDestinationRoute(meetingPoint:coordinate, destination:coordinate, travelType:string) {
-
-        const route:Array<coordinate> = new Array<coordinate>();
+    public drawDestinationRoute(meetingPoint:coordinate, destination:coordinate, travelType:string) {
 
         axios.get("https://api.mapbox.com/directions/v5/mapbox/" +
             travelType + "/" +
             meetingPoint.lng + "%2C" + meetingPoint.lat + "%3B" +
             destination.lng + "%2C" + destination.lat +
             "?alternatives=" + false +
-            "&geometries=" + "geojson" +
-            "&overview=" + "simplified" +
+            "&geometries=geojson" +
+            "&overview=full" +
             "&steps=" + false +
             "&access_token=" + mapboxgl.accessToken)
             .then((response : any) => {
-                response.data.routes[0].geometry.coordinates.forEach((c:coordinate) => {
-                    route.push({lng:c.lng, lat:c.lat});
-                })
+                if(this._map.getSource('route')) {
+                    this._map.removeLayer('route');
+                    this._map.removeSource('route');
+                }
 
+                this._map.addSource('route', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': response.data.routes[0].geometry.coordinates
+                            }}
+                });
+                this._map.addLayer({
+                    'id': 'route',
+                    'type': 'line',
+                    'source': 'route',
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'square'
+                    },
+                    'paint': {
+                        'line-color': "#000000",
+                        'line-width': 6
+                    }
+                });
             })
 
+    }
+
+    public drawMeetingpointRoutes(poolerCoordinates:Array<coordinate>, poolerTravelTypes:Array<string>, destination:coordinate) {
+
+        for (let i = 0; i < poolerCoordinates.length; i++) {
+            axios.get("https://api.mapbox.com/directions/v5/mapbox/" +
+                poolerTravelTypes[i] + "/" +
+                poolerCoordinates[i].lng + "%2C" + poolerCoordinates[i].lat + "%3B" +
+                destination.lng + "%2C" + destination.lat +
+                "?alternatives=" + false +
+                "&geometries=geojson" +
+                "&overview=full" +
+                "&steps=" + false +
+                "&access_token=" + mapboxgl.accessToken)
+                .then((response : any) => {
+                    if(this._map.getSource("route" + i)) {
+                        this._map.removeLayer("route" + i);
+                        this._map.removeSource("route" + i);
+                    }
+
+                    this._map.addSource('route' + i, {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                                'type': 'LineString',
+                                'coordinates': response.data.routes[0].geometry.coordinates
+                            }}
+                    });
+                    this._map.addLayer({
+                        'id': 'route' + i,
+                        'type': 'line',
+                        'source': 'route' + i,
+                        'layout': {
+                            'line-join': 'round',
+                            'line-cap': 'square'
+                        },
+                        'paint': {
+                            'line-color': this._markerColors[i],
+                            'line-width': 4
+                        }
+                    });
+                })
+        }
     }
 }
