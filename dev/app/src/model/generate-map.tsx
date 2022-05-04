@@ -13,7 +13,9 @@ export class streetMap {
     private readonly _map: Map;
     private readonly _mapContainer: string;
 
+    //TODO: be abstracted
     private readonly _markerColors = ["#AE3C60", "#DF473C", "#F3C33C", "#255E79", "#267778", "#82b4bb"];
+
     private _markers = new Array<Marker>();
 
     constructor(mapType: string, mapContainer: string) {
@@ -44,19 +46,19 @@ export class streetMap {
 
     public getRoute() {
 
-        let time = 10;
+        let minutes = 10;
 
         const coordinates = this._markers.map((m: Marker) => {
-            return {lng: m.getLngLat().lng, lat: m.getLngLat().lat}
-        })
+            return {lng: m.getLngLat().lng, lat: m.getLngLat().lat};
+        });
 
-        const travelAreas = new Array<Array<coordinate>>()
+        const travelAreas = new Array<Array<coordinate>>();
 
         for (let i = 0; i < coordinates.length; i++) {
             travelAreas[i] = [];
             axios.get("https://api.mapbox.com/isochrone/v1/mapbox/cycling/" +
                 coordinates[i].lng + "," + coordinates[i].lat +
-                "?contours_minutes=" + time +
+                "?contours_minutes=" + minutes +
                 "&polygons=true" +
                 "&denoise=1" +
                 "&access_token=" + mapboxgl.accessToken)
@@ -69,18 +71,20 @@ export class streetMap {
         }
     }
 
-    public getMeetingPoint(travelAreas: Array<Array<coordinate>>, poolerCoordinates:Array<coordinate>) {
+    public getMeetingPoint(travelAreas: Array<Array<coordinate>>, poolerCoordinates:Array<coordinate>):coordinate {
         let intersectedTravelArea:Array<coordinate>;
         let middle:coordinate;
 
         intersectedTravelArea = this.getIntersectionOfPolygons(travelAreas[0], travelAreas[1])
-        middle = this.getOptimalMiddlePoint(travelAreas[0], travelAreas[1], intersectedTravelArea);
+        middle = this.getOptimalMiddlePoint(poolerCoordinates[0], poolerCoordinates[1], intersectedTravelArea);
 
         for (let i = 2; i < poolerCoordinates.length; i++) {
             let newIntersectedTravelArea = this.getIntersectionOfPolygons(intersectedTravelArea, travelAreas[i]);
-            middle = this.getOptimalMiddlePoint(intersectedTravelArea, travelAreas[i], newIntersectedTravelArea);
+            middle = this.getOptimalMiddlePoint(middle, poolerCoordinates[i], newIntersectedTravelArea);
             intersectedTravelArea = newIntersectedTravelArea;
         }
+
+        this.getDestinationRoute(middle, {lng:30, lat:30}, "cycling");
 
         return middle;
     }
@@ -131,7 +135,7 @@ export class streetMap {
         return result;
     }
 
-    private getIntersectionPoints(l1p1:coordinate, l1p2:coordinate, poly:Array<coordinate>) {
+    private getIntersectionPoints(l1p1:coordinate, l1p2:coordinate, poly:Array<coordinate>):Array<coordinate> {
         const intersectionPoints = new Array<coordinate>();
 
         for (let i = 0; i < poly.length; i++)
@@ -168,7 +172,7 @@ export class streetMap {
         return points.sort(v => Math.atan2(v.lat - mLat, v.lng - mLng));
     }
 
-    private getIntersectionOfPolygons(poly1:Array<coordinate>, poly2:Array<coordinate>) {
+    private getIntersectionOfPolygons(poly1:Array<coordinate>, poly2:Array<coordinate>):Array<coordinate> {
         const clippedCorners:Array<coordinate> = new Array<coordinate>();
         //Add  the corners of poly1 which are inside poly2
         for (let i = 0; i < poly1.length; i++)
@@ -191,7 +195,7 @@ export class streetMap {
         return this.orderClockwise(clippedCorners)
     }
 
-    private getOptimalMiddlePoint(c1, c2, intersectedTravelArea) {
+    private getOptimalMiddlePoint(c1:coordinate, c2:coordinate, intersectedTravelArea:Array<coordinate>):coordinate{
         let middle;
 
         // Gets average between points if both are in the intersected area
@@ -211,7 +215,29 @@ export class streetMap {
 
     }
 
-    private coordEqual(d1:number,d2:number) {
+    private coordEqual(d1:number,d2:number):boolean {
         return Math.abs(d1-d2) <= 0.000000001;
+    }
+
+    public getDestinationRoute(meetingPoint:coordinate, destination:coordinate, travelType:string) {
+
+        const route:Array<coordinate> = new Array<coordinate>();
+
+        axios.get("https://api.mapbox.com/directions/v5/mapbox/" +
+            travelType + "/" +
+            meetingPoint.lng + "%2C" + meetingPoint.lat + "%3B" +
+            destination.lng + "%2C" + destination.lat +
+            "?alternatives=" + false +
+            "&geometries=" + "geojson" +
+            "&overview=" + "simplified" +
+            "&steps=" + false +
+            "&access_token=" + mapboxgl.accessToken)
+            .then((response : any) => {
+                response.data.routes[0].geometry.coordinates.forEach((c:coordinate) => {
+                    route.push({lng:c.lng, lat:c.lat});
+                })
+
+            })
+
     }
 }

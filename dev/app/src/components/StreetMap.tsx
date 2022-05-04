@@ -4,6 +4,8 @@ import {streetMap} from "../model/generate-map";
 const StreetMap = () => {
 
     const map = useRef<streetMap|null>(null);
+
+    //TODO: be abstracted
     const [poolers] = useState<Number>(2);
 
     // Create map and markers
