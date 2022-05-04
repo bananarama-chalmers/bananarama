@@ -1,18 +1,6 @@
-... the current situation or "what is" (A), ... what you want the situation to be or "what might or should be" (B), and ... a plan for getting from where you are to where you want to be or "feedback designed to reduce the gap" (A -> B).
-Questions
+# >>>Axel's<<< Reflection - week 3
 
-    what do I want to learn or understand better?
-    how can I help someone else, or the entire team, to learn something new?
-    what is my contribution towards the team’s use of Scrum?
-    what is my contribution towards the team’s deliveries?
-
-Template suggestion
-
-The snippet below is my (Samuel) suggested formatting, feel free to use if you want to.
-
-# >>>My Name's<<< Reflection - week \[1/2/3/4/...]
-
-Weeky individual reflection, week \[1/2/3/4/...], name here
+Weeky individual reflection, week 3, Axel
 
 ## What do I want to learn or understand better?
 
