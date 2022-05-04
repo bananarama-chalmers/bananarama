@@ -1,9 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
-import {streetMap} from "../model/generate-map";
+import React, { useRef, useEffect, useState } from "react";
+import { streetMap } from "../model/generate-map";
 
 const StreetMap = () => {
-
-    const map = useRef<streetMap|null>(null);
+    const map = useRef<streetMap | null>(null);
 
     //TODO: be abstracted
     const [poolers] = useState<Number>(2);
@@ -11,17 +10,29 @@ const StreetMap = () => {
     // Create map and markers
     useEffect(() => {
         if (map.current) return;
-        map.current = new streetMap('mapbox://styles/mapbox/streets-v11', "mapContainer");
+        map.current = new streetMap(
+            "mapbox://styles/mapbox/streets-v11",
+            "mapContainer"
+        );
         map.current?.generateMarkers(poolers);
     });
 
-
     return (
         <div>
-            <div id="mapContainer" className="h-400px w-2/3 text-white"/>
-            <button onClick={() => {map.current?.getRoute()}}> Generate route </button>
+            <div
+                id="mapContainer"
+                className="absolute w-full bottom-0 top-0 text-white"
+            />
+            <button
+                onClick={() => {
+                    map.current?.getRoute();
+                }}
+                className="absolute z-10 top-5 right-5 hover:bg-green-600 bg-green-500 rounded-lg font-bold p-2 text-white"
+            >
+                Generate route
+            </button>
         </div>
     );
-}
+};
 
 export default StreetMap;
