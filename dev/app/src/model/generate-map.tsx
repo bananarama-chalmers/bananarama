@@ -4,14 +4,15 @@ import axios from "axios";
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg';
 
 
-interface coordinate {
+export interface coordinate {
     lng : number,
     lat : number,
 }
 
 export class streetMap {
-    private readonly _map: Map;
-    private readonly _mapContainer: string;
+    private readonly _map : Map;
+    private readonly _mapContainer : string;
+    private _startLocation : coordinate;
 
     //TODO: be abstracted
     private readonly _markerColors = ["#AE3C60", "#DF473C", "#F3C33C", "#255E79", "#267778", "#82b4bb"];
@@ -19,16 +20,17 @@ export class streetMap {
     private _markers:Array<Marker> = new Array<Marker>();
     private _middleMarker:Marker|null = null;
 
-    constructor(mapType: string, mapContainer: string) {
+    constructor(startLocation:coordinate, mapType: string, mapContainer: string) {
 
+        this._startLocation = startLocation;
         this._mapContainer = mapContainer;
-
         this._map = new mapboxgl.Map({
             container: this._mapContainer,
             style: mapType,
-            center: [11.97, 57.7],
+            center: [this._startLocation.lng, this._startLocation.lat],
             zoom: 12
         });
+
     }
 
     public generateMarkers(poolers : Number) {
@@ -39,7 +41,7 @@ export class streetMap {
                 color: this._markerColors[i],
                 draggable: true,
             })
-                .setLngLat([11.97, 57.7])
+                .setLngLat([this._startLocation.lng, this._startLocation.lat])
                 .addTo(this._map))
         }
 
