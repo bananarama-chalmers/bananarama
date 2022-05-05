@@ -16,11 +16,12 @@ export const PoolFiller = ({
     destinationURL,
     owner,
 }: PoolFillerProps) => {
-    const [pos, setPos] = useState("");
+    const [pos] = useState("");
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
     const [poolers, setPoolers] = useState<Array<Traveler>>([]);
     const [renderedPool, setRenderedPool] = useState<Array<JSX.Element>>([]);
+    const travelTypes = ["car", "walk", "bike", "bus"]; // FIXME: this is too qnd
 
     const handleSubmit = (e: React.FormEvent) => {
         // Sends the event to the parent component and prevents the page from refreshing
@@ -29,6 +30,7 @@ export const PoolFiller = ({
     };
 
     const addPooler = (e: React.FormEvent) => {
+        setTravelType(travelType);
         poolers.push({
             name: name,
             coords: {} as Coordinate,
@@ -52,6 +54,10 @@ export const PoolFiller = ({
         e.preventDefault();
     };
 
+    const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setTravelType(travelTypes.indexOf(e.currentTarget.value));
+    };
+
     useEffect(() => {
         // Populate the pooler list with the owners info when mounting the component
         setPoolers([owner]);
@@ -62,7 +68,7 @@ export const PoolFiller = ({
                 key={0}
             />,
         ]);
-    }, []);
+    }, [owner]);
 
     return (
         <form
@@ -92,40 +98,22 @@ export const PoolFiller = ({
             <label className="col-span-1 text-slate-600 text-base font-semibold">
                 Travel type
                 <select
-                    id="true"
+                    id="travel types"
                     name="travelTypeList"
+                    value={travelTypes[travelType]}
+                    onChange={(e) => handleSelect(e)}
                     className="block z-10 relative w-full p-2 bg-white rounded-md border h-10 outline-slate-200"
                 >
-                    <option
-                        onSelect={() => setTravelType(Travel.Car)}
-                        value="car"
-                    >
-                        Car
-                    </option>
-                    <option
-                        onSelect={() => setTravelType(Travel.Bike)}
-                        value="bike"
-                    >
-                        Bike
-                    </option>
-                    <option
-                        onSelect={() => setTravelType(Travel.Foot)}
-                        value="walk"
-                    >
-                        Walk
-                    </option>
-                    <option
-                        onSelect={() => setTravelType(Travel.Bus)}
-                        value="bus"
-                    >
-                        Bus
-                    </option>
+                    <option value="car">Car</option>
+                    <option value="bike">Bike</option>
+                    <option value="walk">Walk</option>
+                    <option value="bus">Bus</option>
                 </select>
             </label>
             <label className="col-span-2 text-slate-600 text-base font-semibold">
                 Pooler position
                 <input
-                    className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9  bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
+                    className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9 bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
                     type="text"
                     placeholder={"Enter position"}
                 />

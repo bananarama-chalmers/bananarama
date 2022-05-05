@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Separator, ThinSeparator } from "./Separator";
 
 type PoolOverviewProps = {
