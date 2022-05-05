@@ -16,7 +16,7 @@ export const PoolFiller = ({
     destinationURL,
     owner,
 }: PoolFillerProps) => {
-    const [pos, setPos] = useState("");
+    const [pos] = useState("");
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
     const [poolers, setPoolers] = useState<Array<Traveler>>([]);
@@ -68,7 +68,7 @@ export const PoolFiller = ({
                 key={0}
             />,
         ]);
-    }, []);
+    }, [owner]);
 
     return (
         <form

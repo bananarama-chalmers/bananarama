@@ -60,13 +60,13 @@ export const PoolWizard = () => {
             setStep(step + 1);
         }
     };
-
+    /* 
     const prevStep = () => {
         if (step > Step.Create) {
             setStep(step - 1);
         }
     };
-
+    */
     switch (step) {
         case Step.Populate:
             return (
