@@ -1,5 +1,7 @@
 # Bananarama
 
+![CI](hhttps://github.com/bananarama-chalmers/bananarama/tree/main/.github/workflows/unit-tests.yml/badge.svg?branch=main)
+
 Project repo for a GPS pooling app for finding the best meetup spot when carpooling. Made by Bananarama in TDA257.
 
 ## Installation and running:
