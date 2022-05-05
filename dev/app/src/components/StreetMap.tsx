@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
-import { streetMap } from "../model/generate-map";
+import {Coordinate, streetMap} from "../model/generate-map";
 
-const StreetMap = () => {
+const StreetMap = (startLocation:Coordinate) => {
     const map = useRef<streetMap | null>(null);
 
     //TODO: be abstracted
@@ -11,6 +11,7 @@ const StreetMap = () => {
     useEffect(() => {
         if (map.current) return;
         map.current = new streetMap(
+            startLocation,
             "mapbox://styles/mapbox/streets-v11",
             "mapContainer"
         );
