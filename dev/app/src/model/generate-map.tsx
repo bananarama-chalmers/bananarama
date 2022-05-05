@@ -195,7 +195,7 @@ export class streetMap {
         let result: boolean = false;
         for (i = 0, j = poly.length - 1; i < poly.length; j = i++) {
             if (
-                (poly[i].lat > test.lat !== poly[j].lat > test.lat) &&
+                ((poly[i].lat > test.lat) !== (poly[j].lat > test.lat)) &&
                 (test.lng < ((poly[j].lng - poly[i].lng) * (test.lat - poly[i].lat)) / (poly[j].lat - poly[i].lat) + poly[i].lng)
             ) {
                 result = !result;
