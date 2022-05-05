@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import "./tailwind.css";
 import StreetMap from "./components/StreetMap";
 import {PoolWizard} from "./components/PoolWizard";
-import {coordinate} from "./model/generate-map";
+import {Coordinate} from "./model/generate-map";
 
 const App = () => {
-    const [startLocation, setStartLocation] = useState<coordinate>();
+    const [startLocation, setStartLocation] = useState<Coordinate>();
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((response:GeolocationPosition) => {
