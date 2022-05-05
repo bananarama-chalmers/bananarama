@@ -1,4 +1,4 @@
-import { Traveler, Coordinate, Travel } from "./PoolWizard";
+import { Travel } from "./PoolWizard";
 
 type PoolItemProps = {
     poolerName: string;
@@ -6,7 +6,7 @@ type PoolItemProps = {
 };
 
 export const PoolItem = ({ poolerName, travelType }: PoolItemProps) => {
-    const travelTypes = ["Car", "Foot", "Bike", "Bus"];
+    const travelTypes = ["Car", "Walk", "Bike", "Bus"];
 
     return (
         <li className="text-slate-900">
