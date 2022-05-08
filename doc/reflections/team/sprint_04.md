@@ -16,12 +16,10 @@ B: In the optimal scenario, we reach the criterias set out in A.
 
 A->B: The way we go about achieving the criterias in A is partly our weekly sprint reviews where we evaluate the scrum process for the given week. We have started to come into a good work flow in terms of our work methodology so if we continue on this trajectory, we will feel as if scrum was beneficial. The technology chosen in the project reflects the team’s wish to learn more about a given technology because it was new for everyone (typescript). Because learning and becoming more familiar with the technology is one of the main focuses of our group, we will not be afraid to experiment with the tech, even if that means a story may take a day extra.
 
-## The three KPIs you use for monitoring your progress and how you use them to improve your 
-process
+## The three KPIs you use for monitoring your progress and how you use them to improve your process
 
 A: First KPI is (stories completed / stories undertaken) which helps us evaluate if we are making reasonable estimates on the work load. If this percentage is low, then we underestimated the size of the stories. If the average is around 100 %, we will know that we are making reasonable estimates. The second KPI is just the total velocity for the sprint. It helps us see if we are undertaking a reasonable amount of work any given sprint. So far around 60 seems to be a reasonable amount to be able to complete the stories but also make noticeable progress from week to week. Last KPI is work satisfaction. Each member of the team is asked about work satisfaction on a scale from 1-5 and then the average is calculated as the KPI. Helps us keep track of the well being of the group. A low average may be a symptom of a high work load, or even a low, or something completely different which we will have to talk about and resolve.
 
 B: We chose those KPIs because they give valuable information for they amount of effort they take to fill in. The goal is for them to serve as a guiding metric on whether we are doing well or not, both in terms of application progress, but also in terms of the mental well being of the group. Example: We had a sprint where not all stories were completed. We concluded it was because one story in particular was too large, which led us to make more detailed breakdowns of user stories, which was beneficial for the whole team. Stories became more precise.
 
 A->B: We will keep filling in our KPIs and draw conclusions from them. If we find that one KPI is not really contributing much anymore, we will discuss what KPIs may be more valuable.
-
