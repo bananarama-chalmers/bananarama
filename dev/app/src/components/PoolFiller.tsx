@@ -33,7 +33,7 @@ export const PoolFiller = ({
         setTravelType(travelType);
         poolers.push({
             name: name,
-            coords: {} as Coordinate,
+            coords: { lat: 0, lng: 0 } as Coordinate,
             street: pos,
             travelType: travelType,
             color: "purple-500"
