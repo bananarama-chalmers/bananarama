@@ -1,21 +1,20 @@
-import React from "react";
-import { BrowserRouter, Routes, Route} from "react-router-dom";
-import FormPage from "./pages/FormPage";
-import Home from "./pages/Home";
-import PoolPage from "./pages/PoolPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./tailwind.css";
+import StreetMap from "./components/StreetMap";
+import { PoolWizard } from "./components/PoolWizard";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/">
-          <Route path="" element={<Home />} />
-          <Route path="pool" element={<PoolPage />} />
-          <Route path="form" element={<FormPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
+    return (
+        <div className="w-screen h-screen">
+            <StreetMap />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/">
+                        <Route path="" element={<PoolWizard />} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
 }
 export default App;
