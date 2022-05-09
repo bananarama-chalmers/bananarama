@@ -16,4 +16,5 @@ export type Pooler = {
     street: string;
     travelType: Travel;
     color: string;
+    poolElement: JSX.Element;
 };

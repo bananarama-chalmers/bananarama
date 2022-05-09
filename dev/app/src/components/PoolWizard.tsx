@@ -20,7 +20,7 @@ export const PoolWizard = () => {
         color: "purple-500"
     } as Pooler);
     const [dest, setDest] = useState("");
-    const [pool, setPool] = useState<Array<JSX.Element>>([]);
+    const [pool, setPool] = useState<Array<Pooler>>([]);
 
     const handlePoolCreation = (owner: Pooler, dest: string): void => {
         setOwner(owner);
@@ -28,7 +28,7 @@ export const PoolWizard = () => {
         nextStep();
     };
 
-    const handlePoolFill = (poolers: Array<JSX.Element>): void => {
+    const handlePoolFill = (poolers: Array<Pooler>): void => {
         setPool(poolers);
         nextStep();
     };
