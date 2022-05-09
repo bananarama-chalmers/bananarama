@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PoolCreator } from "./PoolCreator";
 import { PoolFiller } from "./PoolFiller";
 import { PoolOverview } from "./PoolOverview";
+import { Pooler, Coordinate, Travel } from '../types/types';
 
 enum Step {
     Create,
@@ -9,44 +10,26 @@ enum Step {
     Overview,
 }
 
-export enum Travel {
-    Car,
-    Foot,
-    Bike,
-    Bus,
-}
-
-export type Coordinate = {
-    lat: number;
-    lng: number;
-};
-
-export type Traveler = {
-    name: string;
-    coords: Coordinate;
-    street: string;
-    travelType: Travel;
-};
-
 export const PoolWizard = () => {
     const [step, setStep] = useState<Step>(Step.Create);
-    const [owner, setOwner] = useState<Traveler>({
+    const [owner, setOwner] = useState<Pooler>({
         name: "",
         coords: { lat: 0, lng: 0 } as Coordinate,
         street: "",
         travelType: Travel.Car,
-    } as Traveler);
+        color: "purple-500"
+    } as Pooler);
     const [dest, setDest] = useState("");
-    const [renderedPool, setRenderedPool] = useState<Array<JSX.Element>>([]);
+    const [pool, setPool] = useState<Array<JSX.Element>>([]);
 
-    const handlePoolCreation = (owner: Traveler, dest: string): void => {
+    const handlePoolCreation = (owner: Pooler, dest: string): void => {
         setOwner(owner);
         setDest(dest);
         nextStep();
     };
 
     const handlePoolFill = (poolers: Array<JSX.Element>): void => {
-        setRenderedPool(poolers);
+        setPool(poolers);
         nextStep();
     };
 
@@ -85,7 +68,7 @@ export const PoolWizard = () => {
                     meetingPointURL="#"
                     meetingPointName="IMPLEMENT ME"
                     callback={handlePoolOverview}
-                    pool={renderedPool}
+                    pool={pool}
                 />
             );
         case Step.Create:
