@@ -1,14 +1,41 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom"
 import { Coordinate, streetMap } from "../model/generate-map";
+
+const defaultCoord: Coordinate = {lng: 11.946472, lat: 57.698864}
+
+function usePos() {
+    let [searchParams, setSearchParams] = useSearchParams()
+
+    let lng = (searchParams.get("lng"))
+    let lat = (searchParams.get("lat"))
+
+    let pos: Coordinate = defaultCoord
+
+    let nullCheck = (lng !== null) && (lat !== null)
+    let nanCheck = (!isNaN(+lng!)) && (!isNaN(+lat!))
+
+
+    // keep default values if any value is missing
+    if(nullCheck && nanCheck) {
+        pos = {lng: +lng!, lat: +lat!}
+    }
+
+    return pos;
+}
 
 const StreetMap = () => {
     const map = useRef<streetMap | null>(null);
+
+    let pos = usePos()
+    
     //TODO: be abstracted
     const [poolers] = useState<Number>(2);
     const [startLocation, setStartLocation] = useState<Coordinate>({
-        lng: 11.946472,
-        lat: 57.698864,
+        lng: pos.lng,
+        lat: pos.lat,
     });
+
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -19,7 +46,7 @@ const StreetMap = () => {
                 });
             },
             (e: any) => {
-                setStartLocation({ lng: 11.946472, lat: 57.698864 });
+                setStartLocation(defaultCoord);
             }
         );
     }, []);

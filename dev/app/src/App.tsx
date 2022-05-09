@@ -6,8 +6,8 @@ import { PoolWizard } from "./components/PoolWizard";
 function App() {
     return (
         <div className="w-screen h-screen">
-            <StreetMap />
             <BrowserRouter>
+                <StreetMap />
                 <Routes>
                     <Route path="/">
                         <Route path="" element={<PoolWizard />} />
