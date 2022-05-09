@@ -1,27 +1,20 @@
-import React, {useEffect, useState} from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./tailwind.css";
 import StreetMap from "./components/StreetMap";
-import {PoolWizard} from "./components/PoolWizard";
-import {Coordinate} from "./model/street-map";
+import { PoolWizard } from "./components/PoolWizard";
 
-const App = () => {
-    const [startLocation, setStartLocation] = useState<Coordinate>();
-
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition((response:GeolocationPosition) => {
-            setStartLocation({lng:response.coords.longitude, lat:response.coords.latitude});
-        },
-        (e:any) => {
-            setStartLocation({lng:11.946472,lat:57.698864});
-        })
-    },[])
-
+function App() {
     return (
         <div className="w-screen h-screen">
-            {startLocation && <StreetMap lat={startLocation.lat} lng={startLocation.lng}/>}
-            <PoolWizard />
+            <StreetMap />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/">
+                        <Route path="" element={<PoolWizard />} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }
-
 export default App;
