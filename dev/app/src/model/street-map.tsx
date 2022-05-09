@@ -1,6 +1,6 @@
 import mapboxgl, { Map, Marker } from "mapbox-gl";
 import axios from "axios";
-import {complexPolygon} from "./complex-polygon";
+import {ComplexPolygon} from "./complex-polygon";
 
 mapboxgl.accessToken =
     "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
@@ -10,7 +10,7 @@ export interface Coordinate {
     lat: number;
 }
 
-export class streetMap {
+export class StreetMap {
     private readonly _map: Map;
     private readonly _mapContainer: string;
     private _startLocation: Coordinate;
@@ -67,10 +67,10 @@ export class streetMap {
             return { lng: m.getLngLat().lng, lat: m.getLngLat().lat };
         });
 
-        const travelAreas = new Array<complexPolygon>();
+        const travelAreas = new Array<ComplexPolygon>();
 
         for (let i: number = 0; i < coordinates.length; i++) {
-            travelAreas[i] = new complexPolygon();
+            travelAreas[i] = new ComplexPolygon();
             axios
                 .get(
                     "https://api.mapbox.com/isochrone/v1/mapbox/cycling/" +
@@ -114,10 +114,10 @@ export class streetMap {
     }
 
     public getMeetingPoint(
-        travelAreas: Array<complexPolygon>,
+        travelAreas: Array<ComplexPolygon>,
         poolerCoordinates: Array<Coordinate>
     ): Coordinate {
-        let intersectedTravelArea: complexPolygon;
+        let intersectedTravelArea: ComplexPolygon;
         let middle: Coordinate;
 
         intersectedTravelArea = travelAreas[0].getIntersectionOfPolygons(travelAreas[1]);
@@ -145,7 +145,7 @@ export class streetMap {
     private getOptimalMiddlePoint(
         c1: Coordinate,
         c2: Coordinate,
-        intersectedTravelArea: complexPolygon
+        intersectedTravelArea: ComplexPolygon
     ): Coordinate {
         let middle: Coordinate;
 
