@@ -69,7 +69,7 @@ export class streetMap {
 
         const travelAreas = new Array<complexPolygon>();
 
-        for (let i = 0; i < coordinates.length; i++) {
+        for (let i: number = 0; i < coordinates.length; i++) {
             travelAreas[i] = new complexPolygon();
             axios
                 .get(

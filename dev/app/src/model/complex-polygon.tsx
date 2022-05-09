@@ -2,28 +2,28 @@ import {Coordinate} from "./street-map";
 
 
 export class complexPolygon {
-    private _corners:Array<Coordinate> = new Array<Coordinate>();
+    private _corners: Array<Coordinate> = new Array<Coordinate>();
 
     public getIntersectionOfPolygons(
         poly: complexPolygon,
     ): complexPolygon {
         const clippedCorners: complexPolygon = new complexPolygon();
-        //Add  the corners of poly1 which are inside poly2
-        for (let i = 0; i < this._corners.length; i++) {
+
+        for (let i:number = 0; i < this._corners.length; i++) {
             if (poly.isPointInside(this._corners[i]))
                 clippedCorners.addCorners(new Array<Coordinate>(this._corners[i]));
         }
-        //Add the corners of poly2 which are inside poly1
-        for (let i = 0; i < poly.getCorners().length; i++) {
+
+        for (let i:number = 0; i < poly.getCorners().length; i++) {
             if (this.isPointInside(poly.getCorners()[i]))
                 clippedCorners.addCorners(new Array<Coordinate>(poly.getCorners()[i]));
         }
 
         const intersectPolygon = new complexPolygon();
 
-        //Add  the intersection points
+
         for (
-            let i = 0, next = 1;
+            let i: number = 0, next: number = 1;
             i < this._corners.length;
             i++, next = i + 1 === this._corners.length ? 0 : i + 1
         ) {
@@ -62,7 +62,7 @@ export class complexPolygon {
         test: Coordinate,
     ): boolean {
         let result: boolean = false;
-        for (let i:number = 0, j:number = this._corners.length - 1; i < this._corners.length; j = i++) {
+        for (let i: number = 0, j: number = this._corners.length - 1; i < this._corners.length; j = i++) {
             if (
                 ((this._corners[i].lat > test.lat) !== (this._corners[j].lat > test.lat)) &&
                 (test.lng < ((this._corners[j].lng - this._corners[i].lng) * (test.lat - this._corners[i].lat)) / (this._corners[j].lat - this._corners[i].lat) + this._corners[i].lng)
@@ -79,7 +79,7 @@ export class complexPolygon {
     ): Array<Coordinate> {
         const intersectionPoints = new Array<Coordinate>();
 
-        for (let i = 0; i < this._corners.length; i++) {
+        for (let i: number = 0; i < this._corners.length; i++) {
             const next: number = i + 1 === this._corners.length ? 0 : i + 1;
             const ip: Coordinate | null = complexPolygon.getIntersectionPoint(
                 l1p1,
@@ -146,7 +146,7 @@ export class complexPolygon {
                     complexPolygon.doubleEqual(Math.min(l2p1.lat, l2p2.lat), lat)) &&
                 (Math.max(l2p1.lat, l2p2.lat) > lat ||
                     complexPolygon.doubleEqual(Math.max(l2p1.lat, l2p2.lat), lat));
-            if (online1 && online2) return { lng: lng, lat: lat };
+            if (online1 && online2) return { lng:lng, lat:lat };
         }
         return null; //intersection is at out of at least one segment.
     }
