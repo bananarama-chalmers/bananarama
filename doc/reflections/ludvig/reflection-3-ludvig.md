@@ -2,32 +2,32 @@ Weeky individual reflection, week \[3], Ludvig
 
 ## What do I want to learn or understand better?
 
-A: I currently know very little about application design and how it is done to aid the development of the actual application.
+A: I currently know very little about UI design.
 
-B: I want to learn more about application design and the tools used (Figma in our case).
+B: I want to become more familiar with Figma and UI design.
 
-A->B: Will sit down with Samuel and learn about Figma while we create an interactive UI-mockup.
+A->B: By creating a basic UI, non-interactive, in Figma. By diving into the tools I will become more familiar with and learn them.
 
 ## How can I help someone else, or the entire team, to learn something new?
 
-A: I explain my understanding of things when I have an understanding.
+A: I feel like I may be able help the team by asking critical questions just to spark up a discussion, even though I may not understand something completely.
 
-B: I will continue to help when someone does not know something that I do. 
+B: I want my being a team member to contribute to higher knowledge within the team.
 
-A->B: Business as usual, but also encourage team mates to look at resources I may have found particularly useful.
+A->B: By asking critical questions to spark discussions.
 
 ## What is my contribution towards the team’s use of Scrum?
 
-A: Have participated in the team's reflection regarding our use of Scrum at the end of each week.
+A: I currently follow the scrum methodology we have developed within the team.
 
-B: Contribute with valuable insight into how we can make our work process better.
+B: I want the team's use of scrum to feel natural and valuable rather than just doing it for the sake of doing it.
 
-A->B: Reflect as the week progresses on how our current methodology is working for me and the team as a whole.
+A->B: By notifying the team if I think something in our work flow is not as good as it could be, which will hopefully create a conversation around how we can improve it.
 
 ## What is my contribution towards the team’s deliveries?
 
-A: Finished the tasks I had been assigned.
+A: I am completing the task I have undertaken in time.
 
-B: The tasks I complete should bring value to the team.
+B: I want my completion of stories to bring value to the final project.
 
-A->B: Be aware of the what tasks I can complete within the given timeframe, and take responsibility for these.
+A->B: By continuing to undertake stories that I think I can manage on time, and if not, break them down into smaller stories.

@@ -1,28 +1,39 @@
-import React, { useRef, useEffect, useState } from 'react';
-import mapboxgl, { Map } from 'mapbox-gl';
+import React, { useRef, useEffect, useState } from "react";
+import {Coordinate, streetMap} from "../model/generate-map";
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg';
+const StreetMap = (startLocation:Coordinate) => {
+    const map = useRef<streetMap | null>(null);
 
-function StreetMap() {
-    const mapContainer = useRef<any>(null);
-    const map = useRef<Map|null>(null);
-    const [lng, setLng] = useState(11.97);
-    const [lat, setLat] = useState(57.71);
-    const [zoom, setZoom] = useState(9);
+    //TODO: be abstracted
+    const [poolers] = useState<Number>(2);
 
+    // Create map and markers
     useEffect(() => {
         if (map.current) return;
-        map.current = new mapboxgl.Map({
-            container: mapContainer.current,
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [lng, lat],
-            zoom: zoom
-        });
+        map.current = new streetMap(
+            startLocation,
+            "mapbox://styles/mapbox/streets-v11",
+            "mapContainer"
+        );
+        map.current?.generateMarkers(poolers);
     });
 
     return (
-        <div ref={mapContainer} className="map-container w-2/3 h-2/3 text-white" />
+        <div>
+            <div
+                id="mapContainer"
+                className="absolute w-full bottom-0 top-0 text-white"
+            />
+            <button
+                onClick={() => {
+                    map.current?.getRoute({lng:11.72, lat:57.70});
+                }}
+                className="absolute z-10 top-5 right-5 hover:bg-green-600 bg-green-500 rounded-lg font-bold p-2 text-white"
+            >
+                Generate route
+            </button>
+        </div>
     );
-}
+};
 
 export default StreetMap;
