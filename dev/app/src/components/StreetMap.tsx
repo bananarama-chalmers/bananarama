@@ -46,7 +46,7 @@ const StreetMap = () => {
                 });
             },
             (e: any) => {
-                setStartLocation(defaultCoord);
+                setStartLocation(pos);
             }
         );
     }, []);
