@@ -1,13 +1,13 @@
 import {Coordinate} from "./street-map";
 
 
-export class complexPolygon {
+export class ComplexPolygon {
     private _corners: Array<Coordinate> = new Array<Coordinate>();
 
     public getIntersectionOfPolygons(
-        poly: complexPolygon,
-    ): complexPolygon {
-        const clippedCorners: complexPolygon = new complexPolygon();
+        poly: ComplexPolygon,
+    ): ComplexPolygon {
+        const clippedCorners: ComplexPolygon = new ComplexPolygon();
 
         for (let i:number = 0; i < this._corners.length; i++) {
             if (poly.isPointInside(this._corners[i]))
@@ -19,8 +19,7 @@ export class complexPolygon {
                 clippedCorners.addCorners(new Array<Coordinate>(poly.getCorners()[i]));
         }
 
-        const intersectPolygon = new complexPolygon();
-
+        const intersectPolygon = new ComplexPolygon();
 
         for (
             let i: number = 0, next: number = 1;
@@ -47,8 +46,8 @@ export class complexPolygon {
             let found: boolean = false;
             this._corners.forEach((p: Coordinate) => {
                 if (
-                    complexPolygon.doubleEqual(p.lng, np.lng) &&
-                    complexPolygon.doubleEqual(p.lat, np.lat)
+                    ComplexPolygon.doubleEqual(p.lng, np.lng) &&
+                    ComplexPolygon.doubleEqual(p.lat, np.lat)
                 ) {
                     found = true;
                     return;
@@ -81,7 +80,7 @@ export class complexPolygon {
 
         for (let i: number = 0; i < this._corners.length; i++) {
             const next: number = i + 1 === this._corners.length ? 0 : i + 1;
-            const ip: Coordinate | null = complexPolygon.getIntersectionPoint(
+            const ip: Coordinate | null = ComplexPolygon.getIntersectionPoint(
                 l1p1,
                 l1p2,
                 this._corners[i],
@@ -124,28 +123,28 @@ export class complexPolygon {
         const C2 = A2 * l2p1.lng + B2 * l2p1.lat;
         //lines are parallel
         const det = A1 * B2 - A2 * B1;
-        if (complexPolygon.doubleEqual(det, 0)) return null; //parallel lines
+        if (ComplexPolygon.doubleEqual(det, 0)) return null; //parallel lines
         else {
             const lng = (B2 * C1 - B1 * C2) / det;
             const lat = (A1 * C2 - A2 * C1) / det;
             const online1: boolean =
                 (Math.min(l1p1.lng, l1p2.lng) < lng ||
-                    complexPolygon.doubleEqual(Math.min(l1p1.lng, l1p2.lng), lng)) &&
+                    ComplexPolygon.doubleEqual(Math.min(l1p1.lng, l1p2.lng), lng)) &&
                 (Math.max(l1p1.lng, l1p2.lng) > lng ||
-                    complexPolygon.doubleEqual(Math.max(l1p1.lng, l1p2.lng), lng)) &&
+                    ComplexPolygon.doubleEqual(Math.max(l1p1.lng, l1p2.lng), lng)) &&
                 (Math.min(l1p1.lat, l1p2.lat) < lat ||
-                    complexPolygon.doubleEqual(Math.min(l1p1.lat, l1p2.lat), lat)) &&
+                    ComplexPolygon.doubleEqual(Math.min(l1p1.lat, l1p2.lat), lat)) &&
                 (Math.max(l1p1.lat, l1p2.lat) > lat ||
-                    complexPolygon.doubleEqual(Math.max(l1p1.lat, l1p2.lat), lat));
+                    ComplexPolygon.doubleEqual(Math.max(l1p1.lat, l1p2.lat), lat));
             const online2: boolean =
                 (Math.min(l2p1.lng, l2p2.lng) < lng ||
-                    complexPolygon.doubleEqual(Math.min(l2p1.lng, l2p2.lng), lng)) &&
+                    ComplexPolygon.doubleEqual(Math.min(l2p1.lng, l2p2.lng), lng)) &&
                 (Math.max(l2p1.lng, l2p2.lng) > lng ||
-                    complexPolygon.doubleEqual(Math.max(l2p1.lng, l2p2.lng), lng)) &&
+                    ComplexPolygon.doubleEqual(Math.max(l2p1.lng, l2p2.lng), lng)) &&
                 (Math.min(l2p1.lat, l2p2.lat) < lat ||
-                    complexPolygon.doubleEqual(Math.min(l2p1.lat, l2p2.lat), lat)) &&
+                    ComplexPolygon.doubleEqual(Math.min(l2p1.lat, l2p2.lat), lat)) &&
                 (Math.max(l2p1.lat, l2p2.lat) > lat ||
-                    complexPolygon.doubleEqual(Math.max(l2p1.lat, l2p2.lat), lat));
+                    ComplexPolygon.doubleEqual(Math.max(l2p1.lat, l2p2.lat), lat));
             if (online1 && online2) return { lng:lng, lat:lat };
         }
         return null; //intersection is at out of at least one segment.
