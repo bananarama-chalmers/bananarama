@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./tailwind.css";
-import StreetMap from "./components/StreetMap";
+import StreetMapView from "./components/StreetMapView";
 import { PoolWizard } from "./components/PoolWizard";
 
 function App() {
     return (
         <div className="w-screen h-screen">
-            <StreetMap />
+            <StreetMapView />
             <BrowserRouter>
                 <Routes>
                     <Route path="/">

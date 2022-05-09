@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
-import {Coordinate, streetMap} from "../model/street-map";
+import { useRef, useEffect, useState } from "react";
+import {Coordinate, StreetMap } from "../model/street-map";
 
-const StreetMap = () => {
-    const map = useRef<streetMap | null>(null);
+const StreetMapView = () => {
+    const map = useRef<StreetMap | null>(null);
     //TODO: be abstracted
     const [poolers] = useState<Number>(2);
     const [startLocation, setStartLocation] = useState<Coordinate>({
@@ -27,7 +27,7 @@ const StreetMap = () => {
     // Create map and markers
     useEffect(() => {
         if (map.current) return;
-        map.current = new streetMap(
+        map.current = new StreetMap(
             startLocation,
             "mapbox://styles/mapbox/streets-v11",
             "mapContainer"
@@ -53,4 +53,4 @@ const StreetMap = () => {
     );
 };
 
-export default StreetMap;
+export default StreetMapView;
