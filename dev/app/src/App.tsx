@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "./tailwind.css";
 import StreetMap from "./components/StreetMap";
 import {PoolWizard} from "./components/PoolWizard";
-import {Coordinate} from "./model/generate-map";
+import {Coordinate} from "./model/street-map";
 
 const App = () => {
     const [startLocation, setStartLocation] = useState<Coordinate>();

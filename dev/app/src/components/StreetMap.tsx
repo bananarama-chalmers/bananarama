@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import {Coordinate, streetMap} from "../model/generate-map";
+import {Coordinate, streetMap} from "../model/street-map";
 
 const StreetMap = (startLocation:Coordinate) => {
     const map = useRef<streetMap | null>(null);
