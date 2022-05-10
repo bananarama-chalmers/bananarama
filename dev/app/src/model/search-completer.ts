@@ -18,9 +18,14 @@ export class searchCompleter{
             encodedAdress +
             '.json?proximity=ip&access_token=' +
             mapboxgl.accessToken).then((response:any) => {
-                for(let i = 0; i < 5; i++){
-                    returnString.push(response.data.features[i].place_name);
+                if(response.data.features.length < 1){
+                    returnString.push("Adress not found");
+                }else{
+                    for(let i = 0; i < 5; i++){
+                        returnString.push(response.data.features[i].place_name);
+                    }
                 }
+
         });
         return returnString;
     }
