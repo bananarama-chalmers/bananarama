@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ThinSeparator, Separator } from "./Separator";
-import { Traveler, Coordinate, Travel } from "./PoolWizard";
+import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
 
 type PoolFillerProps = {
     destinationURL: string;
     destinationName: string;
     callback: Function;
-    owner: Traveler;
+    owner: Pooler;
 };
 
 export const PoolFiller = ({
@@ -19,36 +19,35 @@ export const PoolFiller = ({
     const [pos] = useState("");
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
-    const [poolers, setPoolers] = useState<Array<Traveler>>([]);
-    const [renderedPool, setRenderedPool] = useState<Array<JSX.Element>>([]);
+    const [pool, setPool] = useState<Array<Pooler>>([]);
     const travelTypes = ["car", "walk", "bike", "bus"]; // FIXME: this is too qnd
 
     const handleSubmit = (e: React.FormEvent) => {
         // Sends the event to the parent component and prevents the page from refreshing
         e.preventDefault();
-        callback(renderedPool);
+        callback(pool);
     };
 
     const addPooler = (e: React.FormEvent) => {
         setTravelType(travelType);
-        poolers.push({
-            name: name,
-            coords: {} as Coordinate,
-            street: pos,
-            travelType: travelType,
-        } as Traveler);
-
-        // Update the rendered pool to show all poolers
-        setRenderedPool(
-            poolers.map((traveler, id = 0) => {
-                return (
-                    <PoolItem
-                        poolerName={traveler.name}
-                        travelType={traveler.travelType}
-                        key={id++}
-                    />
-                );
-            })
+        setPool(
+            pool.concat([
+                {
+                    name: name,
+                    coords: { lat: 0, lng: 0 } as Coordinate,
+                    street: pos,
+                    travelType: travelType,
+                    color: "purple-500",
+                    poolElement: (
+                        <PoolItem
+                            poolerName={name}
+                            travelType={travelType}
+                            key={pool.length}
+                            color={"purple-500"}
+                        />
+                    ),
+                } as Pooler,
+            ])
         );
         // Prevent the page from refreshing
         e.preventDefault();
@@ -60,14 +59,7 @@ export const PoolFiller = ({
 
     useEffect(() => {
         // Populate the pooler list with the owners info when mounting the component
-        setPoolers([owner]);
-        setRenderedPool([
-            <PoolItem
-                poolerName={owner.name}
-                travelType={owner.travelType}
-                key={0}
-            />,
-        ]);
+        setPool([owner]);
     }, [owner]);
 
     return (
@@ -135,7 +127,7 @@ export const PoolFiller = ({
                 Traveling by
             </p>
             <div className="block h-1px col-span-3 bg-slate-200" />
-            <ul className="col-span-3">{renderedPool}</ul>
+            <ul className="col-span-3">{pool.map((p) => p.poolElement)}</ul>
             <Separator />
             <button className="col-span-3 font-semibold bg-slate-800 hover:bg-slate-900 text-white h-10 rounded-lg mt-1">
                 Get meeting point

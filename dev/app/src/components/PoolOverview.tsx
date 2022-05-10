@@ -1,4 +1,5 @@
 import React from "react";
+import { Pooler } from '../types/types';
 import { Separator, ThinSeparator } from "./Separator";
 
 type PoolOverviewProps = {
@@ -7,7 +8,7 @@ type PoolOverviewProps = {
     meetingPointURL: string;
     meetingPointName: string;
     callback: React.FormEventHandler;
-    pool: Array<JSX.Element>;
+    pool: Array<Pooler>;
 };
 
 export const PoolOverview = ({
@@ -38,7 +39,7 @@ export const PoolOverview = ({
                 Traveling by
             </p>
             <ThinSeparator />
-            <ul className="col-span-3">{pool}</ul>
+            <ul className="col-span-3">{pool.map(p => p.poolElement)}</ul>
             <Separator />
             <div className="col-span-3 text-slate-600 text-base font-semibold">
                 Destination

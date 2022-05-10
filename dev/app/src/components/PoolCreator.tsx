@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Traveler, Coordinate, Travel } from "./PoolWizard";
+import { useState } from "react";
+import { Pooler, Coordinate, Travel } from "../types/types";
+import { PoolItem } from "./PoolItem";
 
 type PoolCreatorProps = {
     callback: Function;
@@ -20,7 +21,16 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
                 coords: { lat: 0, lng: 0 } as Coordinate,
                 street: pos,
                 travelType: travelType,
-            } as Traveler,
+                color: "purple-500",
+                poolElement: (
+                    <PoolItem
+                        poolerName={name}
+                        travelType={travelType}
+                        key={0}
+                        color={"purple-500"}
+                    />
+                ),
+            } as Pooler,
             dest
         );
     };
