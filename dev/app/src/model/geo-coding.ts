@@ -37,4 +37,19 @@ export class GeoCoding {
             });
         return retCoord;
     }
+    //returns a Promise with the adress as a string.
+    //Takes lng and lat (number) as inputs
+    //see forwardGeoCoding for example of how to use the response
+    public async reverseGeoCoding(lng: number, lat: number):Promise<string>{
+        let retString:string = '';
+        const promise = await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' +
+            lng +
+            ',' +
+            lat +
+            '.json?' +
+            'access_token=' + mapboxgl.accessToken).then((response:any) =>{
+                retString = response.data.features[0].place_name;
+        });
+        return retString;
+    }
 }
