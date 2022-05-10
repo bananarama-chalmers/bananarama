@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ThinSeparator, Separator } from "./Separator";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
+import { SearchBox } from "./SearchBox";
 
 type PoolFillerProps = {
     destinationURL: string;
@@ -26,6 +27,10 @@ export const PoolFiller = ({
         // Sends the event to the parent component and prevents the page from refreshing
         e.preventDefault();
         callback(pool);
+    };
+
+    const search = (query: string) => {
+        console.log(query);
     };
 
     const addPooler = (e: React.FormEvent) => {
@@ -104,11 +109,7 @@ export const PoolFiller = ({
             </label>
             <label className="col-span-2 text-slate-600 text-base font-semibold">
                 Pooler position
-                <input
-                    className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9 bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
-                    type="text"
-                    placeholder={"Enter position"}
-                />
+                <SearchBox placeholder="Enter position" callback={search} />
             </label>
             <label className="col-span-1 text-slate-600 text-base font-semibold">
                 <br />
