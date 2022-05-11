@@ -29,10 +29,6 @@ export const PoolFiller = ({
         callback(pool);
     };
 
-    const search = (query: string) => {
-        console.log(query);
-    };
-
     const addPooler = (e: React.FormEvent) => {
         setTravelType(travelType);
         setPool(
@@ -109,7 +105,7 @@ export const PoolFiller = ({
             </label>
             <label className="col-span-2 text-slate-600 text-base font-semibold">
                 Pooler position
-                <SearchBox placeholder="Enter position" callback={search} />
+                <SearchBox placeholder="Enter position" />
             </label>
             <label className="col-span-1 text-slate-600 text-base font-semibold">
                 <br />
