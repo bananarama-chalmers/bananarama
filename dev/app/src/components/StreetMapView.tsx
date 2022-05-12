@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import {Coordinate, StreetMap } from "../model/street-map";
+import { Coordinate, StreetMap } from "../model/street-map";
 
 const StreetMapView = () => {
     const map = useRef<StreetMap | null>(null);
@@ -45,7 +45,7 @@ const StreetMapView = () => {
                 onClick={() => {
                     map.current?.getRoute({ lng: 11.72, lat: 57.7 });
                 }}
-                className="absolute z-10 top-5 right-5 hover:bg-green-600 bg-green-500 rounded-lg font-bold p-2 text-white"
+                className="absolute z-10 top-66px right-5 hover:bg-green-600 bg-green-500 rounded-lg font-bold p-2 text-white"
             >
                 Generate route
             </button>
