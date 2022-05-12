@@ -21,6 +21,9 @@ module.exports = {
             backgroundPosition: {
                 "left-sm": "center left 0.5rem",
             },
+            spacing: {
+                "66px": "66px",
+            },
         },
     },
     plugins: [require("@tailwindcss/typography")],
