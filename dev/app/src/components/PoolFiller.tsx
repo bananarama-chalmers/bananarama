@@ -17,7 +17,7 @@ export const PoolFiller = ({
     destinationURL,
     owner,
 }: PoolFillerProps) => {
-    const [pos] = useState("");
+    const [pos, setPos] = useState("");
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
     const [pool, setPool] = useState<Array<Pooler>>([]);
@@ -105,7 +105,7 @@ export const PoolFiller = ({
             </label>
             <label className="col-span-2 text-slate-600 text-base font-semibold">
                 Pooler position
-                <SearchBox placeholder="Enter position" />
+                <SearchBox placeholder="Enter position" textSetter={setPos} />
             </label>
             <label className="col-span-1 text-slate-600 text-base font-semibold">
                 <br />

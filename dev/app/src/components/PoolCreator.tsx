@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
+import { SearchBox } from "./SearchBox";
 
 type PoolCreatorProps = {
     callback: Function;
@@ -58,12 +59,7 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
         >
             <label className="col-span-3 text-slate-600 text-base font-semibold">
                 My position
-                <input
-                    className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9  bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
-                    type="text"
-                    onChange={(e) => setPos(e.target.value)}
-                    placeholder={"Enter position"}
-                />
+                <SearchBox placeholder="Enter position" textSetter={setPos} />
             </label>
             <label className="col-span-2 text-slate-600 text-base font-semibold">
                 Name
@@ -92,11 +88,9 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
             </label>
             <label className="col-span-3 text-slate-600 text-base font-semibold">
                 Destination
-                <input
-                    className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9  bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
-                    type="text"
-                    onChange={(e) => setDest(e.target.value)}
-                    placeholder={"Enter destination"}
+                <SearchBox
+                    placeholder="Enter destination"
+                    textSetter={setDest}
                 />
             </label>
             <input
