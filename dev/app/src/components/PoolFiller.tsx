@@ -65,7 +65,7 @@ export const PoolFiller = ({
 
     return (
         <form
-            className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-0 z-10 w-box-width bg-white"
+            className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-66px z-10 w-box-width bg-white"
             onSubmit={handleSubmit}
         >
             <label className="col-span-3 text-slate-600 text-base font-semibold">
