@@ -3,7 +3,7 @@ import Computer from "../assets/demo_computer.png";
 
 export const LandingPage = () => {
     return (
-        <div className="bg-slate-100 w-screen h-screen py-40 px-10">
+        <div className="bg-white w-screen h-screen py-40 px-10">
             <div className="grid grid-cols-2 m-auto w-3/4">
                 <div className="col-span-1">
                     <h1 className="leading-none my-4 font-bold text-7xl text-center">
