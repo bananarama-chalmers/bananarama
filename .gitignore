@@ -1,11 +1,8 @@
 .idea
 .vscode
-
 /dev/app/node_modules
 /dev/app/package-lock.json
-
 /dev/app/src/tailwind.output.css
-
-
 package-lock.json
 dev/.DS_Store
+dev/app/.DS_Store
