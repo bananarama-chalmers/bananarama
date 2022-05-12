@@ -1,26 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { searchCompleter } from "../model/search-completer";
 
 type SearchBoxProps = {
     placeholder: string;
+    textSetter: Function;
 };
 
-export const SearchBox = ({ placeholder }: SearchBoxProps) => {
+/**
+ * SearchBox is a component responsible for receiving user input regarding location. It autocompletes queries and updates the location upon selection.
+ * @param placeholder placeholder text for input box before user input is received.
+ * @param textSetter setter for updating state coming from parent component.
+ * @returns JSX.Element
+ */
+export const SearchBox = ({ placeholder, textSetter }: SearchBoxProps) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [searchResults, setSearchResults] = useState<Array<string>>([]);
-    const [selectedResult, setSelectedResult] = useState<string>("");
+    const [currentInput, setCurrentInput] = useState<string>("");
 
     const handleSearch = async (query: string) => {
         const sc: searchCompleter = new searchCompleter();
         sc.suggestions(query).then((r: Array<string>) => {
             setSearchResults(r);
         });
+        setCurrentInput(query);
     };
 
     const handleSelect = (e: React.MouseEvent<HTMLLIElement>) => {
         let s = e.currentTarget.innerText;
         handleSearch(s);
-        setSelectedResult(s);
+        setCurrentInput(s);
+        textSetter(s);
     };
 
     const searchInput = () => {
@@ -29,7 +38,7 @@ export const SearchBox = ({ placeholder }: SearchBoxProps) => {
                 className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9 bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
                 type="text"
                 placeholder={placeholder}
-                value={selectedResult}
+                value={currentInput}
                 onChange={(e) => handleSearch(e.currentTarget.value)}
                 onBlur={() => setIsExpanded(false)}
                 onFocus={() => setIsExpanded(true)}
