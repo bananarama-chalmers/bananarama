@@ -20,8 +20,8 @@ export const PoolOverview = ({
     pool,
 }: PoolOverviewProps) => {
     return (
-        <div className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-66px z-10 w-box-width bg-white">
-            <div className="col-span-3 text-slate-600 text-base font-semibold">
+        <div className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-66px z-10 w-box-width bg-white dark:bg-neutral-900 dark:text-white">
+            <div className="col-span-3 text-slate-600 text-base font-semibold dark:text-white">
                 Meeting point
                 <br />
                 <a
@@ -31,17 +31,17 @@ export const PoolOverview = ({
                     {meetingPointName}
                 </a>
             </div>
-            <div className="block h-2px col-span-3 bg-slate-200" />
-            <p className="col-span-2 mt-1 text-slate-600 text-base font-semibold">
+            <Separator />
+            <p className="col-span-2 mt-1 text-slate-600 dark:text-white text-base font-semibold">
                 Poolers
             </p>
-            <p className="col-span-1 mt-1 text-slate-600 text-base font-semibold">
+            <p className="col-span-1 mt-1 text-slate-600 dark:text-white text-base font-semibold">
                 Traveling by
             </p>
             <ThinSeparator />
             <ul className="col-span-3">{pool.map((p) => p.poolElement)}</ul>
             <Separator />
-            <div className="col-span-3 text-slate-600 text-base font-semibold">
+            <div className="col-span-3 text-slate-600 dark:text-white text-base font-semibold">
                 Destination
                 <br />
                 <a
