@@ -8,12 +8,12 @@ import { Navigation } from "./components/Navigation";
 function App() {
     return (
         <BrowserRouter>
+            <Navigation />
             <Routes>
                 <Route
                     path="/"
                     element={
                         <div>
-                            <Navigation />
                             <LandingPage />
                         </div>
                     }
@@ -22,7 +22,6 @@ function App() {
                     path="/map"
                     element={
                         <div className="w-screen h-screen">
-                            <Navigation />
                             <StreetMapView />
                             <PoolWizard />
                         </div>
