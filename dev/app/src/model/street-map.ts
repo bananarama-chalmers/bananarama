@@ -43,7 +43,7 @@ export class StreetMap {
                      ])
                      .addTo(this._map)
              );
-         })
+         });
     }
 
     public getRoute(poolers:Array<Pooler>, destination: Coordinate): void {
@@ -248,7 +248,7 @@ export class StreetMap {
                         mapboxgl.accessToken
                 )
                 .then((response: any) => {
-                    for (let j = 0; j < poolers+1; j++) {
+                    for (let j = 0; j < poolers.length+1; j++) {
                         if (this._map.getSource("route" + j)) {
                             this._map.removeLayer("route" + j);
                             this._map.removeSource("route" + j);

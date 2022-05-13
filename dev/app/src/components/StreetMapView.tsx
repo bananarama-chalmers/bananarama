@@ -14,7 +14,7 @@ const StreetMapView = (startLocation: Coordinate, poolers: Array<Pooler>, destin
                 "mapbox://styles/mapbox/streets-v11",
                 "mapContainer",
             );
-        map.current?.generateMarkers(poolers);
+        //map.current?.generateMarkers(poolers);
     });
 
     return (
