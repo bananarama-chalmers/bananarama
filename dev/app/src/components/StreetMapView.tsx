@@ -12,12 +12,12 @@ const StreetMapView = (
     // Create map and markers
     useEffect(() => {
         if (map.current) return;
-        map.current = new StreetMap(
-            startLocation,
-            "mapbox://styles/mapbox/streets-v11",
-            "mapContainer"
-        );
-        map.current?.generateMarkers(poolers);
+            map.current = new StreetMap(
+                startLocation,
+                "mapbox://styles/mapbox/streets-v11",
+                "mapContainer",
+            );
+        //map.current?.generateMarkers(poolers);
     });
 
     return (

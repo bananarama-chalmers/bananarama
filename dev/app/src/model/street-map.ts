@@ -27,17 +27,23 @@ export class StreetMap {
     }
 
     public generateMarkers(poolers: Array<Pooler>): void {
-        this._markers.forEach((marker: Marker) => marker.remove());
-        Object.values(poolers).forEach((pooler: Pooler) => {
-            this._markers.push(
-                new mapboxgl.Marker({
-                    color: pooler.color,
-                    draggable: false,
-                })
-                    .setLngLat([pooler.coords.lng, pooler.coords.lat])
-                    .addTo(this._map)
-            );
-        });
+         poolers.forEach((pooler: Pooler) => {
+             this._markers.forEach((marker: Marker) => {
+                 marker.remove();
+             })
+
+             this._markers.push(
+                 new mapboxgl.Marker({
+                     color: pooler.color,
+                     draggable: false,
+                 })
+                     .setLngLat([
+                         pooler.coords.lng,
+                         pooler.coords.lat,
+                     ])
+                     .addTo(this._map)
+             );
+         });
     }
 
     /**
@@ -260,7 +266,8 @@ export class StreetMap {
                         mapboxgl.accessToken
                 )
                 .then((response: any) => {
-                    for (let j = 0; j < poolers.length + 1; j++) {
+
+                    for (let j: number = 0; j < poolers.length + 1; j++) {
                         if (this._map.getSource("route" + j)) {
                             this._map.removeLayer("route" + j);
                             this._map.removeSource("route" + j);
