@@ -27,7 +27,7 @@ const StreetMapView = (startLocation: Coordinate, poolers: Array<Pooler>, destin
                 onClick={() => {
                     map.current?.getRoute(poolers, destination);
                 }}
-                className="absolute z-10 top-5 right-5 hover:bg-green-600 bg-green-500 rounded-lg font-bold p-2 text-white"
+                className="absolute z-10 top-66px right-5 hover:bg-green-600 bg-green-500 rounded-lg font-bold p-2 text-white"
             >
                 Generate route
             </button>

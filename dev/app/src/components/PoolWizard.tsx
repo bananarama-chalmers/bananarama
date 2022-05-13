@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PoolCreator } from "./PoolCreator";
 import { PoolFiller } from "./PoolFiller";
 import { PoolOverview } from "./PoolOverview";
-import { Pooler, Coordinate, Travel } from '../types/types';
+import { Pooler, Coordinate, Travel } from "../types/types";
 
 enum Step {
     Create,
@@ -17,7 +17,7 @@ export const PoolWizard = () => {
         coords: { lat: 0, lng: 0 } as Coordinate,
         street: "",
         travelType: Travel.Car,
-        color: "purple-500"
+        color: "purple-500",
     } as Pooler);
     const [dest, setDest] = useState("");
     const [pool, setPool] = useState<Array<Pooler>>([]);

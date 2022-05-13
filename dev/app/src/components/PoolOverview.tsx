@@ -1,5 +1,5 @@
 import React from "react";
-import { Pooler } from '../types/types';
+import { Pooler } from "../types/types";
 import { Separator, ThinSeparator } from "./Separator";
 
 type PoolOverviewProps = {
@@ -20,7 +20,7 @@ export const PoolOverview = ({
     pool,
 }: PoolOverviewProps) => {
     return (
-        <div className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-0 z-10 w-box-width bg-white">
+        <div className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-66px z-10 w-box-width bg-white">
             <div className="col-span-3 text-slate-600 text-base font-semibold">
                 Meeting point
                 <br />
@@ -39,7 +39,7 @@ export const PoolOverview = ({
                 Traveling by
             </p>
             <ThinSeparator />
-            <ul className="col-span-3">{pool.map(p => p.poolElement)}</ul>
+            <ul className="col-span-3">{pool.map((p) => p.poolElement)}</ul>
             <Separator />
             <div className="col-span-3 text-slate-600 text-base font-semibold">
                 Destination

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ThinSeparator, Separator } from "./Separator";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
+import { SearchBox } from "./SearchBox";
 
 type PoolFillerProps = {
     destinationURL: string;
@@ -16,7 +17,7 @@ export const PoolFiller = ({
     destinationURL,
     owner,
 }: PoolFillerProps) => {
-    const [pos] = useState("");
+    const [pos, setPos] = useState("");
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
     const [pool, setPool] = useState<Array<Pooler>>([]);
@@ -64,7 +65,7 @@ export const PoolFiller = ({
 
     return (
         <form
-            className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-0 z-10 w-box-width bg-white"
+            className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-66px z-10 w-box-width bg-white"
             onSubmit={handleSubmit}
         >
             <label className="col-span-3 text-slate-600 text-base font-semibold">
@@ -104,11 +105,7 @@ export const PoolFiller = ({
             </label>
             <label className="col-span-2 text-slate-600 text-base font-semibold">
                 Pooler position
-                <input
-                    className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9 bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
-                    type="text"
-                    placeholder={"Enter position"}
-                />
+                <SearchBox placeholder="Enter position" textSetter={setPos} />
             </label>
             <label className="col-span-1 text-slate-600 text-base font-semibold">
                 <br />

@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import StreetMapView from "./components/StreetMapView";
 import { PoolWizard } from "./components/PoolWizard";
+import { LandingPage } from "./pages/LandingPage";
+import { Navigation } from "./components/Navigation";
 
 import { Coordinate, Pooler } from "./types/types";
 import mapboxgl from "mapbox-gl";
@@ -26,16 +28,28 @@ function App() {
     },[])
 
     return (
-        <div className="w-screen h-screen">
-            {startLocation && <StreetMapView lat={startLocation.lat} lng={startLocation.lng} />}
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/">
-                        <Route path="" element={<PoolWizard />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
-        </div>
+        <BrowserRouter>
+            <Navigation />
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <div>
+                            <LandingPage />
+                        </div>
+                    }
+                />
+                <Route
+                    path="/map"
+                    element={
+                        {startLocation && <StreetMapView lat={startLocation.lat} lng={startLocation.lng} />}
+                            <StreetMapView />
+                            <PoolWizard />
+                        </div>
+                    }
+                />
+            </Routes>
+        </BrowserRouter>
     );
 }
 export default App;
