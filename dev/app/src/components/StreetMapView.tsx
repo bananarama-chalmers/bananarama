@@ -2,18 +2,21 @@ import { useRef, useEffect } from "react";
 import { StreetMap } from "../model/street-map";
 import { Coordinate, Pooler } from "../types/types";
 
-const StreetMapView = (startLocation: Coordinate, poolers: Array<Pooler>, destination: Coordinate) => {
+const StreetMapView = (
+    startLocation: Coordinate,
+    poolers: Array<Pooler>,
+    destination: Coordinate
+) => {
     const map = useRef<StreetMap | null>(null);
-
 
     // Create map and markers
     useEffect(() => {
         if (map.current) return;
-            map.current = new StreetMap(
-                startLocation,
-                "mapbox://styles/mapbox/streets-v11",
-                "mapContainer",
-            );
+        map.current = new StreetMap(
+            startLocation,
+            "mapbox://styles/mapbox/streets-v11",
+            "mapContainer"
+        );
         map.current?.generateMarkers(poolers);
     });
 
