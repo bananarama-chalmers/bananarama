@@ -2,9 +2,12 @@ import { useRef, useEffect } from "react";
 import { StreetMap } from "../model/street-map";
 import { Coordinate, Pooler } from "../types/types";
 
-const StreetMapView = (startLocation: Coordinate, poolers: Array<Pooler>, destination: Coordinate) => {
+const StreetMapView = (
+    startLocation: Coordinate,
+    poolers: Array<Pooler>,
+    destination: Coordinate
+) => {
     const map = useRef<StreetMap | null>(null);
-
 
     // Create map and markers
     useEffect(() => {
