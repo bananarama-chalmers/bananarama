@@ -14,7 +14,7 @@ export class StreetMap {
     constructor(
         startLocation: Coordinate,
         mapType: string,
-        mapContainer: string,
+        mapContainer: string
     ) {
         this._startLocation = startLocation;
         this._mapContainer = mapContainer;
@@ -27,26 +27,31 @@ export class StreetMap {
     }
 
     public generateMarkers(poolers: Array<Pooler>): void {
-         poolers.forEach((pooler: Pooler) => {
-             this._markers.forEach((marker: Marker) => {
-                 marker.remove();
-             })
-
-             this._markers.push(
-                 new mapboxgl.Marker({
-                     color: pooler.color,
-                     draggable: false,
-                 })
-                     .setLngLat([
-                         pooler.coords.lng,
-                         pooler.coords.lat,
-                     ])
-                     .addTo(this._map)
-             );
-         })
+        this._markers.forEach((marker: Marker) => marker.remove());
+        Object.values(poolers).map((pooler: Pooler) => {
+            this._markers.push(
+                new mapboxgl.Marker({
+                    color: pooler.color,
+                    draggable: false,
+                })
+                    .setLngLat([pooler.coords.lng, pooler.coords.lat])
+                    .addTo(this._map)
+            );
+        });
     }
 
-    public getRoute(poolers:Array<Pooler>, destination: Coordinate): void {
+    /**
+     * this._markers.push(
+                new mapboxgl.Marker({
+                    color: pooler.color,
+                    draggable: false,
+                })
+                    .setLngLat([pooler.coords.lng, pooler.coords.lat])
+                    .addTo(this._map)
+            );
+     */
+
+    public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
         let minutes = 10;
 
         const travelAreas = new Array<ComplexPolygon>();
@@ -71,20 +76,22 @@ export class StreetMap {
                 .then((response: any) => {
                     response.data.features[0].geometry.coordinates[0].forEach(
                         (c: any) => {
-                            travelAreas[i].getCorners().push({ lng: c[0], lat: c[1] });
+                            travelAreas[i]
+                                .getCorners()
+                                .push({ lng: c[0], lat: c[1] });
                         }
                     );
                     if (i + 1 === poolers.length) {
-                        const meetingPoint:Coordinate = this.getMeetingPoint(travelAreas, poolers);
+                        const meetingPoint: Coordinate = this.getMeetingPoint(
+                            travelAreas,
+                            poolers
+                        );
                         this.drawDestinationRoute(
                             meetingPoint,
                             destination,
                             "driving"
                         );
-                        this.drawMeetingpointRoutes(
-                            poolers,
-                            meetingPoint
-                        );
+                        this.drawMeetingpointRoutes(poolers, meetingPoint);
                     }
                 });
         }
@@ -97,7 +104,9 @@ export class StreetMap {
         let intersectedTravelArea: ComplexPolygon;
         let middle: Coordinate;
 
-        intersectedTravelArea = travelAreas[0].getIntersectionOfPolygons(travelAreas[1]);
+        intersectedTravelArea = travelAreas[0].getIntersectionOfPolygons(
+            travelAreas[1]
+        );
         middle = this.getOptimalMiddlePoint(
             poolers[0].coords,
             poolers[1].coords,
@@ -105,7 +114,8 @@ export class StreetMap {
         );
 
         for (let i = 2; i < poolers.length; i++) {
-            let newIntersectedTravelArea = intersectedTravelArea.getIntersectionOfPolygons(travelAreas[i]);
+            let newIntersectedTravelArea =
+                intersectedTravelArea.getIntersectionOfPolygons(travelAreas[i]);
 
             middle = this.getOptimalMiddlePoint(
                 middle,
@@ -139,13 +149,15 @@ export class StreetMap {
             middle = {
                 lng:
                     (intersectedTravelArea.getCorners()[0].lng +
-                        intersectedTravelArea.getCorners()[intersectedTravelArea.getCorners().length - 1]
-                            .lng) /
+                        intersectedTravelArea.getCorners()[
+                            intersectedTravelArea.getCorners().length - 1
+                        ].lng) /
                     2,
                 lat:
                     (intersectedTravelArea.getCorners()[0].lat +
-                        intersectedTravelArea.getCorners()[intersectedTravelArea.getCorners().length - 1]
-                            .lat) /
+                        intersectedTravelArea.getCorners()[
+                            intersectedTravelArea.getCorners().length - 1
+                        ].lat) /
                     2,
             };
 
@@ -248,7 +260,7 @@ export class StreetMap {
                         mapboxgl.accessToken
                 )
                 .then((response: any) => {
-                    for (let j = 0; j < poolers+1; j++) {
+                    for (let j = 0; j < poolers.length + 1; j++) {
                         if (this._map.getSource("route" + j)) {
                             this._map.removeLayer("route" + j);
                             this._map.removeSource("route" + j);
