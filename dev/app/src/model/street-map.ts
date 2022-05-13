@@ -26,7 +26,7 @@ export class StreetMap {
         });
     }
 
-    public generateMarkers(poolers: Array<Pooler>) {
+    public generateMarkers(poolers: Array<Pooler>): void {
          poolers.forEach((pooler: Pooler) => {
              this._markers.forEach((marker: Marker) => {
                  marker.remove();
@@ -46,7 +46,7 @@ export class StreetMap {
          })
     }
 
-    public getRoute(poolers:Array<Pooler>, destination: Coordinate) {
+    public getRoute(poolers:Array<Pooler>, destination: Coordinate): void {
         let minutes = 10;
 
         const travelAreas = new Array<ComplexPolygon>();
@@ -165,7 +165,7 @@ export class StreetMap {
         meetingPoint: Coordinate,
         destination: Coordinate,
         travelType: string
-    ) {
+    ): void {
         axios
             .get(
                 "https://api.mapbox.com/directions/v5/mapbox/" +
@@ -224,7 +224,7 @@ export class StreetMap {
     private drawMeetingpointRoutes(
         poolers: Array<Pooler>,
         destination: Coordinate
-    ) {
+    ): void {
         for (let i = 0; i < poolers.length; i++) {
             axios
                 .get(
