@@ -28,7 +28,7 @@ export class StreetMap {
 
     public generateMarkers(poolers: Array<Pooler>): void {
         this._markers.forEach((marker: Marker) => marker.remove());
-        Object.values(poolers).map((pooler: Pooler) => {
+        Object.values(poolers).forEach((pooler: Pooler) => {
             this._markers.push(
                 new mapboxgl.Marker({
                     color: pooler.color,
