@@ -42,8 +42,8 @@ function App() {
                 <Route
                     path="/map"
                     element={
-                        {startLocation && <StreetMapView lat={startLocation.lat} lng={startLocation.lng} />}
-                            <StreetMapView />
+                        <div>
+                            {startLocation && <StreetMapView lat={startLocation.lat} lng={startLocation.lng} />}
                             <PoolWizard />
                         </div>
                     }
