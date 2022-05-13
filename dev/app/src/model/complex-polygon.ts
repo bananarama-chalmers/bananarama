@@ -1,4 +1,4 @@
-import {Coordinate} from "./street-map";
+import { Coordinate } from "../types/types";
 
 
 export class ComplexPolygon {
@@ -9,12 +9,12 @@ export class ComplexPolygon {
     ): ComplexPolygon {
         const clippedCorners: ComplexPolygon = new ComplexPolygon();
 
-        for (let i:number = 0; i < this._corners.length; i++) {
+        for (let i: number = 0; i < this._corners.length; i++) {
             if (poly.isPointInside(this._corners[i]))
                 clippedCorners.addCorners(new Array<Coordinate>(this._corners[i]));
         }
 
-        for (let i:number = 0; i < poly.getCorners().length; i++) {
+        for (let i: number = 0; i < poly.getCorners().length; i++) {
             if (this.isPointInside(poly.getCorners()[i]))
                 clippedCorners.addCorners(new Array<Coordinate>(poly.getCorners()[i]));
         }
