@@ -1,29 +1,12 @@
 import mapboxgl, { Map, Marker } from "mapbox-gl";
 import axios from "axios";
-import {ComplexPolygon} from "./complex-polygon";
-
-mapboxgl.accessToken =
-    "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
-
-export interface Coordinate {
-    lng: number;
-    lat: number;
-}
+import { ComplexPolygon } from "./complex-polygon";
+import { Coordinate, Pooler } from "../types/types";
 
 export class StreetMap {
     private readonly _map: Map;
     private readonly _mapContainer: string;
     private _startLocation: Coordinate;
-
-    //TODO: be abstracted
-    private readonly _markerColors = [
-        "#AE3C60",
-        "#DF473C",
-        "#F3C33C",
-        "#255E79",
-        "#267778",
-        "#82b4bb",
-    ];
 
     private _markers: Array<Marker> = new Array<Marker>();
     private _middleMarker: Marker | null = null;
@@ -43,96 +26,115 @@ export class StreetMap {
         });
     }
 
-    public generateMarkers(poolers: Number) {
-        for (let i = 0; i < poolers; i++) {
-            if (this._markers[i]) return;
-            this._markers.push(
-                new mapboxgl.Marker({
-                    color: this._markerColors[i],
-                    draggable: true,
+    public generateMarkers(poolers: Array<Pooler>): void {
+        if(poolers.length > 0) {
+            poolers.forEach((pooler: Pooler) => {
+                this._markers.forEach((marker: Marker) => {
+                    marker.remove();
                 })
-                    .setLngLat([
-                        this._startLocation.lng,
-                        this._startLocation.lat,
-                    ])
+
+
+                this._markers.push(
+                    new mapboxgl.Marker({
+                        color: pooler.color,
+                        draggable: false,
+                    })
+                        .setLngLat([
+                            pooler.coords.lng,
+                            pooler.coords.lat,
+                        ])
+                        .addTo(this._map)
+                );
+            });
+
+        }
+    }
+
+    /**
+     * this._markers.push(
+                new mapboxgl.Marker({
+                    color: pooler.color,
+                    draggable: false,
+                })
+                    .setLngLat([pooler.coords.lng, pooler.coords.lat])
                     .addTo(this._map)
             );
-        }
-    }
+     */
 
-    public getRoute(destination: Coordinate) {
+    public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
         let minutes = 10;
 
-        const coordinates = this._markers.map((m: Marker) => {
-            return { lng: m.getLngLat().lng, lat: m.getLngLat().lat };
-        });
-
         const travelAreas = new Array<ComplexPolygon>();
+        const meetingPoint = {lng:-1, lat:-1};
 
-        for (let i: number = 0; i < coordinates.length; i++) {
-            travelAreas[i] = new ComplexPolygon();
-            axios
-                .get(
-                    "https://api.mapbox.com/isochrone/v1/mapbox/cycling/" +
-                        coordinates[i].lng +
-                        "," +
-                        coordinates[i].lat +
-                        "?contours_minutes=" +
-                        minutes +
-                        "&polygons=true" +
-                        "&denoise=1" +
-                        "&access_token=" +
-                        mapboxgl.accessToken
-                )
-                .then((response: any) => {
-                    response.data.features[0].geometry.coordinates[0].forEach(
-                        (c: any) => {
-                            travelAreas[i].getCorners().push({ lng: c[0], lat: c[1] });
+        for(let minutes: number = 10; meetingPoint !== {lng:-1, lat:-1}; minutes += 5) {
+            for (let i: number = 0; i < poolers.length; i++) {
+                travelAreas[i] = new ComplexPolygon();
+                axios
+                    .get(
+                        "https://api.mapbox.com/isochrone/v1/mapbox/" +
+                            poolers[i].travelType +
+                            "/" +
+                            poolers[i].coords.lng +
+                            "," +
+                            poolers[i].coords.lat +
+                            "?contours_minutes=" +
+                            minutes +
+                            "&polygons=true" +
+                            "&denoise=1" +
+                            "&access_token=" +
+                            mapboxgl.accessToken
+                    )
+                    .then((response: any) => {
+                        response.data.features[0].geometry.coordinates[0].forEach(
+                            (c: any) => {
+                                travelAreas[i]
+                                    .getCorners()
+                                    .push({ lng: c[0], lat: c[1] });
+                            }
+                        );
+                        if (i + 1 === poolers.length) {
+                            const meetingPoint: Coordinate = this.getMeetingPoint(
+                                travelAreas,
+                                poolers
+                            );
+
+                            if(meetingPoint !== {lng:-1, lat:-1}) {
+                                this.drawDestinationRoute(
+                                    meetingPoint,
+                                    destination,
+                                    "driving"
+                                );
+                                this.drawMeetingpointRoutes(poolers, meetingPoint);
+                            }
                         }
-                    );
-                    if (i + 1 === coordinates.length) {
-                        this.drawDestinationRoute(
-                            this.getMeetingPoint(travelAreas, coordinates),
-                            destination,
-                            "driving"
-                        );
-                        this.drawMeetingpointRoutes(
-                            coordinates,
-                            [
-                                "cycling",
-                                "cycling",
-                                "cycling",
-                                "cycling",
-                                "cycling",
-                                "cycling",
-                            ],
-                            this.getMeetingPoint(travelAreas, coordinates)
-                        );
-                    }
-                });
-        }
+                    });
+        }}
     }
 
-    public getMeetingPoint(
+    private getMeetingPoint(
         travelAreas: Array<ComplexPolygon>,
-        poolerCoordinates: Array<Coordinate>
+        poolers: Array<Pooler>
     ): Coordinate {
         let intersectedTravelArea: ComplexPolygon;
         let middle: Coordinate;
 
-        intersectedTravelArea = travelAreas[0].getIntersectionOfPolygons(travelAreas[1]);
+        intersectedTravelArea = travelAreas[0].getIntersectionOfPolygons(
+            travelAreas[1]
+        );
         middle = this.getOptimalMiddlePoint(
-            poolerCoordinates[0],
-            poolerCoordinates[1],
+            poolers[0].coords,
+            poolers[1].coords,
             intersectedTravelArea
         );
 
-        for (let i = 2; i < poolerCoordinates.length; i++) {
-            let newIntersectedTravelArea = intersectedTravelArea.getIntersectionOfPolygons(travelAreas[i]);
+        for (let i = 2; i < poolers.length; i++) {
+            let newIntersectedTravelArea =
+                intersectedTravelArea.getIntersectionOfPolygons(travelAreas[i]);
 
             middle = this.getOptimalMiddlePoint(
                 middle,
-                poolerCoordinates[i],
+                poolers[i].coords,
                 newIntersectedTravelArea
             );
             intersectedTravelArea = newIntersectedTravelArea;
@@ -140,7 +142,6 @@ export class StreetMap {
 
         return middle;
     }
-
 
     private getOptimalMiddlePoint(
         c1: Coordinate,
@@ -159,19 +160,23 @@ export class StreetMap {
                 lat: (c1.lat + c2.lat) / 2,
             };
         // Gets middle of intersected area if points are outside intersected area
-        else
+        else if (intersectedTravelArea.getCorners().length > 0)
             middle = {
                 lng:
                     (intersectedTravelArea.getCorners()[0].lng +
-                        intersectedTravelArea.getCorners()[intersectedTravelArea.getCorners().length - 1]
-                            .lng) /
+                        intersectedTravelArea.getCorners()[
+                            intersectedTravelArea.getCorners().length - 1
+                        ].lng) /
                     2,
                 lat:
                     (intersectedTravelArea.getCorners()[0].lat +
-                        intersectedTravelArea.getCorners()[intersectedTravelArea.getCorners().length - 1]
-                            .lat) /
+                        intersectedTravelArea.getCorners()[
+                            intersectedTravelArea.getCorners().length - 1
+                        ].lat) /
                     2,
             };
+        else
+            return {lng:-1, lat:-1};
 
         if (this._middleMarker) this._middleMarker.remove();
 
@@ -185,11 +190,11 @@ export class StreetMap {
         return middle;
     }
 
-    public drawDestinationRoute(
+    private drawDestinationRoute(
         meetingPoint: Coordinate,
         destination: Coordinate,
         travelType: string
-    ) {
+    ): void {
         axios
             .get(
                 "https://api.mapbox.com/directions/v5/mapbox/" +
@@ -245,20 +250,19 @@ export class StreetMap {
             });
     }
 
-    public drawMeetingpointRoutes(
-        poolerCoordinates: Array<Coordinate>,
-        poolerTravelTypes: Array<string>,
+    private drawMeetingpointRoutes(
+        poolers: Array<Pooler>,
         destination: Coordinate
-    ) {
-        for (let i = 0; i < poolerCoordinates.length; i++) {
+    ): void {
+        for (let i = 0; i < poolers.length; i++) {
             axios
                 .get(
                     "https://api.mapbox.com/directions/v5/mapbox/" +
-                        poolerTravelTypes[i] +
+                        poolers[i].travelType +
                         "/" +
-                        poolerCoordinates[i].lng +
+                        poolers[i].coords.lng +
                         "%2C" +
-                        poolerCoordinates[i].lat +
+                        poolers[i].coords.lat +
                         "%3B" +
                         destination.lng +
                         "%2C" +
@@ -273,9 +277,12 @@ export class StreetMap {
                         mapboxgl.accessToken
                 )
                 .then((response: any) => {
-                    if (this._map.getSource("route" + i)) {
-                        this._map.removeLayer("route" + i);
-                        this._map.removeSource("route" + i);
+
+                    for (let j: number = 0; j < poolers.length + 1; j++) {
+                        if (this._map.getSource("route" + j)) {
+                            this._map.removeLayer("route" + j);
+                            this._map.removeSource("route" + j);
+                        }
                     }
 
                     this._map.addSource("route" + i, {
@@ -300,7 +307,7 @@ export class StreetMap {
                             "line-cap": "square",
                         },
                         paint: {
-                            "line-color": this._markerColors[i],
+                            "line-color": poolers[i].color,
                             "line-width": 4,
                         },
                     });

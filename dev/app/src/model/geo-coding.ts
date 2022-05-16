@@ -1,10 +1,7 @@
 import axios from "axios";
 import mapboxgl from "mapbox-gl";
+import { Coordinate } from "../types/types";
 
-mapboxgl.accessToken =
-    "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
-
-export type coordinate = { lng: number; lat: number };
 
 export class GeoCoding {
     // Takes an adress and returns a promise of a coordinate
@@ -13,9 +10,9 @@ export class GeoCoding {
     // let y = t.forwardGeoCoding("Chalmers").then((r:coordinate) =>{
     //          console.log(r)
     // });
-    public async forwardGeoCoding(adress: string): Promise<coordinate> {
+    public async forwardGeoCoding(adress: string): Promise<Coordinate> {
         //return coordinate
-        let retCoord: coordinate = { lng: -1, lat: -1 };
+        let retCoord: Coordinate = { lng: -1, lat: -1 };
         //encodes the adress to URL UTF-8
         let encodedAdress = encodeURI(adress);
         const promise = await axios
