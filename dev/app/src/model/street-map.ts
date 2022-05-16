@@ -65,46 +65,50 @@ export class StreetMap {
         let minutes = 10;
 
         const travelAreas = new Array<ComplexPolygon>();
+        const meetingPoint = {lng:-1, lat:-1};
 
-        for (let i: number = 0; i < poolers.length; i++) {
-            travelAreas[i] = new ComplexPolygon();
-            axios
-                .get(
-                    "https://api.mapbox.com/isochrone/v1/mapbox/" +
-                        poolers[i].travelType +
-                        "/" +
-                        poolers[i].coords.lng +
-                        "," +
-                        poolers[i].coords.lat +
-                        "?contours_minutes=" +
-                        minutes +
-                        "&polygons=true" +
-                        "&denoise=1" +
-                        "&access_token=" +
-                        mapboxgl.accessToken
-                )
-                .then((response: any) => {
-                    response.data.features[0].geometry.coordinates[0].forEach(
-                        (c: any) => {
-                            travelAreas[i]
-                                .getCorners()
-                                .push({ lng: c[0], lat: c[1] });
+        for(let minutes: number = 10; meetingPoint !== {lng:-1, lat:-1}; minutes += 5) {
+            for (let i: number = 0; i < poolers.length; i++) {
+                travelAreas[i] = new ComplexPolygon();
+                axios
+                    .get(
+                        "https://api.mapbox.com/isochrone/v1/mapbox/" +
+                            poolers[i].travelType +
+                            "/" +
+                            poolers[i].coords.lng +
+                            "," +
+                            poolers[i].coords.lat +
+                            "?contours_minutes=" +
+                            minutes +
+                            "&polygons=true" +
+                            "&denoise=1" +
+                            "&access_token=" +
+                            mapboxgl.accessToken
+                    )
+                    .then((response: any) => {
+                        response.data.features[0].geometry.coordinates[0].forEach(
+                            (c: any) => {
+                                travelAreas[i]
+                                    .getCorners()
+                                    .push({ lng: c[0], lat: c[1] });
+                            }
+                        );
+                        if (i + 1 === poolers.length) {
+                            const meetingPoint: Coordinate = this.getMeetingPoint(
+                                travelAreas,
+                                poolers
+                            );
+
+                            if(meetingPoint === {lng:-1, lat:-1}) break;
+                            this.drawDestinationRoute(
+                                meetingPoint,
+                                destination,
+                                "driving"
+                            );
+                            this.drawMeetingpointRoutes(poolers, meetingPoint);
                         }
-                    );
-                    if (i + 1 === poolers.length) {
-                        const meetingPoint: Coordinate = this.getMeetingPoint(
-                            travelAreas,
-                            poolers
-                        );
-                        this.drawDestinationRoute(
-                            meetingPoint,
-                            destination,
-                            "driving"
-                        );
-                        this.drawMeetingpointRoutes(poolers, meetingPoint);
-                    }
-                });
-        }
+                    });
+        }}
     }
 
     private getMeetingPoint(
@@ -155,7 +159,7 @@ export class StreetMap {
                 lat: (c1.lat + c2.lat) / 2,
             };
         // Gets middle of intersected area if points are outside intersected area
-        else
+        else if (intersectedTravelArea.getCorners().length > 0)
             middle = {
                 lng:
                     (intersectedTravelArea.getCorners()[0].lng +
@@ -170,6 +174,8 @@ export class StreetMap {
                         ].lat) /
                     2,
             };
+        else
+            return {lng:-1, lat:-1};
 
         if (this._middleMarker) this._middleMarker.remove();
 
