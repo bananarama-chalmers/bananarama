@@ -58,6 +58,11 @@ function App() {
                                         destination={destination}
                                         poolers={poolers}
                                         startLocation={startLocation}
+                                        theme={
+                                            theme === ""
+                                                ? "light-v10"
+                                                : "dark-v10"
+                                        }
                                     />
                                 )}
                                 <PoolWizard />
