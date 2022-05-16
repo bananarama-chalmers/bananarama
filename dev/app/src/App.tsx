@@ -1,6 +1,6 @@
 import "./tailwind.css";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route }  from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import StreetMapView from "./components/StreetMapView";
 import { PoolWizard } from "./components/PoolWizard";
