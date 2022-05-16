@@ -2,10 +2,16 @@ import { useRef, useEffect } from "react";
 import { StreetMap } from "../model/street-map";
 import { Coordinate, Pooler } from "../types/types";
 
-const StreetMapView = (
+type StreetMapViewProps = {
     startLocation: Coordinate,
     poolers: Array<Pooler>,
     destination: Coordinate
+}
+
+const StreetMapView = (
+    {startLocation,
+     poolers,
+     destination}: StreetMapViewProps
 ) => {
     const map = useRef<StreetMap | null>(null);
 

@@ -27,23 +27,27 @@ export class StreetMap {
     }
 
     public generateMarkers(poolers: Array<Pooler>): void {
-         poolers.forEach((pooler: Pooler) => {
-             this._markers.forEach((marker: Marker) => {
-                 marker.remove();
-             })
+        if(poolers.length > 0) {
+            poolers.forEach((pooler: Pooler) => {
+                this._markers.forEach((marker: Marker) => {
+                    marker.remove();
+                })
 
-             this._markers.push(
-                 new mapboxgl.Marker({
-                     color: pooler.color,
-                     draggable: false,
-                 })
-                     .setLngLat([
-                         pooler.coords.lng,
-                         pooler.coords.lat,
-                     ])
-                     .addTo(this._map)
-             );
-         });
+
+                this._markers.push(
+                    new mapboxgl.Marker({
+                        color: pooler.color,
+                        draggable: false,
+                    })
+                        .setLngLat([
+                            pooler.coords.lng,
+                            pooler.coords.lat,
+                        ])
+                        .addTo(this._map)
+                );
+            });
+
+        }
     }
 
     /**

@@ -16,7 +16,7 @@ mapboxgl.accessToken =
 function App() {
     const [startLocation, setStartLocation] = useState<Coordinate>();
     const [poolers] = useState<Array<Pooler>>(new Array<Pooler>());
-    const [destination, setDestination] = useState<Coordinate>();
+    const [destination, setDestination] = useState<Coordinate>({ lng: 11.946472, lat: 57.698864 });
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -50,9 +50,9 @@ function App() {
                         <div>
                             {startLocation && (
                                 <StreetMapView
-                                    lat={startLocation.lat}
-                                    lng={startLocation.lng}
-                                />
+                                    destination={destination}
+                                    poolers={poolers}
+                                    startLocation={startLocation}/>
                             )}
                             <PoolWizard />
                         </div>
