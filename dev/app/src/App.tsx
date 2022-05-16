@@ -13,6 +13,8 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
     "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
 
+const defaultCoord: Coordinate = {lng: 11.946472, lat: 57.698864}
+
 function App() {
     const [startLocation, setStartLocation] = useState<Coordinate>();
     const [poolers] = useState<Array<Pooler>>(new Array<Pooler>());
