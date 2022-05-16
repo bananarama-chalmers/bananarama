@@ -99,13 +99,14 @@ export class StreetMap {
                                 poolers
                             );
 
-                            if(meetingPoint === {lng:-1, lat:-1}) break;
-                            this.drawDestinationRoute(
-                                meetingPoint,
-                                destination,
-                                "driving"
-                            );
-                            this.drawMeetingpointRoutes(poolers, meetingPoint);
+                            if(meetingPoint !== {lng:-1, lat:-1}) {
+                                this.drawDestinationRoute(
+                                    meetingPoint,
+                                    destination,
+                                    "driving"
+                                );
+                                this.drawMeetingpointRoutes(poolers, meetingPoint);
+                            }
                         }
                     });
         }}
