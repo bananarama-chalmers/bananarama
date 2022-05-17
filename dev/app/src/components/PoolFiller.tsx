@@ -3,12 +3,14 @@ import { ThinSeparator, Separator } from "./Separator";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
 import { SearchBox } from "./SearchBox";
+import { GeoCoding } from "../model/geo-coding";
 
 type PoolFillerProps = {
     destinationURL: string;
     destinationName: string;
     callback: Function;
     owner: Pooler;
+    pool: Array<Pooler>;
 };
 
 export const PoolFiller = ({
@@ -16,11 +18,11 @@ export const PoolFiller = ({
     destinationName,
     destinationURL,
     owner,
+    pool,
 }: PoolFillerProps) => {
     const [pos, setPos] = useState("");
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
-    const [pool, setPool] = useState<Array<Pooler>>([]);
     const travelTypes = ["car", "walk", "bike", "bus"]; // FIXME: this is too qnd
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -31,25 +33,28 @@ export const PoolFiller = ({
 
     const addPooler = (e: React.FormEvent) => {
         setTravelType(travelType);
-        setPool(
-            pool.concat([
-                {
-                    name: name,
-                    coords: { lat: 0, lng: 0 } as Coordinate,
-                    street: pos,
-                    travelType: travelType,
-                    color: "purple-500",
-                    poolElement: (
-                        <PoolItem
-                            poolerName={name}
-                            travelType={travelType}
-                            key={pool.length}
-                            color={"purple-500"}
-                        />
-                    ),
-                } as Pooler,
-            ])
-        );
+        let gc = new GeoCoding();
+        gc.forwardGeoCoding(pos).then((r: Coordinate) => {
+            callback(
+                pool.concat([
+                    {
+                        name: name,
+                        coords: r,
+                        street: pos,
+                        travelType: travelType,
+                        color: "purple-500",
+                        poolElement: (
+                            <PoolItem
+                                poolerName={name}
+                                travelType={travelType}
+                                key={pool.length}
+                                color={"purple-500"}
+                            />
+                        ),
+                    } as Pooler,
+                ])
+            );
+        });
         // Prevent the page from refreshing
         e.preventDefault();
     };
@@ -60,7 +65,7 @@ export const PoolFiller = ({
 
     useEffect(() => {
         // Populate the pooler list with the owners info when mounting the component
-        setPool([owner]);
+        callback([owner]);
     }, [owner]);
 
     return (

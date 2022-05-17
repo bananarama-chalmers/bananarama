@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PoolCreator } from "./PoolCreator";
 import { PoolFiller } from "./PoolFiller";
 import { PoolOverview } from "./PoolOverview";
@@ -10,7 +10,12 @@ enum Step {
     Overview,
 }
 
-export const PoolWizard = () => {
+type PoolWizardProps = {
+    poolers: Array<Pooler>;
+    poolHandler: Function;
+};
+
+export const PoolWizard = ({ poolers, poolHandler }: PoolWizardProps) => {
     const [step, setStep] = useState<Step>(Step.Create);
     const [owner, setOwner] = useState<Pooler>({
         name: "",
@@ -20,16 +25,11 @@ export const PoolWizard = () => {
         color: "purple-500",
     } as Pooler);
     const [dest, setDest] = useState("");
-    const [pool, setPool] = useState<Array<Pooler>>([]);
 
     const handlePoolCreation = (owner: Pooler, dest: string): void => {
         setOwner(owner);
         setDest(dest);
-        nextStep();
-    };
-
-    const handlePoolFill = (poolers: Array<Pooler>): void => {
-        setPool(poolers);
+        poolHandler(poolers.concat([owner]));
         nextStep();
     };
 
@@ -56,8 +56,9 @@ export const PoolWizard = () => {
                 <PoolFiller
                     destinationName={dest}
                     destinationURL="#"
-                    callback={handlePoolFill}
+                    callback={poolHandler}
                     owner={owner}
+                    pool={poolers}
                 />
             );
         case Step.Overview:
@@ -68,11 +69,11 @@ export const PoolWizard = () => {
                     meetingPointURL="#"
                     meetingPointName="IMPLEMENT ME"
                     callback={handlePoolOverview}
-                    pool={pool}
+                    pool={poolers}
                 />
             );
         case Step.Create:
         default:
-            return <PoolCreator callback={handlePoolCreation} />;
+            return <PoolCreator callback={handlePoolCreation} pool={poolers} />;
     }
 };

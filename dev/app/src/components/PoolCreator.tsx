@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
 import { SearchBox } from "./SearchBox";
+import { GeoCoding } from "../model/geo-coding";
 
 type PoolCreatorProps = {
     callback: Function;
+    pool: Array<Pooler>;
 };
 
-export const PoolCreator = ({ callback }: PoolCreatorProps) => {
+export const PoolCreator = ({ callback, pool }: PoolCreatorProps) => {
     const [name, setName] = useState<string>("");
     const [dest, setDest] = useState<string>("");
     const [pos, setPos] = useState<string>("");
@@ -16,24 +18,31 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
     const handleSubmit = (e: any) => {
         // Sends the state to the parent component and prevents the page from refeshing
         e.preventDefault();
-        callback(
-            {
-                name: name,
-                coords: { lat: 0, lng: 0 } as Coordinate,
-                street: pos,
-                travelType: travelType,
-                color: "purple-500",
-                poolElement: (
-                    <PoolItem
-                        poolerName={name}
-                        travelType={travelType}
-                        key={0}
-                        color={"purple-500"}
-                    />
-                ),
-            } as Pooler,
-            dest
-        );
+        let gc = new GeoCoding();
+        gc.forwardGeoCoding(pos).then((r: Coordinate) => {
+            callback(
+                pool.concat([
+                    {
+                        name: name,
+                        coords: r,
+                        street: pos,
+                        travelType: travelType,
+                        color: "purple-500",
+                        poolElement: (
+                            <PoolItem
+                                poolerName={name}
+                                travelType={travelType}
+                                key={pool.length}
+                                color={"purple-500"}
+                            />
+                        ),
+                    } as Pooler,
+                ])
+            );
+        });
+        callback(name, pos);
+        // Prevent the page from refreshing
+        e.preventDefault();
     };
 
     const stringToTravelType = (travelString: string): Travel => {

@@ -13,15 +13,12 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
     "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
 
-
 function App() {
-    const defaultCoord: Coordinate = {lng: 11.946472, lat: 57.698864}
+    const defaultCoord: Coordinate = { lng: 11.946472, lat: 57.698864 };
 
     const [startLocation, setStartLocation] = useState<Coordinate>();
-    const [poolers] = useState<Array<Pooler>>(new Array<Pooler>());
+    const [poolers, setPoolers] = useState<Array<Pooler>>([]);
     const [destination, setDestination] = useState<Coordinate>(defaultCoord);
-
-
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -57,9 +54,13 @@ function App() {
                                 <StreetMapView
                                     destination={destination}
                                     poolers={poolers}
-                                    startLocation={startLocation}/>
+                                    startLocation={startLocation}
+                                />
                             )}
-                            <PoolWizard />
+                            <PoolWizard
+                                poolers={poolers}
+                                poolHandler={setPoolers}
+                            />
                         </div>
                     }
                 />

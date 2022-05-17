@@ -27,34 +27,32 @@ export class StreetMap {
     }
 
     public generateMarkers(poolers: Array<Pooler>): void {
-        if(poolers.length > 0) {
+        if (poolers.length > 0) {
+            this._markers.forEach((marker: Marker) => {
+                marker.remove();
+            });
             poolers.forEach((pooler: Pooler) => {
-                this._markers.forEach((marker: Marker) => {
-                    marker.remove();
-                })
-
-
                 this._markers.push(
                     new mapboxgl.Marker({
                         color: pooler.color,
                         draggable: false,
                     })
-                        .setLngLat([
-                            pooler.coords.lng,
-                            pooler.coords.lat,
-                        ])
+                        .setLngLat([pooler.coords.lng, pooler.coords.lat])
                         .addTo(this._map)
                 );
             });
-
         }
     }
 
     public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
         const travelAreas = new Array<ComplexPolygon>();
-        const meetingPoint = {lng:-1, lat:-1};
+        const meetingPoint = { lng: -1, lat: -1 };
 
-        for(let minutes: number = 10; meetingPoint !== {lng:-1, lat:-1}; minutes += 5) {
+        for (
+            let minutes: number = 10;
+            meetingPoint !== { lng: -1, lat: -1 };
+            minutes += 5
+        ) {
             for (let i: number = 0; i < poolers.length; i++) {
                 travelAreas[i] = new ComplexPolygon();
                 axios
@@ -81,22 +79,24 @@ export class StreetMap {
                             }
                         );
                         if (i + 1 === poolers.length) {
-                            const meetingPoint: Coordinate = this.getMeetingPoint(
-                                travelAreas,
-                                poolers
-                            );
+                            const meetingPoint: Coordinate =
+                                this.getMeetingPoint(travelAreas, poolers);
 
-                            if(meetingPoint !== {lng:-1, lat:-1}) {
+                            if (meetingPoint !== { lng: -1, lat: -1 }) {
                                 this.drawDestinationRoute(
                                     meetingPoint,
                                     destination,
                                     "driving"
                                 );
-                                this.drawMeetingpointRoutes(poolers, meetingPoint);
+                                this.drawMeetingpointRoutes(
+                                    poolers,
+                                    meetingPoint
+                                );
                             }
                         }
                     });
-        }}
+            }
+        }
     }
 
     private getMeetingPoint(
@@ -162,8 +162,7 @@ export class StreetMap {
                         ].lat) /
                     2,
             };
-        else
-            return {lng:-1, lat:-1};
+        else return { lng: -1, lat: -1 };
 
         if (this._middleMarker) this._middleMarker.remove();
 
@@ -264,7 +263,6 @@ export class StreetMap {
                         mapboxgl.accessToken
                 )
                 .then((response: any) => {
-
                     for (let j: number = 0; j < poolers.length + 1; j++) {
                         if (this._map.getSource("route" + j)) {
                             this._map.removeLayer("route" + j);
