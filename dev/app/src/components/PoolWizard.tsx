@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PoolCreator } from "./PoolCreator";
 import { PoolFiller } from "./PoolFiller";
 import { PoolOverview } from "./PoolOverview";
-import { Pooler, Coordinate, Travel } from "../types/types";
+import { Pooler } from "../types/types";
 
 enum Step {
     Create,

@@ -4,7 +4,7 @@ import StreetMapView from "./components/StreetMapView";
 import { PoolWizard } from "./components/PoolWizard";
 import { LandingPage } from "./pages/LandingPage";
 import { Navigation } from "./components/Navigation";
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import { Coordinate, Pooler } from "./types/types";
 import mapboxgl from "mapbox-gl";
 
@@ -48,7 +48,7 @@ function App() {
                 setStartLocation(defaultCoord);
             }
         );
-    }, []);
+    }, [navigator]);
 
     const mapboxTheme = () => {
         return theme === "" ? "light-v10" : "dark-v10";

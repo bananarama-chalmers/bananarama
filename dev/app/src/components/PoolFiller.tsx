@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ThinSeparator, Separator } from "./Separator";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";

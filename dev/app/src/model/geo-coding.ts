@@ -2,7 +2,6 @@ import axios from "axios";
 import mapboxgl from "mapbox-gl";
 import { Coordinate } from "../types/types";
 
-
 export class GeoCoding {
     // Takes an adress and returns a promise of a coordinate
     // example of how to use. MUST import type coordinate in client code
@@ -15,7 +14,7 @@ export class GeoCoding {
         let retCoord: Coordinate = { lng: -1, lat: -1 };
         //encodes the adress to URL UTF-8
         let encodedAdress = encodeURI(adress);
-        const promise = await axios
+        await axios
             .get(
                 "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
                     encodedAdress +
@@ -37,16 +36,21 @@ export class GeoCoding {
     //returns a Promise with the adress as a string.
     //Takes lng and lat (number) as inputs
     //see forwardGeoCoding for example of how to use the response
-    public async reverseGeoCoding(lng: number, lat: number):Promise<string>{
-        let retString:string = '';
-        const promise = await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' +
-            lng +
-            ',' +
-            lat +
-            '.json?' +
-            'access_token=' + mapboxgl.accessToken).then((response:any) =>{
+    public async reverseGeoCoding(lng: number, lat: number): Promise<string> {
+        let retString: string = "";
+        await axios
+            .get(
+                "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+                    lng +
+                    "," +
+                    lat +
+                    ".json?" +
+                    "access_token=" +
+                    mapboxgl.accessToken
+            )
+            .then((response: any) => {
                 retString = response.data.features[0].place_name;
-        });
+            });
         return retString;
     }
 }
