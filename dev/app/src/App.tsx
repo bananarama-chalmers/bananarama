@@ -13,12 +13,13 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
     "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
 
-const defaultCoord: Coordinate = {lng: 11.946472, lat: 57.698864}
 
 function App() {
+    const defaultCoord: Coordinate = {lng: 11.946472, lat: 57.698864}
+
     const [startLocation, setStartLocation] = useState<Coordinate>();
     const [poolers] = useState<Array<Pooler>>(new Array<Pooler>());
-    const [destination, setDestination] = useState<Coordinate>({ lng: 11.946472, lat: 57.698864 });
+    const [destination, setDestination] = useState<Coordinate>(defaultCoord);
 
 
 
@@ -31,7 +32,7 @@ function App() {
                 });
             },
             () => {
-                setStartLocation({ lng: 11.946472, lat: 57.698864 });
+                setStartLocation(defaultCoord);
             }
         );
     }, []);
