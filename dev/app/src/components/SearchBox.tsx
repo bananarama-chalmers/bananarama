@@ -35,7 +35,7 @@ export const SearchBox = ({ placeholder, textSetter }: SearchBoxProps) => {
     const searchInput = () => {
         return (
             <input
-                className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9 bg-left-sm bg-white rounded-md border h-10 outline-slate-200"
+                className="w-full bg-search-icon bg-sm bg-no-repeat p-1 pl-9 bg-left-sm bg-white rounded-md border h-10 outline-slate-200 dark:bg-black dark:text-white dark:outline-neutral-800 dark:border-neutral-800"
                 type="text"
                 placeholder={placeholder}
                 value={currentInput}
@@ -50,7 +50,7 @@ export const SearchBox = ({ placeholder, textSetter }: SearchBoxProps) => {
         return (
             <li
                 key={key}
-                className="w-full block bg-auto hover:bg-slate-100 p-1 hover:cursor-pointer hover:text-blue-400 hover:underline"
+                className="w-full block bg-auto dark:bg-black dark:text-white dark:hover:bg-neutral-900   hover:bg-slate-100 p-1 hover:cursor-pointer hover:text-blue-400 hover:underline"
                 onMouseDown={(e) => handleSelect(e)}
             >
                 {result}

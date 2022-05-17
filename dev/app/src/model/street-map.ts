@@ -50,20 +50,11 @@ export class StreetMap {
         }
     }
 
-    /**
-     * this._markers.push(
-                new mapboxgl.Marker({
-                    color: pooler.color,
-                    draggable: false,
-                })
-                    .setLngLat([pooler.coords.lng, pooler.coords.lat])
-                    .addTo(this._map)
-            );
-     */
+    public changeMapStyle(style: string): void {
+        this._map.setStyle(style);
+    }
 
     public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
-        let minutes = 10;
-
         const travelAreas = new Array<ComplexPolygon>();
         const meetingPoint = {lng:-1, lat:-1};
 

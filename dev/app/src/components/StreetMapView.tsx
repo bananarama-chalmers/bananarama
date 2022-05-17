@@ -4,54 +4,54 @@ import { StreetMap } from "../model/street-map";
 import { Coordinate, Pooler } from "../types/types";
 
 type StreetMapViewProps = {
-    startLocation: Coordinate,
-    poolers: Array<Pooler>,
-    destination: Coordinate
-}
+    startLocation: Coordinate;
+    poolers: Array<Pooler>;
+    destination: Coordinate;
+    theme: string;
+};
 
-const defaultCoord: Coordinate = {lng: 11.946472, lat: 57.698864}
+const defaultCoord: Coordinate = { lng: 11.946472, lat: 57.698864 };
 
 function usePos() {
-    let [searchParams, setSearchParams] = useSearchParams()
+    let [searchParams, setSearchParams] = useSearchParams();
 
-    let lng = (searchParams.get("lng"))
-    let lat = (searchParams.get("lat"))
+    let lng = searchParams.get("lng");
+    let lat = searchParams.get("lat");
 
-    let pos: Coordinate = defaultCoord
+    let pos: Coordinate = defaultCoord;
 
-    let nullCheck = (lng !== null) && (lat !== null)
-    let nanCheck = (!isNaN(+lng!)) && (!isNaN(+lat!))
-
+    let nullCheck = lng !== null && lat !== null;
+    let nanCheck = !isNaN(+lng!) && !isNaN(+lat!);
 
     // keep default values if any value is missing
-    if(nullCheck && nanCheck) {
-        pos = {lng: +lng!, lat: +lat!}
+    if (nullCheck && nanCheck) {
+        pos = { lng: +lng!, lat: +lat! };
     }
 
     return pos;
 }
 
-
-const StreetMapView = (
-    {startLocation,
-     poolers,
-     destination}: StreetMapViewProps
-) => {
+const StreetMapView = ({
+    startLocation,
+    poolers,
+    destination,
+    theme,
+}: StreetMapViewProps) => {
     const map = useRef<StreetMap | null>(null);
 
-    let startPos = usePos()
+    let startPos = usePos();
 
-    if(startPos === defaultCoord) {
-        startPos = startLocation
+    if (startPos === defaultCoord) {
+        startPos = startLocation;
     }
     // Create map and markers
     useEffect(() => {
         if (map.current) return;
-            map.current = new StreetMap(
-                startPos,
-                "mapbox://styles/mapbox/streets-v11",
-                "mapContainer",
-            );
+        map.current = new StreetMap(
+            startPos,
+            "mapbox://styles/mapbox/" + theme,
+            "mapContainer"
+        );
         //map.current?.generateMarkers(poolers);
     });
 

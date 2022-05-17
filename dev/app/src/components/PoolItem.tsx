@@ -10,7 +10,7 @@ export const PoolItem = ({ poolerName, travelType, color }: PoolItemProps) => {
     const travelTypes = ["Car", "Walk", "Bike", "Bus"];
     const border = "border-" + color;
     return (
-        <li className="text-slate-900">
+        <li className="text-slate-900 dark:text-white">
             <div
                 className={
                     "block w-3 border-8 rounded-full mt-1 mr-2 float-left " +
