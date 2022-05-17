@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PoolCreator } from "./PoolCreator";
 import { PoolFiller } from "./PoolFiller";
 import { PoolOverview } from "./PoolOverview";
@@ -11,27 +11,13 @@ enum Step {
 }
 
 type PoolWizardProps = {
-    poolers: Array<Pooler>;
-    poolHandler: Function;
+    pool: Array<Pooler>;
+    setPool: Function;
 };
 
-export const PoolWizard = ({ poolers, poolHandler }: PoolWizardProps) => {
+export const PoolWizard = ({ pool, setPool }: PoolWizardProps) => {
     const [step, setStep] = useState<Step>(Step.Create);
-    const [owner, setOwner] = useState<Pooler>({
-        name: "",
-        coords: { lat: 0, lng: 0 } as Coordinate,
-        street: "",
-        travelType: Travel.Car,
-        color: "purple-500",
-    } as Pooler);
     const [dest, setDest] = useState("");
-
-    const handlePoolCreation = (owner: Pooler, dest: string): void => {
-        setOwner(owner);
-        setDest(dest);
-        poolHandler(poolers.concat([owner]));
-        nextStep();
-    };
 
     const handlePoolOverview = (e: React.FormEvent) => {
         // This function will open a share link when done!
@@ -50,15 +36,24 @@ export const PoolWizard = ({ poolers, poolHandler }: PoolWizardProps) => {
         }
     };
     */
+
+    const updatePool = async (p: Pooler) => {
+        await setPool(p);
+    };
+
+    const setDestinationHeader = (destination: string) => {
+        setDest(destination);
+    };
+
     switch (step) {
         case Step.Populate:
             return (
                 <PoolFiller
                     destinationName={dest}
                     destinationURL="#"
-                    callback={poolHandler}
-                    owner={owner}
-                    pool={poolers}
+                    addPooler={updatePool}
+                    pool={pool}
+                    nextStep={nextStep}
                 />
             );
         case Step.Overview:
@@ -69,11 +64,18 @@ export const PoolWizard = ({ poolers, poolHandler }: PoolWizardProps) => {
                     meetingPointURL="#"
                     meetingPointName="IMPLEMENT ME"
                     callback={handlePoolOverview}
-                    pool={poolers}
+                    pool={pool}
                 />
             );
         case Step.Create:
         default:
-            return <PoolCreator callback={handlePoolCreation} pool={poolers} />;
+            return (
+                <PoolCreator
+                    addPooler={updatePool}
+                    pool={pool}
+                    setDestHeader={setDestinationHeader}
+                    nextStep={nextStep}
+                />
+            );
     }
 };
