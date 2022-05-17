@@ -7,6 +7,7 @@ type StreetMapViewProps = {
     startLocation: Coordinate;
     poolers: Array<Pooler>;
     destination: Coordinate;
+    theme: string;
 };
 
 const defaultCoord: Coordinate = { lng: 11.946472, lat: 57.698864 };
@@ -34,6 +35,7 @@ const StreetMapView = ({
     startLocation,
     poolers,
     destination,
+    theme,
 }: StreetMapViewProps) => {
     const map = useRef<StreetMap | null>(null);
 
@@ -47,9 +49,10 @@ const StreetMapView = ({
         if (map.current) return;
         map.current = new StreetMap(
             startPos,
-            "mapbox://styles/mapbox/streets-v11",
+            "mapbox://styles/mapbox/" + theme,
             "mapContainer"
         );
+        //map.current?.generateMarkers(poolers);
     });
 
     useEffect(() => {

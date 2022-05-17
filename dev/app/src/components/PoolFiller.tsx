@@ -70,10 +70,10 @@ export const PoolFiller = ({
 
     return (
         <form
-            className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-66px z-10 w-box-width bg-white"
+            className="grid grid-cols-3 drop-shadow-lg gap-2 p-2 rounded-lg fixed m-4 left-0 top-66px z-10 w-box-width bg-white dark:bg-neutral-900 dark:text-white"
             onSubmit={handleSubmit}
         >
-            <label className="col-span-3 text-slate-600 text-base font-semibold">
+            <label className="col-span-3 text-slate-600 dark:text-white text-base font-semibold">
                 Destination
                 <br />
                 <a
@@ -84,23 +84,23 @@ export const PoolFiller = ({
                 </a>
             </label>
             <Separator />
-            <label className="col-span-2 text-slate-600 text-base font-semibold">
+            <label className="col-span-2 text-slate-600 dark:text-white text-base font-semibold">
                 Pooler name
                 <input
-                    className="p-2 bg-white rounded-md border h-10 outline-slate-200"
+                    className="p-2 bg-white dark:bg-black dark:text-white dark:outline-neutral-800 dark:border-neutral-800 rounded-md border h-10 outline-slate-200"
                     type="text"
                     onChange={(e) => setName(e.target.value)}
                     placeholder={"Enter name"}
                 />
             </label>
-            <label className="col-span-1 text-slate-600 text-base font-semibold">
+            <label className="col-span-1 text-slate-600 dark:text-white text-base font-semibold">
                 Travel type
                 <select
                     id="travel types"
                     name="travelTypeList"
                     value={travelTypes[travelType]}
                     onChange={(e) => handleSelect(e)}
-                    className="block z-10 relative w-full p-2 bg-white rounded-md border h-10 outline-slate-200"
+                    className="block z-10 relative w-full p-2 bg-white rounded-md border h-10 outline-slate-200 dark:bg-black dark:text-white dark:outline-neutral-800 dark:border-neutral-800"
                 >
                     <option value="car">Car</option>
                     <option value="bike">Bike</option>
@@ -108,11 +108,11 @@ export const PoolFiller = ({
                     <option value="bus">Bus</option>
                 </select>
             </label>
-            <label className="col-span-2 text-slate-600 text-base font-semibold">
+            <label className="col-span-2 text-slate-600 dark:text-white text-base font-semibold">
                 Pooler position
                 <SearchBox placeholder="Enter position" textSetter={setPos} />
             </label>
-            <label className="col-span-1 text-slate-600 text-base font-semibold">
+            <label className="col-span-1 text-slate-600 dark:text-white text-base font-semibold">
                 <br />
                 <input
                     className="w-full hover:bg-green-600 hover:cursor-pointer bg-green-500 font-semibold text-white rounded-md h-10"
@@ -122,16 +122,16 @@ export const PoolFiller = ({
                 />
             </label>
             <ThinSeparator />
-            <p className="col-span-2 mt-1 text-slate-600 text-base font-semibold">
+            <p className="col-span-2 mt-1 text-slate-600 dark:text-white text-base font-semibold">
                 Poolers
             </p>
-            <p className="col-span-1 mt-1 text-slate-600 text-base text-right font-semibold">
+            <p className="col-span-1 mt-1 text-slate-600 dark:text-white text-base text-right font-semibold">
                 Traveling by
             </p>
-            <div className="block h-1px col-span-3 bg-slate-200" />
+            <ThinSeparator />
             <ul className="col-span-3">{pool.map((p) => p.poolElement)}</ul>
             <Separator />
-            <button className="col-span-3 font-semibold bg-slate-800 hover:bg-slate-900 text-white h-10 rounded-lg mt-1">
+            <button className="col-span-3 font-semibold dark:bg-blue-500 dark:hover:bg-blue-600 bg-slate-800 hover:bg-slate-900 text-white h-10 rounded-lg mt-1">
                 Get meeting point
             </button>
         </form>

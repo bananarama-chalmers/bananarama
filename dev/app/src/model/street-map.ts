@@ -44,6 +44,10 @@ export class StreetMap {
         }
     }
 
+    public changeMapStyle(style: string): void {
+        this._map.setStyle(style);
+    }
+
     public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
         const travelAreas = new Array<ComplexPolygon>();
         const meetingPoint = { lng: -1, lat: -1 };
