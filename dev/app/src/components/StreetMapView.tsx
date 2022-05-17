@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { StreetMap } from "../model/street-map";
 import { Coordinate, Pooler } from "../types/types";
 
@@ -8,6 +9,29 @@ type StreetMapViewProps = {
     destination: Coordinate
 }
 
+const defaultCoord: Coordinate = {lng: 11.946472, lat: 57.698864}
+
+function usePos() {
+    let [searchParams, setSearchParams] = useSearchParams()
+
+    let lng = (searchParams.get("lng"))
+    let lat = (searchParams.get("lat"))
+
+    let pos: Coordinate = defaultCoord
+
+    let nullCheck = (lng !== null) && (lat !== null)
+    let nanCheck = (!isNaN(+lng!)) && (!isNaN(+lat!))
+
+
+    // keep default values if any value is missing
+    if(nullCheck && nanCheck) {
+        pos = {lng: +lng!, lat: +lat!}
+    }
+
+    return pos;
+}
+
+
 const StreetMapView = (
     {startLocation,
      poolers,
@@ -15,11 +39,16 @@ const StreetMapView = (
 ) => {
     const map = useRef<StreetMap | null>(null);
 
+    let startPos = usePos()
+
+    if(startPos === defaultCoord) {
+        startPos = startLocation
+    }
     // Create map and markers
     useEffect(() => {
         if (map.current) return;
             map.current = new StreetMap(
-                startLocation,
+                startPos,
                 "mapbox://styles/mapbox/streets-v11",
                 "mapContainer",
             );
