@@ -45,7 +45,7 @@ export class StreetMap {
     }
 
     public changeMapStyle(style: string): void {
-        this._map.setStyle(style);
+        this._map.setStyle("mapbox://styles/mapbox/" + style);
     }
 
     public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
