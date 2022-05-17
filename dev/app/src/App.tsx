@@ -48,7 +48,7 @@ function App() {
                 setStartLocation(defaultCoord);
             }
         );
-    }, [navigator]);
+    });
 
     const mapboxTheme = () => {
         return theme === "" ? "light-v10" : "dark-v10";

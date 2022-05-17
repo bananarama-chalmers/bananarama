@@ -27,6 +27,7 @@ export const PoolCreator = ({
      * @param e FormEvent
      */
     const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         let gc = new GeoCoding(); // FIXME: make this into a static function, we dont need to create a new object every time.
         await gc.forwardGeoCoding(pos).then((r: Coordinate) => {
             addPooler({
@@ -47,7 +48,6 @@ export const PoolCreator = ({
         });
         setDestHeader(dest);
         nextStep();
-        e.preventDefault();
     };
 
     const stringToTravelType = (travelString: string): Travel => {
