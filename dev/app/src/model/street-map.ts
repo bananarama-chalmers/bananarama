@@ -51,8 +51,6 @@ export class StreetMap {
     }
 
     public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
-        let minutes = 10;
-
         const travelAreas = new Array<ComplexPolygon>();
         const meetingPoint = {lng:-1, lat:-1};
 
