@@ -52,8 +52,12 @@ const StreetMapView = (
                 "mapbox://styles/mapbox/streets-v11",
                 "mapContainer",
             );
-        //map.current?.generateMarkers(poolers);
+
     });
+
+    useEffect(() => {
+        map.current?.generateMarkers(poolers);
+    },[poolers])
 
     return (
         <div>

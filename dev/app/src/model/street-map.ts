@@ -50,17 +50,6 @@ export class StreetMap {
         }
     }
 
-    /**
-     * this._markers.push(
-                new mapboxgl.Marker({
-                    color: pooler.color,
-                    draggable: false,
-                })
-                    .setLngLat([pooler.coords.lng, pooler.coords.lat])
-                    .addTo(this._map)
-            );
-     */
-
     public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
         let minutes = 10;
 
