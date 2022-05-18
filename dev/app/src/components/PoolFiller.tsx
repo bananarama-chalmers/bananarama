@@ -1,55 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ThinSeparator, Separator } from "./Separator";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
 import { SearchBox } from "./SearchBox";
+import { GeoCoding } from "../model/geo-coding";
 
 type PoolFillerProps = {
     destinationURL: string;
     destinationName: string;
-    callback: Function;
-    owner: Pooler;
+    addPooler: Function;
+    pool: Array<Pooler>;
+    nextStep: Function;
 };
 
 export const PoolFiller = ({
-    callback,
+    addPooler,
     destinationName,
     destinationURL,
-    owner,
+    pool,
+    nextStep,
 }: PoolFillerProps) => {
     const [pos, setPos] = useState("");
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
-    const [pool, setPool] = useState<Array<Pooler>>([]);
     const travelTypes = ["car", "walk", "bike", "bus"]; // FIXME: this is too qnd
 
     const handleSubmit = (e: React.FormEvent) => {
-        // Sends the event to the parent component and prevents the page from refreshing
+        // Sends the event to the parent component and progresses to next step
         e.preventDefault();
-        callback(pool);
+        nextStep();
     };
 
-    const addPooler = (e: React.FormEvent) => {
+    const handleOnClick = (e: React.FormEvent) => {
         setTravelType(travelType);
-        setPool(
-            pool.concat([
-                {
-                    name: name,
-                    coords: { lat: 0, lng: 0 } as Coordinate,
-                    street: pos,
-                    travelType: travelType,
-                    color: "purple-500",
-                    poolElement: (
-                        <PoolItem
-                            poolerName={name}
-                            travelType={travelType}
-                            key={pool.length}
-                            color={"purple-500"}
-                        />
-                    ),
-                } as Pooler,
-            ])
-        );
+        let gc = new GeoCoding();
+        gc.forwardGeoCoding(pos).then((r: Coordinate) => {
+            addPooler({
+                name: name,
+                coords: r,
+                street: pos,
+                travelType: travelType,
+                color: "purple-500",
+                poolElement: (
+                    <PoolItem
+                        poolerName={name}
+                        travelType={travelType}
+                        key={pool.length}
+                        color={"purple-500"}
+                    />
+                ),
+            } as Pooler);
+        });
         // Prevent the page from refreshing
         e.preventDefault();
     };
@@ -57,11 +58,6 @@ export const PoolFiller = ({
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setTravelType(travelTypes.indexOf(e.currentTarget.value));
     };
-
-    useEffect(() => {
-        // Populate the pooler list with the owners info when mounting the component
-        setPool([owner]);
-    }, [owner]);
 
     return (
         <form
@@ -109,12 +105,12 @@ export const PoolFiller = ({
             </label>
             <label className="col-span-1 text-slate-600 dark:text-white text-base font-semibold">
                 <br />
-                <input
+                <button
                     className="w-full hover:bg-green-600 hover:cursor-pointer bg-green-500 font-semibold text-white rounded-md h-10"
-                    type="submit"
-                    value="Add pooler"
-                    onClick={(e) => addPooler(e)}
-                />
+                    onClick={(e) => handleOnClick(e)}
+                >
+                    {"Add pooler"}
+                </button>
             </label>
             <ThinSeparator />
             <p className="col-span-2 mt-1 text-slate-600 dark:text-white text-base font-semibold">
@@ -126,9 +122,11 @@ export const PoolFiller = ({
             <ThinSeparator />
             <ul className="col-span-3">{pool.map((p) => p.poolElement)}</ul>
             <Separator />
-            <button className="col-span-3 font-semibold dark:bg-blue-500 dark:hover:bg-blue-600 bg-slate-800 hover:bg-slate-900 text-white h-10 rounded-lg mt-1">
-                Get meeting point
-            </button>
+            <input
+                type="submit"
+                value={"Get meeting point"}
+                className="col-span-3 font-semibold dark:bg-blue-500 dark:hover:bg-blue-600 bg-slate-800 hover:bg-slate-900 text-white h-10 rounded-lg mt-1"
+            />
         </form>
     );
 };

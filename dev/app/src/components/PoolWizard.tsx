@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PoolCreator } from "./PoolCreator";
 import { PoolFiller } from "./PoolFiller";
 import { PoolOverview } from "./PoolOverview";
-import { Pooler, Coordinate, Travel } from "../types/types";
+import { Pooler } from "../types/types";
 
 enum Step {
     Create,
@@ -10,28 +10,14 @@ enum Step {
     Overview,
 }
 
-export const PoolWizard = () => {
+type PoolWizardProps = {
+    pool: Array<Pooler>;
+    setPool: Function;
+};
+
+export const PoolWizard = ({ pool, setPool }: PoolWizardProps) => {
     const [step, setStep] = useState<Step>(Step.Create);
-    const [owner, setOwner] = useState<Pooler>({
-        name: "",
-        coords: { lat: 0, lng: 0 } as Coordinate,
-        street: "",
-        travelType: Travel.Car,
-        color: "purple-500",
-    } as Pooler);
     const [dest, setDest] = useState("");
-    const [pool, setPool] = useState<Array<Pooler>>([]);
-
-    const handlePoolCreation = (owner: Pooler, dest: string): void => {
-        setOwner(owner);
-        setDest(dest);
-        nextStep();
-    };
-
-    const handlePoolFill = (poolers: Array<Pooler>): void => {
-        setPool(poolers);
-        nextStep();
-    };
 
     const handlePoolOverview = (e: React.FormEvent) => {
         // This function will open a share link when done!
@@ -50,14 +36,24 @@ export const PoolWizard = () => {
         }
     };
     */
+
+    const updatePool = async (p: Pooler) => {
+        await setPool(p);
+    };
+
+    const setDestinationHeader = (destination: string) => {
+        setDest(destination);
+    };
+
     switch (step) {
         case Step.Populate:
             return (
                 <PoolFiller
                     destinationName={dest}
                     destinationURL="#"
-                    callback={handlePoolFill}
-                    owner={owner}
+                    addPooler={updatePool}
+                    pool={pool}
+                    nextStep={nextStep}
                 />
             );
         case Step.Overview:
@@ -73,6 +69,13 @@ export const PoolWizard = () => {
             );
         case Step.Create:
         default:
-            return <PoolCreator callback={handlePoolCreation} />;
+            return (
+                <PoolCreator
+                    addPooler={updatePool}
+                    pool={pool}
+                    setDestHeader={setDestinationHeader}
+                    nextStep={nextStep}
+                />
+            );
     }
 };

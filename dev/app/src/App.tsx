@@ -11,16 +11,30 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
     "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
 
-const defaultCoord: Coordinate = { lng: 11.946472, lat: 57.698864 };
-
 function App() {
+    const defaultCoord: Coordinate = { lng: 11.946472, lat: 57.698864 };
     const [startLocation, setStartLocation] = useState<Coordinate>();
-    const [poolers] = useState<Array<Pooler>>(new Array<Pooler>());
-    const [destination, setDestination] = useState<Coordinate>({
+    const [destination] = useState<Coordinate>({
         lng: 11.946472,
         lat: 57.698864,
-    });
+    }); // Add setter when its needed.
     const [theme, setTheme] = useState("");
+
+    const [pool, setPool] = useState<Array<Pooler>>(new Array<Pooler>());
+    /**
+     * Adds a pooler to the pool. This function is sent to multiple components within the frontend.
+     * @param p Pooler to push to @poolRefactor
+     */
+    const addPooler = async (p: Pooler) => {
+        // FIXME: Remove null check somehow ewwww
+        if (p.coords != null) {
+            setPool(pool.concat([p]));
+        }
+    };
+
+    const changeTheme = (theme: string) => {
+        setTheme(theme);
+    };
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -31,15 +45,19 @@ function App() {
                 });
             },
             () => {
-                setStartLocation({ lng: 11.946472, lat: 57.698864 });
+                setStartLocation(defaultCoord);
             }
         );
-    }, []);
+    });
+
+    const mapboxTheme = () => {
+        return theme === "" ? "light-v10" : "dark-v10";
+    };
 
     return (
         <BrowserRouter>
             <div className={theme}>
-                <Navigation toggleTheme={setTheme} />
+                <Navigation toggleTheme={changeTheme} />
                 <Routes>
                     <Route
                         path="/"
@@ -56,16 +74,12 @@ function App() {
                                 {startLocation && (
                                     <StreetMapView
                                         destination={destination}
-                                        poolers={poolers}
+                                        poolers={pool}
                                         startLocation={startLocation}
-                                        theme={
-                                            theme === ""
-                                                ? "light-v10"
-                                                : "dark-v10"
-                                        }
+                                        theme={mapboxTheme()}
                                     />
                                 )}
-                                <PoolWizard />
+                                <PoolWizard pool={pool} setPool={addPooler} />
                             </div>
                         }
                     />

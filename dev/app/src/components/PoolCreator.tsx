@@ -1,25 +1,38 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
 import { SearchBox } from "./SearchBox";
+import { GeoCoding } from "../model/geo-coding";
 
 type PoolCreatorProps = {
-    callback: Function;
+    setDestHeader: Function;
+    addPooler: Function;
+    nextStep: Function;
+    pool: Array<Pooler>;
 };
 
-export const PoolCreator = ({ callback }: PoolCreatorProps) => {
+export const PoolCreator = ({
+    setDestHeader,
+    addPooler,
+    nextStep,
+    pool,
+}: PoolCreatorProps) => {
     const [name, setName] = useState<string>("");
     const [dest, setDest] = useState<string>("");
     const [pos, setPos] = useState<string>("");
     const [travelType, setTravelType] = useState<Travel>(Travel.Car);
 
-    const handleSubmit = (e: any) => {
-        // Sends the state to the parent component and prevents the page from refeshing
+    /**
+     * This function is called whenever the user submits the form, in this case, when creating the owner.
+     * @param e FormEvent
+     */
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        callback(
-            {
+        let gc = new GeoCoding(); // FIXME: make this into a static function, we dont need to create a new object every time.
+        await gc.forwardGeoCoding(pos).then((r: Coordinate) => {
+            addPooler({
                 name: name,
-                coords: { lat: 0, lng: 0 } as Coordinate,
+                coords: r,
                 street: pos,
                 travelType: travelType,
                 color: "purple-500",
@@ -27,13 +40,14 @@ export const PoolCreator = ({ callback }: PoolCreatorProps) => {
                     <PoolItem
                         poolerName={name}
                         travelType={travelType}
-                        key={0}
+                        key={pool.length}
                         color={"purple-500"}
                     />
                 ),
-            } as Pooler,
-            dest
-        );
+            } as Pooler);
+        });
+        setDestHeader(dest);
+        nextStep();
     };
 
     const stringToTravelType = (travelString: string): Travel => {
