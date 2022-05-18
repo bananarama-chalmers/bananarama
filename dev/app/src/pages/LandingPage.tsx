@@ -19,6 +19,11 @@ export const LandingPage = () => {
                             {"Create a pool"}
                         </Link>
                     </div>
+                    <div className="my-2 mx-auto w-64 rounded-lg text-md font-bold dark:bg-violet-600 dark:hover:bg-violet-700 bg-blue-500 hover:bg-blue-600 text-white text-center">
+                        <Link className="block w-full p-2" to="/join">
+                            {"Join a pool"}
+                        </Link>
+                    </div>
                     <div className="my-2 mx-auto col-span-2 w-64 rounded-lg text-md font-bold bg-white hover:border-slate-300 text-black border-2 border-slate-200 text-center dark:text-white dark:bg-neutral-800 dark:hover:text-black dark:hover:bg-white dark:border-none">
                         <Link className="block w-full p-2 " to="/map">
                             {"Learn how to use"}
