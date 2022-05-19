@@ -14,10 +14,10 @@ mapboxgl.accessToken =
 function App() {
     const defaultCoord: Coordinate = { lng: 11.946472, lat: 57.698864 };
     const [startLocation, setStartLocation] = useState<Coordinate>();
-    const [destination] = useState<Coordinate>({
+    const [destination, setDestination] = useState<Coordinate>({
         lng: 11.946472,
         lat: 57.698864,
-    }); // Add setter when its needed.
+    });
     const [theme, setTheme] = useState("");
 
     const [pool, setPool] = useState<Array<Pooler>>(new Array<Pooler>());
@@ -79,7 +79,11 @@ function App() {
                                         theme={mapboxTheme()}
                                     />
                                 )}
-                                <PoolWizard pool={pool} setPool={addPooler} />
+                                <PoolWizard
+                                    pool={pool}
+                                    setPool={addPooler}
+                                    setDest={setDestination}
+                                />
                             </div>
                         }
                     />

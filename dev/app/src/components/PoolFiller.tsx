@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ThinSeparator, Separator } from "./Separator";
 import { Pooler, Coordinate, Travel } from "../types/types";
 import { PoolItem } from "./PoolItem";
@@ -11,6 +11,7 @@ type PoolFillerProps = {
     addPooler: Function;
     pool: Array<Pooler>;
     nextStep: Function;
+    setDest: Function;
 };
 
 export const PoolFiller = ({
@@ -19,6 +20,7 @@ export const PoolFiller = ({
     destinationURL,
     pool,
     nextStep,
+    setDest,
 }: PoolFillerProps) => {
     const [pos, setPos] = useState("");
     const [name, setName] = useState("");
@@ -30,6 +32,13 @@ export const PoolFiller = ({
         e.preventDefault();
         nextStep();
     };
+
+    useEffect(() => {
+        let gc = new GeoCoding();
+        gc.forwardGeoCoding(destinationName).then((r: Coordinate) => {
+            setDest(r);
+        });
+    }, [destinationName]);
 
     const handleOnClick = (e: React.FormEvent) => {
         setTravelType(travelType);

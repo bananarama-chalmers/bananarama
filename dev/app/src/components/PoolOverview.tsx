@@ -9,6 +9,7 @@ type PoolOverviewProps = {
     meetingPointName: string;
     callback: React.FormEventHandler;
     pool: Array<Pooler>;
+    setDest: Function;
 };
 
 export const PoolOverview = ({

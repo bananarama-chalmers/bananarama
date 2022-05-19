@@ -9,6 +9,7 @@ type PoolCreatorProps = {
     addPooler: Function;
     nextStep: Function;
     pool: Array<Pooler>;
+    setDest: Function;
 };
 
 export const PoolCreator = ({
@@ -16,9 +17,10 @@ export const PoolCreator = ({
     addPooler,
     nextStep,
     pool,
+    setDest,
 }: PoolCreatorProps) => {
     const [name, setName] = useState<string>("");
-    const [dest, setDest] = useState<string>("");
+    const [destText, setDestText] = useState<string>("");
     const [pos, setPos] = useState<string>("");
     const [travelType, setTravelType] = useState<Travel>(Travel.Car);
 
@@ -46,7 +48,10 @@ export const PoolCreator = ({
                 ),
             } as Pooler);
         });
-        setDestHeader(dest);
+        await gc.forwardGeoCoding(destText).then((r: Coordinate) => {
+            setDest(r);
+        });
+        setDestHeader(destText);
         nextStep();
     };
 
@@ -104,7 +109,7 @@ export const PoolCreator = ({
                 Destination
                 <SearchBox
                     placeholder="Enter destination"
-                    textSetter={setDest}
+                    textSetter={setDestText}
                 />
             </label>
             <input

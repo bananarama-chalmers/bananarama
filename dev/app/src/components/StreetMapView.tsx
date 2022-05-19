@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { GeoCoding } from "../model/geo-coding";
 import { StreetMap } from "../model/street-map";
 import { Coordinate, Pooler } from "../types/types";
 
@@ -58,6 +59,10 @@ const StreetMapView = ({
     useEffect(() => {
         map.current?.generateMarkers(poolers);
     }, [poolers]);
+
+    useEffect(() => {
+        map.current?.generateMarkerFromPos(destination);
+    }, [destination]);
 
     return (
         <div>
