@@ -44,6 +44,17 @@ export class StreetMap {
         }
     }
 
+    public generateMarkerFromPos(coords: Coordinate): void {
+        this._markers.push(
+            new mapboxgl.Marker({
+                color: "#22C55E",
+                draggable: false,
+            })
+                .setLngLat([coords.lng, coords.lat])
+                .addTo(this._map)
+        );
+    }
+
     public changeMapStyle(style: string): void {
         this._map.setStyle("mapbox://styles/mapbox/" + style);
     }
@@ -52,11 +63,7 @@ export class StreetMap {
         const travelAreas = new Array<ComplexPolygon>();
         const travelTypes = ["driving", "walking", "cycling", "driving"];
 
-        for (
-            let minutes: number = 10;
-            minutes < 90;
-            minutes += 5
-        ) {
+        for (let minutes: number = 10; minutes < 90; minutes += 5) {
             for (let i: number = 0; i < poolers.length; i++) {
                 travelAreas[i] = new ComplexPolygon();
                 axios
@@ -168,7 +175,6 @@ export class StreetMap {
             };
         else return { lng: -1, lat: -1 };
 
-
         return middle;
     }
 
@@ -236,7 +242,6 @@ export class StreetMap {
         poolers: Array<Pooler>,
         destination: Coordinate
     ): void {
-
         if (this._middleMarker) this._middleMarker.remove();
 
         this._middleMarker = new mapboxgl.Marker({
