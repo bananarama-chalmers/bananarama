@@ -26,6 +26,17 @@ export class StreetMap {
         });
     }
 
+    public generateMarkerFromPos(coords: Coordinate): void {
+        this._markers.push(
+            new mapboxgl.Marker({
+                color: "#22C55E",
+                draggable: false,
+            })
+                .setLngLat([coords.lng, coords.lat])
+                .addTo(this._map)
+        );
+    }
+
     public generateMarkers(poolers: Array<Pooler>): void {
         if (poolers.length > 0) {
             this._markers.forEach((marker: Marker) => {
