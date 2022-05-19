@@ -48,31 +48,29 @@ export class StreetMap {
         this._map.setStyle("mapbox://styles/mapbox/" + style);
     }
 
-    public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
+    public async getRoute(poolers: Array<Pooler>, destination: Coordinate): Promise<void> {
         const travelAreas = new Array<ComplexPolygon>();
         const travelTypes = ["driving", "walking", "cycling", "driving"];
 
-        for (
-            let minutes: number = 10;
-            minutes < 90;
-            minutes += 5
-        ) {
+
+        let found: boolean | undefined = false;
+        for (let minutes: number = 10; minutes < 60 && !found; minutes += 10) {
             for (let i: number = 0; i < poolers.length; i++) {
                 travelAreas[i] = new ComplexPolygon();
-                axios
+                found = await axios
                     .get(
                         "https://api.mapbox.com/isochrone/v1/mapbox/" +
-                            travelTypes[poolers[i].travelType] +
-                            "/" +
-                            poolers[i].coords.lng +
-                            "," +
-                            poolers[i].coords.lat +
-                            "?contours_minutes=" +
-                            minutes +
-                            "&polygons=true" +
-                            "&denoise=1" +
-                            "&access_token=" +
-                            mapboxgl.accessToken
+                        travelTypes[poolers[i].travelType] +
+                        "/" +
+                        poolers[i].coords.lng +
+                        "," +
+                        poolers[i].coords.lat +
+                        "?contours_minutes=" +
+                        minutes +
+                        "&polygons=true" +
+                        "&denoise=1" +
+                        "&access_token=" +
+                        mapboxgl.accessToken
                     )
                     .then((response: any) => {
                         response.data.features[0].geometry.coordinates[0].forEach(
@@ -86,7 +84,8 @@ export class StreetMap {
                             const meetingPoint: Coordinate =
                                 this.getMeetingPoint(travelAreas, poolers);
 
-                            if (meetingPoint !== { lng: -1, lat: -1 }) {
+                            console.log(meetingPoint);
+                            if (meetingPoint.lng !== -1 && meetingPoint.lat !== -1) {
                                 this.drawDestinationRoute(
                                     meetingPoint,
                                     destination,
@@ -96,6 +95,7 @@ export class StreetMap {
                                     poolers,
                                     meetingPoint
                                 );
+                                return true;
                             }
                         }
                     });
@@ -230,12 +230,23 @@ export class StreetMap {
                     },
                 });
             });
+
+        this._markers.push(
+            new mapboxgl.Marker({
+                color: "#000000",
+                draggable: false,
+            })
+                .setLngLat([destination.lng, destination.lat])
+                .addTo(this._map)
+        );
+
     }
 
     private drawMeetingpointRoutes(
         poolers: Array<Pooler>,
         destination: Coordinate
     ): void {
+        const travelTypes = ["driving", "walking", "cycling", "driving"];
 
         if (this._middleMarker) this._middleMarker.remove();
 
@@ -246,11 +257,18 @@ export class StreetMap {
             .setLngLat([destination.lng, destination.lat])
             .addTo(this._map);
 
+        for (let j: number = 0; j < poolers.length + 1; j++) {
+            if (this._map.getSource("route" + j)) {
+                this._map.removeLayer("route" + j);
+                this._map.removeSource("route" + j);
+            }
+        }
+
         for (let i = 0; i < poolers.length; i++) {
             axios
                 .get(
                     "https://api.mapbox.com/directions/v5/mapbox/" +
-                        poolers[i].travelType +
+                        travelTypes[poolers[i].travelType] +
                         "/" +
                         poolers[i].coords.lng +
                         "%2C" +
@@ -269,12 +287,6 @@ export class StreetMap {
                         mapboxgl.accessToken
                 )
                 .then((response: any) => {
-                    for (let j: number = 0; j < poolers.length + 1; j++) {
-                        if (this._map.getSource("route" + j)) {
-                            this._map.removeLayer("route" + j);
-                            this._map.removeSource("route" + j);
-                        }
-                    }
 
                     this._map.addSource("route" + i, {
                         type: "geojson",
@@ -298,7 +310,7 @@ export class StreetMap {
                             "line-cap": "square",
                         },
                         paint: {
-                            "line-color": poolers[i].color,
+                            "line-color": "#000000",
                             "line-width": 4,
                         },
                     });
