@@ -50,11 +50,11 @@ export class StreetMap {
 
     public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
         const travelAreas = new Array<ComplexPolygon>();
-        const meetingPoint = { lng: -1, lat: -1 };
+        const travelTypes = ["driving", "walking", "cycling", "driving"];
 
         for (
             let minutes: number = 10;
-            meetingPoint !== { lng: -1, lat: -1 };
+            minutes < 90;
             minutes += 5
         ) {
             for (let i: number = 0; i < poolers.length; i++) {
@@ -62,7 +62,7 @@ export class StreetMap {
                 axios
                     .get(
                         "https://api.mapbox.com/isochrone/v1/mapbox/" +
-                            poolers[i].travelType +
+                            travelTypes[poolers[i].travelType] +
                             "/" +
                             poolers[i].coords.lng +
                             "," +

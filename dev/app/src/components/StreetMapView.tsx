@@ -49,7 +49,9 @@ const StreetMapView = ({
                 "mapContainer"
             );
         } else {
-            map.current.changeMapStyle(theme);
+            if (map.current instanceof StreetMap) {
+                map.current.changeMapStyle(theme);
+            }
         }
     });
 
