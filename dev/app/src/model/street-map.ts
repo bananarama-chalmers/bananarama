@@ -168,14 +168,6 @@ export class StreetMap {
             };
         else return { lng: -1, lat: -1 };
 
-        if (this._middleMarker) this._middleMarker.remove();
-
-        this._middleMarker = new mapboxgl.Marker({
-            color: "#000000",
-            draggable: false,
-        })
-            .setLngLat([middle.lng, middle.lat])
-            .addTo(this._map);
 
         return middle;
     }
@@ -244,6 +236,16 @@ export class StreetMap {
         poolers: Array<Pooler>,
         destination: Coordinate
     ): void {
+
+        if (this._middleMarker) this._middleMarker.remove();
+
+        this._middleMarker = new mapboxgl.Marker({
+            color: "#000000",
+            draggable: false,
+        })
+            .setLngLat([destination.lng, destination.lat])
+            .addTo(this._map);
+
         for (let i = 0; i < poolers.length; i++) {
             axios
                 .get(
