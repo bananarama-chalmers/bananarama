@@ -1,7 +1,7 @@
 import mapboxgl, { Map, Marker } from "mapbox-gl";
 import axios from "axios";
 import { ComplexPolygon } from "./complex-polygon";
-import { Coordinate, Pooler } from "../types/types";
+import { Color, Coordinate, Pooler } from "../types/types";
 
 export class StreetMap {
     private readonly _map: Map;
@@ -38,21 +38,39 @@ export class StreetMap {
     }
 
     public generateMarkers(poolers: Array<Pooler>): void {
+
         if (poolers.length > 0) {
             this._markers.forEach((marker: Marker) => {
                 marker.remove();
             });
             poolers.forEach((pooler: Pooler) => {
+                const m = this.createMarkerImg(pooler.color)
+
                 this._markers.push(
                     new mapboxgl.Marker({
-                        color: pooler.color,
-                        draggable: false,
+                        element: m,
                     })
                         .setLngLat([pooler.coords.lng, pooler.coords.lat])
                         .addTo(this._map)
                 );
             });
         }
+    }
+
+    private createMarkerImg(color: Color) {
+        const m = document.createElement('img');
+
+        m.className = 'marker' + color.hex;
+        m.style.width = `27px`;
+        m.style.height = `27px`;
+        m.style.transformOrigin = "bottom";
+
+        m.src = require("../assets/pooler_point.png");
+        m.style.filter = m.style.filter = "hue-rotate(" + color.hue +
+            "deg)saturate(" + 300 +
+            "%) brightness(" + 200 + "%)";
+
+        return m;
     }
 
     public changeMapStyle(style: string): void {
@@ -236,16 +254,25 @@ export class StreetMap {
                         "line-cap": "square",
                     },
                     paint: {
-                        "line-color": "#000000",
+                        "line-color": "#FFA000",
                         "line-width": 6,
                     },
                 });
             });
 
+        const dm = document.createElement('img');
+
+        dm.className = 'marker';
+        dm.style.width = '27px';
+        dm.style.height = '72px';
+        dm.style.transformOrigin = "bottom";
+        dm.style.paddingBottom = "30px";
+
+        dm.src = require("../assets/destination_point.png");
+
         this._markers.push(
             new mapboxgl.Marker({
-                color: "#000000",
-                draggable: false,
+                element: dm,
             })
                 .setLngLat([destination.lng, destination.lat])
                 .addTo(this._map)
@@ -261,9 +288,18 @@ export class StreetMap {
 
         if (this._middleMarker) this._middleMarker.remove();
 
+        const mpm = document.createElement('img');
+
+        mpm.className = 'marker';
+        mpm.style.width = '27px';
+        mpm.style.height = '72px';
+        mpm.style.transformOrigin = "bottom";
+        mpm.style.paddingBottom = "30px";
+
+        mpm.src = require("../assets/meeting_point.png");
+
         this._middleMarker = new mapboxgl.Marker({
-            color: "#000000",
-            draggable: false,
+            element : mpm,
         })
             .setLngLat([destination.lng, destination.lat])
             .addTo(this._map);
@@ -321,7 +357,7 @@ export class StreetMap {
                             "line-cap": "square",
                         },
                         paint: {
-                            "line-color": "#000000",
+                            "line-color": poolers[i].color.hex,
                             "line-width": 4,
                         },
                     });

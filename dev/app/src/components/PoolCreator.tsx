@@ -35,7 +35,7 @@ export const PoolCreator = ({
                 coords: r,
                 street: pos,
                 travelType: travelType,
-                color: "purple-500",
+                color: {hex:"#ff0000", hue:0},
                 poolElement: (
                     <PoolItem
                         poolerName={name}
