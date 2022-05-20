@@ -4,6 +4,23 @@ import axios from "axios";
 mapboxgl.accessToken =
     "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
 
+
+const m = document.createElement('img');
+
+m.className = 'marker';
+m.style.width = `27px`;
+m.style.height = `27px`;
+m.style.transformOrigin = "bottom";
+
+const mpm = document.createElement('img');
+
+mpm.className = 'marker';
+mpm.style.width = '27px';
+mpm.style.height = '72px';
+mpm.style.transformOrigin = "bottom";
+mpm.style.paddingBottom = "30px";
+
+
 export interface Coordinate {
     lng: number;
     lat: number;
@@ -16,12 +33,11 @@ export class streetMap {
 
     //TODO: be abstracted
     private readonly _markerColors = [
-        "#AE3C60",
-        "#DF473C",
-        "#F3C33C",
-        "#255E79",
-        "#267778",
-        "#82b4bb",
+        0,
+        200,
+        50,
+        160,
+        300,
     ];
 
     private _markers: Array<Marker> = new Array<Marker>();
@@ -42,12 +58,18 @@ export class streetMap {
         });
     }
 
+
+
+
     public generateMarkers(poolers: Number) {
         for (let i = 0; i < poolers; i++) {
+            //m.src = "https://svgsilh.com/svg/1093167-" + this._markerColors[i] + ".svg";
+            m.src = require("../assets/pooler_point.png");
+            m.style.filter = "hue-rotate(" + this._markerColors[i] + "deg)";
             if (this._markers[i]) return;
             this._markers.push(
                 new mapboxgl.Marker({
-                    color: this._markerColors[i],
+                    element: m,
                     draggable: true,
                 })
                     .setLngLat([
@@ -57,6 +79,20 @@ export class streetMap {
                     .addTo(this._map)
             );
         }
+    }
+    public meetingPointMarker() {
+        mpm.src = require("../assets/meeting_point.png");
+        this._markers.push(
+            new mapboxgl.Marker({
+                element: mpm,
+                draggable: true,
+            })
+                .setLngLat([
+                    this._startLocation.lng,
+                    this._startLocation.lat,
+                ])
+                .addTo(this._map)
+        );
     }
 
     public getRoute(destination: Coordinate) {
@@ -447,7 +483,7 @@ export class streetMap {
                             "line-cap": "square",
                         },
                         paint: {
-                            "line-color": this._markerColors[i],
+                            "line-color": "#000000",
                             "line-width": 4,
                         },
                     });
