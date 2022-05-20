@@ -31,7 +31,7 @@ export const JoinPage = () => {
                     <label>
                         <input
                             type="text"
-                            className="appearance-none bg-transparent border-none w-full text-gray-700 dark:text-white text-3xl mr-3 py-1 px-2 focus:outline-none"
+                            className="appearance-none bg-transparent border-none w-screen text-gray-700 dark:text-white text-3xl mr-3 py-1 px-2 focus:outline-none"
                             placeholder="Enter your link"
                             value={joinLink}
                             onChange={(e) => setJoinLink(e.target.value)}
