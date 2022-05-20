@@ -10,6 +10,7 @@ export class StreetMap {
 
     private _markers: Array<Marker> = new Array<Marker>();
     private _middleMarker: Marker | null = null;
+    private _destinationMarker: Marker | null = null;
 
     constructor(
         startLocation: Coordinate,
@@ -27,24 +28,33 @@ export class StreetMap {
     }
 
     public generateMarkerFromPos(coords: Coordinate): void {
-        this._markers.push(
-            new mapboxgl.Marker({
-                color: "#22C55E",
-                draggable: false,
-            })
-                .setLngLat([coords.lng, coords.lat])
-                .addTo(this._map)
-        );
+        if (this._destinationMarker) {
+            this._destinationMarker.remove();
+        }
+        const dm = document.createElement("img");
+
+        dm.className = "marker";
+        dm.style.width = "27px";
+        dm.style.height = "72px";
+        dm.style.transformOrigin = "bottom";
+        dm.style.paddingBottom = "30px";
+
+        dm.src = require("../assets/destination_point.png");
+
+        this._destinationMarker = new mapboxgl.Marker({
+            element: dm,
+        })
+            .setLngLat([coords.lng, coords.lat])
+            .addTo(this._map);
     }
 
     public generateMarkers(poolers: Array<Pooler>): void {
-
         if (poolers.length > 0) {
             this._markers.forEach((marker: Marker) => {
                 marker.remove();
             });
             poolers.forEach((pooler: Pooler) => {
-                const m = this.createMarkerImg(pooler.color)
+                const m = this.createMarkerImg(pooler.color);
 
                 this._markers.push(
                     new mapboxgl.Marker({
@@ -58,17 +68,22 @@ export class StreetMap {
     }
 
     private createMarkerImg(color: Color) {
-        const m = document.createElement('img');
+        const m = document.createElement("img");
 
-        m.className = 'marker' + color.hex;
+        m.className = "marker" + color.hex;
         m.style.width = `27px`;
         m.style.height = `27px`;
         m.style.transformOrigin = "bottom";
 
         m.src = require("../assets/pooler_point.png");
-        m.style.filter = m.style.filter = "hue-rotate(" + color.hue +
-            "deg)saturate(" + 250 +
-            "%) brightness(" + 100 + "%)";
+        m.style.filter = m.style.filter =
+            "hue-rotate(" +
+            color.hue +
+            "deg)saturate(" +
+            250 +
+            "%) brightness(" +
+            100 +
+            "%)";
 
         return m;
     }
@@ -77,10 +92,12 @@ export class StreetMap {
         this._map.setStyle("mapbox://styles/mapbox/" + style);
     }
 
-    public async getRoute(poolers: Array<Pooler>, destination: Coordinate): Promise<void> {
+    public async getRoute(
+        poolers: Array<Pooler>,
+        destination: Coordinate
+    ): Promise<void> {
         const travelAreas = new Array<ComplexPolygon>();
         const travelTypes = ["driving", "walking", "cycling", "driving"];
-
 
         let found: boolean | undefined = false;
         for (let minutes: number = 10; minutes < 60 && !found; minutes += 10) {
@@ -89,17 +106,17 @@ export class StreetMap {
                 found = await axios
                     .get(
                         "https://api.mapbox.com/isochrone/v1/mapbox/" +
-                        travelTypes[poolers[i].travelType] +
-                        "/" +
-                        poolers[i].coords.lng +
-                        "," +
-                        poolers[i].coords.lat +
-                        "?contours_minutes=" +
-                        minutes +
-                        "&polygons=true" +
-                        "&denoise=1" +
-                        "&access_token=" +
-                        mapboxgl.accessToken
+                            travelTypes[poolers[i].travelType] +
+                            "/" +
+                            poolers[i].coords.lng +
+                            "," +
+                            poolers[i].coords.lat +
+                            "?contours_minutes=" +
+                            minutes +
+                            "&polygons=true" +
+                            "&denoise=1" +
+                            "&access_token=" +
+                            mapboxgl.accessToken
                     )
                     .then((response: any) => {
                         response.data.features[0].geometry.coordinates[0].forEach(
@@ -114,7 +131,10 @@ export class StreetMap {
                                 this.getMeetingPoint(travelAreas, poolers);
 
                             console.log(meetingPoint);
-                            if (meetingPoint.lng !== -1 && meetingPoint.lat !== -1) {
+                            if (
+                                meetingPoint.lng !== -1 &&
+                                meetingPoint.lat !== -1
+                            ) {
                                 this.drawDestinationRoute(
                                     meetingPoint,
                                     destination,
@@ -197,7 +217,6 @@ export class StreetMap {
             };
         else return { lng: -1, lat: -1 };
 
-
         return middle;
     }
 
@@ -259,25 +278,6 @@ export class StreetMap {
                     },
                 });
             });
-
-        const dm = document.createElement('img');
-
-        dm.className = 'marker';
-        dm.style.width = '27px';
-        dm.style.height = '72px';
-        dm.style.transformOrigin = "bottom";
-        dm.style.paddingBottom = "30px";
-
-        dm.src = require("../assets/destination_point.png");
-
-        this._markers.push(
-            new mapboxgl.Marker({
-                element: dm,
-            })
-                .setLngLat([destination.lng, destination.lat])
-                .addTo(this._map)
-        );
-
     }
 
     private drawMeetingpointRoutes(
@@ -288,18 +288,18 @@ export class StreetMap {
 
         if (this._middleMarker) this._middleMarker.remove();
 
-        const mpm = document.createElement('img');
+        const mpm = document.createElement("img");
 
-        mpm.className = 'marker';
-        mpm.style.width = '27px';
-        mpm.style.height = '72px';
+        mpm.className = "marker";
+        mpm.style.width = "27px";
+        mpm.style.height = "72px";
         mpm.style.transformOrigin = "bottom";
         mpm.style.paddingBottom = "30px";
 
         mpm.src = require("../assets/meeting_point.png");
 
         this._middleMarker = new mapboxgl.Marker({
-            element : mpm,
+            element: mpm,
         })
             .setLngLat([destination.lng, destination.lat])
             .addTo(this._map);
@@ -334,7 +334,6 @@ export class StreetMap {
                         mapboxgl.accessToken
                 )
                 .then((response: any) => {
-
                     this._map.addSource("route" + i, {
                         type: "geojson",
                         data: {
