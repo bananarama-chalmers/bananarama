@@ -24,13 +24,12 @@ export const PoolFiller = ({
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
     const travelTypes = ["car", "walk", "bike", "bus"]; // FIXME: this is too qnd
-    let colors:Array<Color> =
-           [{hex:"#0044ff", hue:224},
-            {hex:"#00ff5e", hue:142},
-            {hex:"#ffcc00", hue:48},
-            {hex:"#8c00ff", hue:273},
-            {hex:"#dd00ff", hue:292},
-            {hex:"#00ffee", hue:176}]
+    const [colors] = useState<Array<Color>>(new Array<Color>(
+        {hex:"#0048FF", hue:224},
+        {hex:"#009200", hue:103},
+        {hex:"#D900FF", hue:273},
+        {hex:"#00946B", hue:176},
+        {hex:"#FF00FF", hue:292}))
 
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -48,7 +47,7 @@ export const PoolFiller = ({
                 coords: r,
                 street: pos,
                 travelType: travelType,
-                color: colors.pop(),
+                color: colors[pool.length-1],
                 poolElement: (
                     <PoolItem
                         poolerName={name}

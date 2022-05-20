@@ -67,8 +67,8 @@ export class StreetMap {
 
         m.src = require("../assets/pooler_point.png");
         m.style.filter = m.style.filter = "hue-rotate(" + color.hue +
-            "deg)saturate(" + 300 +
-            "%) brightness(" + 200 + "%)";
+            "deg)saturate(" + 250 +
+            "%) brightness(" + 100 + "%)";
 
         return m;
     }
