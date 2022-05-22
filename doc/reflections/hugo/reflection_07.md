@@ -28,8 +28,8 @@ A->B: Share my knowledge and help people during meetings and in discord
 
 ## What is my contribution towards the team’s deliveries?
 
-A: Started writing the majority of the underlying algorithm used for calculating optimal meeting point for poolers
+A: Started setting up the big task of connecting front and backend and stop using mock data
 
-B: Write good fundamental code that is open for extension
+B: Write a solid connection between the stacks
 
-A->B: Keep being consistent in my coding and discuss others needs in the codebase
+A->B: Discuss solutions with the team to find optimal way

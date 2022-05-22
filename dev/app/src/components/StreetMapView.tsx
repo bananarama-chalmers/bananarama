@@ -1,13 +1,15 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { StreetMap } from "../model/street-map";
 import { Coordinate, Pooler } from "../types/types";
+import { Step } from "../App";
 
 type StreetMapViewProps = {
     startLocation: Coordinate;
     poolers: Array<Pooler>;
     destination: Coordinate;
     theme: string;
+    fooStep: Step;
 };
 
 const defaultCoord: Coordinate = { lng: 11.946472, lat: 57.698864 };
@@ -33,9 +35,11 @@ const StreetMapView = ({
     poolers,
     destination,
     theme,
+    fooStep,
 }: StreetMapViewProps) => {
     const map = useRef<StreetMap | null>(null);
     let startPos = usePos();
+    const [prevTheme, setPrevTheme] = useState<string>(theme);
 
     if (startPos === defaultCoord) {
         startPos = startLocation;
@@ -48,14 +52,24 @@ const StreetMapView = ({
                 "mapbox://styles/mapbox/" + theme,
                 "mapContainer"
             );
-        } else {
+        } else if (theme !== prevTheme) {
             map.current.changeMapStyle(theme);
+            setPrevTheme(theme);
         }
-    });
+    }, [theme, prevTheme, startPos]);
 
     useEffect(() => {
         map.current?.generateMarkers(poolers);
     }, [poolers]);
+
+    useEffect(() => {
+        if (fooStep === Step.Populate) {
+            map.current?.generateMarkerFromPos(destination);
+        }
+        if (fooStep === Step.Overview) {
+            map.current?.getRoute(poolers, destination);
+        }
+    }, [fooStep]);
 
     return (
         <div>

@@ -11,15 +11,21 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
     "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
 
+export enum Step {
+    Create,
+    Populate,
+    Overview,
+}
+
 function App() {
     const defaultCoord: Coordinate = { lng: 11.946472, lat: 57.698864 };
     const [startLocation, setStartLocation] = useState<Coordinate>();
-    const [destination] = useState<Coordinate>({
+    const [destination, setDestination] = useState<Coordinate>({
         lng: 11.946472,
         lat: 57.698864,
-    }); // Add setter when its needed.
+    });
     const [theme, setTheme] = useState("");
-
+    const [step, setStep] = useState(Step.Create);
     const [pool, setPool] = useState<Array<Pooler>>(new Array<Pooler>());
     /**
      * Adds a pooler to the pool. This function is sent to multiple components within the frontend.
@@ -36,6 +42,12 @@ function App() {
         setTheme(theme);
     };
 
+    const nextStep = () => {
+        if (step < Step.Overview) {
+            setStep(step + 1);
+        }
+    };
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             (response: GeolocationPosition) => {
@@ -48,7 +60,7 @@ function App() {
                 setStartLocation(defaultCoord);
             }
         );
-    });
+    }, []);
 
     const mapboxTheme = () => {
         return theme === "" ? "light-v10" : "dark-v10";
@@ -77,9 +89,16 @@ function App() {
                                         poolers={pool}
                                         startLocation={startLocation}
                                         theme={mapboxTheme()}
+                                        fooStep={step}
                                     />
                                 )}
-                                <PoolWizard pool={pool} setPool={addPooler} />
+                                <PoolWizard
+                                    pool={pool}
+                                    setPool={addPooler}
+                                    step={step}
+                                    nextStep={nextStep}
+                                    setDestination={setDestination}
+                                />
                             </div>
                         }
                     />

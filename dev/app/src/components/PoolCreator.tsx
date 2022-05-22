@@ -9,6 +9,7 @@ type PoolCreatorProps = {
     addPooler: Function;
     nextStep: Function;
     pool: Array<Pooler>;
+    setDestination: Function;
 };
 
 export const PoolCreator = ({
@@ -16,6 +17,7 @@ export const PoolCreator = ({
     addPooler,
     nextStep,
     pool,
+    setDestination,
 }: PoolCreatorProps) => {
     const [name, setName] = useState<string>("");
     const [dest, setDest] = useState<string>("");
@@ -35,7 +37,7 @@ export const PoolCreator = ({
                 coords: r,
                 street: pos,
                 travelType: travelType,
-                color: "purple-500",
+                color: { hex: "#ff0000", hue: 0 },
                 poolElement: (
                     <PoolItem
                         poolerName={name}
@@ -46,6 +48,7 @@ export const PoolCreator = ({
                 ),
             } as Pooler);
         });
+        await gc.forwardGeoCoding(dest).then((r) => setDestination(r));
         setDestHeader(dest);
         nextStep();
     };

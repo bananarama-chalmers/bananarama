@@ -3,39 +3,29 @@ import { PoolCreator } from "./PoolCreator";
 import { PoolFiller } from "./PoolFiller";
 import { PoolOverview } from "./PoolOverview";
 import { Pooler } from "../types/types";
-
-enum Step {
-    Create,
-    Populate,
-    Overview,
-}
+import { Step } from "../App";
 
 type PoolWizardProps = {
     pool: Array<Pooler>;
     setPool: Function;
+    step: Step;
+    nextStep: Function;
+    setDestination: Function;
 };
 
-export const PoolWizard = ({ pool, setPool }: PoolWizardProps) => {
-    const [step, setStep] = useState<Step>(Step.Create);
+export const PoolWizard = ({
+    pool,
+    setPool,
+    step,
+    nextStep,
+    setDestination,
+}: PoolWizardProps) => {
     const [dest, setDest] = useState("");
 
     const handlePoolOverview = (e: React.FormEvent) => {
         // This function will open a share link when done!
         e.preventDefault();
     };
-
-    const nextStep = () => {
-        if (step < Step.Overview) {
-            setStep(step + 1);
-        }
-    };
-    /* 
-    const prevStep = () => {
-        if (step > Step.Create) {
-            setStep(step - 1);
-        }
-    };
-    */
 
     const updatePool = async (p: Pooler) => {
         await setPool(p);
@@ -75,6 +65,7 @@ export const PoolWizard = ({ pool, setPool }: PoolWizardProps) => {
                     pool={pool}
                     setDestHeader={setDestinationHeader}
                     nextStep={nextStep}
+                    setDestination={setDestination}
                 />
             );
     }
