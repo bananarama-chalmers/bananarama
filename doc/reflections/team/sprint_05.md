@@ -38,7 +38,7 @@ A->B: By continuing to be reflective on our weekly sprint reviews and think abou
 ## The roles you have used within the team and their impact on your work
 A: We have the traditional roles of SM, PO, and Devs. We also have some people that have been more focused on the UI and frontend, whereas others have been more focused on the backend. This has been beneficial because we all become familiar with our area over time, which leads to higher productivity, something we’ve noticed increase over the weeks. But we also brief each other on the different areas and sometimes may take on a user story not in our “area”.
 
-B: The roles outside of SM, PO, and Devs should be such that they increase the overall productivity of the team, but team members should have the opportunity to work in a different area if they wish.
+B: The roles outside of SM, PO, and Devs (i.e. frontend-focus, backend-focus, or UI etc.) should be such that they increase the overall productivity of the team, but team members should have the opportunity to work in a different area if they wish.
 
 A->B: By keeping the current roles we have. These roles came naturally as the project developed because many times team members wanted to keep building on what they had been doing the week before.
 
