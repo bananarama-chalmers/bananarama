@@ -15,6 +15,11 @@ export type Pooler = {
     coords: Coordinate;
     street: string;
     travelType: Travel;
-    color: string;
+    color: Color;
     poolElement: JSX.Element;
 };
+
+export type Color = {
+    hex: string;
+    hue: number;
+}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ThinSeparator, Separator } from "./Separator";
-import { Pooler, Coordinate, Travel } from "../types/types";
+import { Pooler, Coordinate, Travel, Color } from "../types/types";
 import { PoolItem } from "./PoolItem";
 import { SearchBox } from "./SearchBox";
 import { GeoCoding } from "../model/geo-coding";
@@ -24,6 +24,13 @@ export const PoolFiller = ({
     const [name, setName] = useState("");
     const [travelType, setTravelType] = useState(Travel.Car);
     const travelTypes = ["car", "walk", "bike", "bus"]; // FIXME: this is too qnd
+    const [colors] = useState<Array<Color>>(new Array<Color>(
+        {hex:"#0048FF", hue:224},
+        {hex:"#009200", hue:103},
+        {hex:"#D900FF", hue:273},
+        {hex:"#00946B", hue:176},
+        {hex:"#FF00FF", hue:292}))
+
 
     const handleSubmit = (e: React.FormEvent) => {
         // Sends the event to the parent component and progresses to next step
@@ -40,7 +47,7 @@ export const PoolFiller = ({
                 coords: r,
                 street: pos,
                 travelType: travelType,
-                color: "purple-500",
+                color: colors[pool.length-1],
                 poolElement: (
                     <PoolItem
                         poolerName={name}

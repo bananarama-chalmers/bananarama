@@ -1,7 +1,7 @@
 import mapboxgl, { Map, Marker } from "mapbox-gl";
 import axios from "axios";
 import { ComplexPolygon } from "./complex-polygon";
-import { Coordinate, Pooler } from "../types/types";
+import { Color, Coordinate, Pooler } from "../types/types";
 
 export class StreetMap {
     private readonly _map: Map;
@@ -10,6 +10,7 @@ export class StreetMap {
 
     private _markers: Array<Marker> = new Array<Marker>();
     private _middleMarker: Marker | null = null;
+    private _destinationMarker: Marker | null = null;
 
     constructor(
         startLocation: Coordinate,
@@ -26,16 +27,38 @@ export class StreetMap {
         });
     }
 
+    public generateMarkerFromPos(coords: Coordinate): void {
+        if (this._destinationMarker) {
+            this._destinationMarker.remove();
+        }
+        const dm = document.createElement("img");
+
+        dm.className = "marker";
+        dm.style.width = "27px";
+        dm.style.height = "72px";
+        dm.style.transformOrigin = "bottom";
+        dm.style.paddingBottom = "30px";
+
+        dm.src = require("../assets/destination_point.png");
+
+        this._destinationMarker = new mapboxgl.Marker({
+            element: dm,
+        })
+            .setLngLat([coords.lng, coords.lat])
+            .addTo(this._map);
+    }
+
     public generateMarkers(poolers: Array<Pooler>): void {
         if (poolers.length > 0) {
             this._markers.forEach((marker: Marker) => {
                 marker.remove();
             });
             poolers.forEach((pooler: Pooler) => {
+                const m = this.createMarkerImg(pooler.color);
+
                 this._markers.push(
                     new mapboxgl.Marker({
-                        color: pooler.color,
-                        draggable: false,
+                        element: m,
                     })
                         .setLngLat([pooler.coords.lng, pooler.coords.lat])
                         .addTo(this._map)
@@ -44,25 +67,46 @@ export class StreetMap {
         }
     }
 
+    private createMarkerImg(color: Color) {
+        const m = document.createElement("img");
+
+        m.className = "marker" + color.hex;
+        m.style.width = `27px`;
+        m.style.height = `27px`;
+        m.style.transformOrigin = "bottom";
+
+        m.src = require("../assets/pooler_point.png");
+        m.style.filter = m.style.filter =
+            "hue-rotate(" +
+            color.hue +
+            "deg)saturate(" +
+            250 +
+            "%) brightness(" +
+            100 +
+            "%)";
+
+        return m;
+    }
+
     public changeMapStyle(style: string): void {
         this._map.setStyle("mapbox://styles/mapbox/" + style);
     }
 
-    public getRoute(poolers: Array<Pooler>, destination: Coordinate): void {
+    public async getRoute(
+        poolers: Array<Pooler>,
+        destination: Coordinate
+    ): Promise<void> {
         const travelAreas = new Array<ComplexPolygon>();
-        const meetingPoint = { lng: -1, lat: -1 };
+        const travelTypes = ["driving", "walking", "cycling", "driving"];
 
-        for (
-            let minutes: number = 10;
-            meetingPoint !== { lng: -1, lat: -1 };
-            minutes += 5
-        ) {
+        let found: boolean | undefined = false;
+        for (let minutes: number = 10; minutes < 60 && !found; minutes += 10) {
             for (let i: number = 0; i < poolers.length; i++) {
                 travelAreas[i] = new ComplexPolygon();
-                axios
+                found = await axios
                     .get(
                         "https://api.mapbox.com/isochrone/v1/mapbox/" +
-                            poolers[i].travelType +
+                            travelTypes[poolers[i].travelType] +
                             "/" +
                             poolers[i].coords.lng +
                             "," +
@@ -86,7 +130,11 @@ export class StreetMap {
                             const meetingPoint: Coordinate =
                                 this.getMeetingPoint(travelAreas, poolers);
 
-                            if (meetingPoint !== { lng: -1, lat: -1 }) {
+                            console.log(meetingPoint);
+                            if (
+                                meetingPoint.lng !== -1 &&
+                                meetingPoint.lat !== -1
+                            ) {
                                 this.drawDestinationRoute(
                                     meetingPoint,
                                     destination,
@@ -96,6 +144,7 @@ export class StreetMap {
                                     poolers,
                                     meetingPoint
                                 );
+                                return true;
                             }
                         }
                     });
@@ -168,15 +217,6 @@ export class StreetMap {
             };
         else return { lng: -1, lat: -1 };
 
-        if (this._middleMarker) this._middleMarker.remove();
-
-        this._middleMarker = new mapboxgl.Marker({
-            color: "#000000",
-            draggable: false,
-        })
-            .setLngLat([middle.lng, middle.lat])
-            .addTo(this._map);
-
         return middle;
     }
 
@@ -233,7 +273,7 @@ export class StreetMap {
                         "line-cap": "square",
                     },
                     paint: {
-                        "line-color": "#000000",
+                        "line-color": "#FFA000",
                         "line-width": 6,
                     },
                 });
@@ -244,11 +284,38 @@ export class StreetMap {
         poolers: Array<Pooler>,
         destination: Coordinate
     ): void {
+        const travelTypes = ["driving", "walking", "cycling", "driving"];
+
+        if (this._middleMarker) this._middleMarker.remove();
+
+        const mpm = document.createElement("img");
+
+        mpm.className = "marker";
+        mpm.style.width = "27px";
+        mpm.style.height = "72px";
+        mpm.style.transformOrigin = "bottom";
+        mpm.style.paddingBottom = "30px";
+
+        mpm.src = require("../assets/meeting_point.png");
+
+        this._middleMarker = new mapboxgl.Marker({
+            element: mpm,
+        })
+            .setLngLat([destination.lng, destination.lat])
+            .addTo(this._map);
+
+        for (let j: number = 0; j < poolers.length + 1; j++) {
+            if (this._map.getSource("route" + j)) {
+                this._map.removeLayer("route" + j);
+                this._map.removeSource("route" + j);
+            }
+        }
+
         for (let i = 0; i < poolers.length; i++) {
             axios
                 .get(
                     "https://api.mapbox.com/directions/v5/mapbox/" +
-                        poolers[i].travelType +
+                        travelTypes[poolers[i].travelType] +
                         "/" +
                         poolers[i].coords.lng +
                         "%2C" +
@@ -267,13 +334,6 @@ export class StreetMap {
                         mapboxgl.accessToken
                 )
                 .then((response: any) => {
-                    for (let j: number = 0; j < poolers.length + 1; j++) {
-                        if (this._map.getSource("route" + j)) {
-                            this._map.removeLayer("route" + j);
-                            this._map.removeSource("route" + j);
-                        }
-                    }
-
                     this._map.addSource("route" + i, {
                         type: "geojson",
                         data: {
@@ -296,7 +356,7 @@ export class StreetMap {
                             "line-cap": "square",
                         },
                         paint: {
-                            "line-color": poolers[i].color,
+                            "line-color": poolers[i].color.hex,
                             "line-width": 4,
                         },
                     });
