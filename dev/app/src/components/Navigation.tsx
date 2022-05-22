@@ -13,7 +13,7 @@ type NavigationProps = {
 
 export const Navigation = ({ toggleTheme }: NavigationProps) => {
     const navItems: Array<NavItem> = [
-        { url: "/map", key: "about", text: "About us" },
+        { url: "/about", key: "about", text: "About us" },
         { url: "/", key: "home", text: "How to use" },
         { url: "/map", key: "map", text: "Map" },
     ];
@@ -30,7 +30,7 @@ export const Navigation = ({ toggleTheme }: NavigationProps) => {
                     className="float-left p-2 font-bold text-2xl text-violet-500 hover:text-violet-600 dark:text-white dark:hover:text-violet-200"
                     key={"home logo"}
                 >
-                    <Link to="/">{"pooler."}</Link>
+                    <Link to="/">{"DiDRiK"}</Link>
                 </li>
                 <li className="float-right my-2">
                     <button

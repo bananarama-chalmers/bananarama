@@ -8,6 +8,7 @@ import { Navigation } from "./components/Navigation";
 import { useState, useEffect } from "react";
 import { Coordinate, Pooler } from "./types/types";
 import mapboxgl from "mapbox-gl";
+import {AboutPage} from "./pages/About";
 
 mapboxgl.accessToken =
     "pk.eyJ1Ijoic2ltam9obiIsImEiOiJjbDFxNGRwajYwN2lrM2xudWl4dzloaXo4In0.ul3d8p97UuUMYOLADmbNEg";
@@ -103,6 +104,8 @@ function App() {
                             </div>
                         }
                     />
+
+                    <Route path="/about" element={<AboutPage />} />
                     <Route
                         path="/join"
                         element ={
