@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import StreetMapView from "./components/StreetMapView";
 import { PoolWizard } from "./components/PoolWizard";
 import { LandingPage } from "./pages/LandingPage";
+import { JoinPage } from "./pages/JoinPage";
 import { Navigation } from "./components/Navigation";
 import { useState, useEffect } from "react";
 import { Coordinate, Pooler } from "./types/types";
@@ -101,6 +102,14 @@ function App() {
                                 />
                             </div>
                         }
+                    />
+                    <Route
+                        path="/join"
+                        element ={
+                            <div>
+                                <JoinPage />
+                            </div>
+                        } 
                     />
                 </Routes>
             </div>
