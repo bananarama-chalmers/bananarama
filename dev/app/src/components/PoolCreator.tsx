@@ -43,7 +43,7 @@ export const PoolCreator = ({
                         poolerName={name}
                         travelType={travelType}
                         key={pool.length}
-                        color={"purple-500"}
+                        color={"#ff0000"}
                     />
                 ),
             } as Pooler);
