@@ -85,3 +85,10 @@ A: In order to decide what questions to discuss during our sprint reviews we dre
 B: The literature should inspire us and facilitate discussion within the group.
 
 A -> B: Byt studying a bit of literature on our own, making sure to do a google-search if something is unclear and share with the group if it is relevant.
+
+## Which technical documentation you use and why (e.g. use cases, interaction diagrams, class diagrams, domain models or component diagrams, text documents)
+A: As of right now we are using a diagram for describing how our app should be structured regarding files and their interaction between one another but it is not very detailed. We also use a contribution guide which is used when naming variabels, classes, functions, files and more. These are taken into consideration when we continue with our development in order to make the code more cohesive and extendable. Our code documentation as of right now is lacking and could use some comments explaining what parts of the code do.
+
+B: We would like to have a more in-depth diagram with dependensies showing which parts of the code that depend on other parts. This will help us with producing better code that  is easier to extend and less prone to bugs. We would like to have better documented code in order for other developers on the team to use the existing code base without having the  author of the code with them.
+
+A -> B: By setting aside more time for planning in the beginning of the project we could produce a more detailed diagram of our code. The produced diagram will  probably differ a bit from the code but if we would update it along the way during meetings it would probably help us a lot when designing new features and extending the code. During the sprints it would also help if we set some time aside towards the end for documenting the code that has been produced during that sprint.
