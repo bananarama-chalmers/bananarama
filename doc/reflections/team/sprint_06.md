@@ -92,3 +92,10 @@ A: As of right now we are using a diagram for describing how our app should be s
 B: We would like to have a more in-depth diagram with dependensies showing which parts of the code that depend on other parts. This will help us with producing better code that  is easier to extend and less prone to bugs. We would like to have better documented code in order for other developers on the team to use the existing code base without having the  author of the code with them.
 
 A -> B: By setting aside more time for planning in the beginning of the project we could produce a more detailed diagram of our code. The produced diagram will  probably differ a bit from the code but if we would update it along the way during meetings it would probably help us a lot when designing new features and extending the code. During the sprints it would also help if we set some time aside towards the end for documenting the code that has been produced during that sprint.
+
+## The three KPIs you use for monitoring your progress and how you use them to improve your process
+A: We experience the KPIs are somewhat arbitrary and some of them are in need of further specification, such as the work satisfaction KPI.
+
+B: We would like for the KPIs to not be as arbitrary as we experience them today. The goal is for tem to serve as a guiding metric on how well we are doing, both in terms of application progress, but also in terms of overall satisfaction within the group. We also should have evaluated the KPIs at some point to find flaws in them, such as them not being specific enough, so that we can improve them and hopefully have them contribute in a more meaningful way.
+
+A -> B: We should have specified early in our process what 1 velocity actually means, possibly in terms of working hours, rather than the current intuitive gut feeling we are using which is different for everyone. The work satisfaction KPI should have had a clearer specification on what each number 1 through 5 actually entails in terms of work satisfaction and what an acceptable average is. We should have had a meeting mid-project to evaluate the KPIs to have potential flaws come to the surface quicker.
